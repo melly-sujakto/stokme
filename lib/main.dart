@@ -40,11 +40,32 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      initialRoute: FirstTimeScreen.routeName,
+      routes: {
+        FirstTimeScreen.routeName: (context) => const FirstTimeScreen(),
+        MyHomePage.routeName: (context) => const MyHomePage(title: 'Stokme'),
+      },
+    );
+  }
+}
+
+class FirstTimeScreen extends StatelessWidget {
+  static const routeName = 'firstTimeScreen';
+  const FirstTimeScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Material(
+      child: Center(
+        child: Text('hallo'),
+      ),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
+  static const routeName = 'myHomePage';
+
   const MyHomePage({super.key, required this.title});
 
   final String title;
