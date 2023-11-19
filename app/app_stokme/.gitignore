@@ -1,0 +1,130 @@
+# Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+.atom/
+.buildlog/
+.history
+.svn/
+coverage/*
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# VS code related
+.vscode/
+
+# Others
+coverage/
+local_database_test_files/
+.flutter-plugins-dependencies
+ios/Flutter/Flutter.podspec
+.fvm/flutter_sdk
+
+# Flutter/Dart/Pub related
+**/doc/api/
+.dart_tool/
+.flutter-plugins
+.packages
+.pub-cache/
+.pub/
+/build/
+.flutter-plugins-dependencies
+
+# Android related
+**/android/**/google-services.json
+**/android/**/gradle-wrapper.jar
+**/android/.gradle
+**/android/captures/
+**/android/gradlew
+**/android/gradlew.bat
+**/android/local.properties
+**/android/**/GeneratedPluginRegistrant.java
+
+# iOS/XCode related
+**/ios/firebase_app_id_file.json
+**/ios/Runner/GoogleService-Info.plist
+**/ios/build/
+**/ios/**/*.mode1v3
+**/ios/**/*.mode2v3
+**/ios/**/*.moved-aside
+**/ios/**/*.pbxuser
+**/ios/**/*.perspectivev3
+**/ios/**/*sync/
+**/ios/**/.sconsign.dblite
+**/ios/**/.tags*
+**/ios/**/.vagrant/
+**/ios/**/DerivedData/
+**/ios/**/Icon?
+**/ios/**/Pods/
+**/ios/**/.symlinks/
+**/ios/**/profile
+**/ios/**/xcuserdata
+**/ios/.generated/
+**/ios/Flutter/App.framework/*
+**/ios/Flutter/Flutter.framework
+**/ios/Flutter/Generated.xcconfig
+**/ios/Flutter/app.flx
+**/ios/Flutter/app.zip
+**/ios/vendor
+**/ios/Flutter/flutter_assets/
+**/ios/Flutter/flutter_export_environment.sh
+**/ios/ServiceDefinitions.json
+**/ios/Runner/GeneratedPluginRegistrant.*
+**/ios/Flutter/.last_build_id
+**/ios/fastlane/README.md
+**/ios/fastlane/report.xml
+**/ios/DigitalBankingApp.app.dSYM.zip
+**/ios/DigitalBankingApp.ipa
+
+# Exceptions to above rules.
+!**/ios/**/default.mode1v3
+!**/ios/**/default.mode2v3
+!**/ios/**/default.pbxuser
+!**/ios/**/default.perspectivev3
+!**/ios/Flutter/App.framework/Info.plist
+!/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
+
+# Ignore generated environment configuration
+.classpath
+.project
+ablysdk/example
+cipher/android/.settings
+image_network_downloaded/android/.settings
+ablysdk/example/android/.settings
+image_crop/android/.settings
+node_modules/
+report/cucumber_report.html
+test_driver/test-report/report.json
+report.json
+org.eclipse.buildship.core.prefs
+**/report_reader/json_report.json
+**/report_reader/*.html
+lib/.env.dart
+
+
+#E2E Testing
+test_driver/screenshots
+test_driver/reports/report.json
+test_driver/reports/application.xml
+
+#  Generated files in integration_test
+integration_test/journey/**/*_test.dart
+integration_test/integration_test.dart
+integration_test/test_driver/reports/*
+
+# Fake test paths in path_provider_mock.dart
+temporaryPath/**/*
+applicationSupportPath/**/*
+downloadsPath/**/*
+libraryPath/**/*
+applicationDocumentsPath/**/*
+externalCachePath/**/*
+externalStoragePath/**/*
+
+# Generated SSL pinned certificates in the default folder
+tools/cert_pinning/scripts/output/*.json
