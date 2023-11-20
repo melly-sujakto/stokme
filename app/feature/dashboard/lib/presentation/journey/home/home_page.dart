@@ -1,6 +1,7 @@
 import 'package:feature_dashboard/common/injector/injector.dart';
 import 'package:feature_dashboard/domain/navigation/interaction_navigation.dart';
 import 'package:flutter/material.dart';
+import 'package:module_common/i18n/i18n_extension.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -20,7 +21,7 @@ class HomePage extends StatelessWidget {
                 Injector.resolve<DashboardInteractionNavigation>()
                     .navigateToSale(context);
               },
-              child: const Text('Ke Penjualan'),
+              child: Text('toSaleButtonTitle'.i18n(context)),
             ),
             ElevatedButton(
               onPressed: () {

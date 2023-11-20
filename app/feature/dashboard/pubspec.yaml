@@ -13,6 +13,8 @@ dependencies:
     sdk: flutter
   library_injection:
     path: ../../library/injection
+  module_common:
+    path: ../../generic/module_common
 
 dev_dependencies:
   build_runner: ^2.4.6

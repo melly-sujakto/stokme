@@ -6,13 +6,19 @@ import 'package:feature_stock/common/injector/injector.dart' as stock_injector;
 import 'package:feature_transaction/common/injector/injector.dart'
     as transaction_injector;
 import 'package:flutter/material.dart';
+import 'package:module_common/common/injector/injector.dart'
+    as module_common_injector;
+import 'package:module_common/presentation/bloc/language_bloc/language_bloc.dart';
 import 'package:stokme/common/injector/injector.dart' as app_injector;
 import 'package:stokme/presentation/app.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   _configureInjector();
-  runApp(const App());
+
+  final languageBloc = app_injector.Injector.resolve<LanguageBloc>();
+
+  runApp(App(languageBloc: languageBloc));
 }
 
 void _configureInjector() {
@@ -22,4 +28,5 @@ void _configureInjector() {
   product_injector.Injector.init();
   stock_injector.Injector.init();
   transaction_injector.Injector.init();
+  module_common_injector.Injector.init();
 }
