@@ -8,13 +8,17 @@ import 'package:module_common/presentation/bloc/base_bloc.dart';
 import 'package:module_common/presentation/bloc/language_bloc/language_bloc.dart';
 import 'package:module_common/presentation/global_routes.dart';
 import 'package:stokme/presentation/routes.dart';
+import 'package:ui_kit/theme/bloc/app_theme_bloc.dart';
+import 'package:ui_kit/utils/screen_utils.dart';
 
 class App extends StatelessWidget {
   const App({
     Key? key,
     required this.languageBloc,
+    required this.appThemeBloc,
   }) : super(key: key);
   final LanguageBloc languageBloc;
+  final AppThemeBloc appThemeBloc;
 
   List<BlocProvider> _getProviders() => [
         BlocProvider<LanguageBloc>.value(
@@ -22,6 +26,9 @@ class App extends StatelessWidget {
             ..add(
               LanguageInitialLoad(),
             ),
+        ),
+        BlocProvider<AppThemeBloc>.value(
+          value: appThemeBloc,
         ),
       ];
 
@@ -34,6 +41,7 @@ class App extends StatelessWidget {
         builder: (context, state) {
           return _StokmeApp(
             languageState: state,
+            appThemeBloc: appThemeBloc,
           );
         },
       ),
@@ -44,38 +52,42 @@ class App extends StatelessWidget {
 class _StokmeApp extends StatelessWidget {
   const _StokmeApp({
     required this.languageState,
+    required this.appThemeBloc,
   });
 
   final LanguageState languageState;
+  final AppThemeBloc appThemeBloc;
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       navigatorKey: GlobalRoutes.globalKey,
       debugShowCheckedModeBanner: false,
-      // builder: (context, widget){
-      //   return MediaQuery(
-      //     data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
-      //     child: Builder(
-      //       builder: (context) {
-      //         /// Add theme init event (SafiThemeChange) here
-      //         /// due to it requires ScreenUtil to be initiated first.
-      //         themeBloc.add(
-      //           SafiThemeChange(
-      //             mode: SafiThemeMode.light,
-      //           )
-      //         );
-      //         return Splash(
-      //           readyBuilder: (context, widget) => _buildReady(widget),
-      //           transitionWidget: widget,
-      //           splashCondition: () =>
-      //               !S.isReady(context) ||
-      //               languageState is! LanguageLoadedState,
-      //         );
-      //       },
-      //     ),
-      //   );
-      // },
+      builder: (context, widget) {
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+          child: Builder(
+            builder: (context) {
+              ScreenUtil.init(context);
+              appThemeBloc.add(
+                AppThemeChange(
+                  mode: AppThemeMode.light,
+                ),
+              );
+              return BlocBuilder<AppThemeBloc, AppThemeState>(
+                buildWhen: (previous, current) => current is AppThemeLoaded,
+                builder: (context, state) {
+                  final ThemeData data = Theme.of(context);
+                  return Theme(
+                    data: state is AppThemeLoaded ? state.data : data,
+                    child: widget!,
+                  );
+                },
+              );
+            },
+          ),
+        );
+      },
       supportedLocales: [
         Locale(Languages.en.code),
         Locale(Languages.id.code),
@@ -90,10 +102,6 @@ class _StokmeApp extends StatelessWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
       locale: languageState.locale,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
       initialRoute: feature_dashboard.Routes.initial,
       routes: Routes.all,
       // onGenerateRoute: Routes.getRoutesWithSettings,
