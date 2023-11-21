@@ -1,5 +1,5 @@
-import 'package:feature_dashboard/presentation/routes.dart'
-    as feature_dashboard;
+import 'package:feature_login/presentation/routes.dart'
+    as feature_login;
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:module_common/common/enum/languages.dart';
@@ -102,7 +102,7 @@ class _StokmeApp extends StatelessWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
       locale: languageState.locale,
-      initialRoute: feature_dashboard.Routes.initial,
+      initialRoute: feature_login.Routes.login,
       routes: Routes.all,
       // onGenerateRoute: Routes.getRoutesWithSettings,
       // navigatorObservers: [

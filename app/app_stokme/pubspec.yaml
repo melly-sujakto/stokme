@@ -33,6 +33,8 @@ dependencies:
   cupertino_icons: ^1.0.2
   feature_dashboard:
     path: ../feature/dashboard
+  feature_login:
+    path: ../feature/login
   feature_product:
     path: ../feature/product
   feature_stock:

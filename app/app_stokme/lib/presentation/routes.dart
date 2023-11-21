@@ -1,4 +1,5 @@
 import 'package:feature_dashboard/presentation/routes.dart' as dashboard_routes;
+import 'package:feature_login/presentation/routes.dart' as login_routes;
 import 'package:feature_product/presentation/routes.dart' as product_routes;
 import 'package:feature_stock/presentation/routes.dart' as stock_routes;
 import 'package:feature_transaction/presentation/routes.dart'
@@ -11,6 +12,7 @@ abstract class Routes {
   static Map<String, WidgetBuilder> get all {
     return {
       ...dashboard_routes.Routes.all,
+      ...login_routes.Routes.all,
       ...product_routes.Routes.all,
       ...stock_routes.Routes.all,
       ...transaction_routes.Routes.all,

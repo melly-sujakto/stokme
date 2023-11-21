@@ -303,6 +303,13 @@ packages:
       relative: true
     source: path
     version: "0.0.1"
+  feature_login:
+    dependency: "direct main"
+    description:
+      path: "../feature/login"
+      relative: true
+    source: path
+    version: "0.0.1"
   feature_product:
     dependency: "direct main"
     description:

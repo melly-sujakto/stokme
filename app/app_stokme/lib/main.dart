@@ -1,5 +1,6 @@
 import 'package:feature_dashboard/common/injector/injector.dart'
     as dashboard_injector;
+import 'package:feature_login/common/injector/injector.dart' as login_injector;
 import 'package:feature_product/common/injector/injector.dart'
     as product_injector;
 import 'package:feature_stock/common/injector/injector.dart' as stock_injector;
@@ -33,6 +34,7 @@ void _configureInjector() {
   // main injector needs to be first, since it clears kiwi container
   app_injector.Injector.init();
   dashboard_injector.Injector.init();
+  login_injector.Injector.init();
   product_injector.Injector.init();
   stock_injector.Injector.init();
   transaction_injector.Injector.init();
