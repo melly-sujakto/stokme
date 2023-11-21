@@ -48,7 +48,7 @@ abstract class CustomThemes {
     ),
     colorScheme: AppColorScheme(
       brightness: Brightness.light,
-      primary: CustomColors.primary.c60,
+      primary: CustomColors.primary.c0,
       onPrimary: CustomColors.primary.c100,
       primaryContainer: CustomColors.primary.c98,
       onPrimaryContainer: CustomColors.primary.c60,
@@ -60,9 +60,8 @@ abstract class CustomThemes {
       onTertiary: CustomColors.tertiary.c100,
       tertiaryContainer: CustomColors.tertiary.c98,
       onTertiaryContainer: CustomColors.tertiary.c20,
-      // We assume surface as success accent on figma
-      surface: CustomColors.successAccent.c100,
-      onSurface: CustomColors.successAccent.c40,
+      surface: CustomColors.white,
+      onSurface: CustomColors.black,
       error: CustomColors.errorAccent.c60,
       onError: CustomColors.errorAccent.c100,
       errorContainer: CustomColors.errorAccent.c98,
@@ -71,7 +70,7 @@ abstract class CustomThemes {
 
       /// Below values are randomly choosen,
       /// since its not defiend on figma
-      background: CustomColors.neutral.c100,
+      background: CustomColors.neutral.c98,
       onBackground: CustomColors.neutral.c10,
 
       /// Custom Implementation

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ui_kit/theme/app_color_palette.dart';
 
+// we can get custom colors pattern here: https://www.color-hex.com/
 class CustomColors {
   static const Color transparent = Colors.transparent;
   static const Color white = Color(0xFFFFFFFF);
@@ -31,33 +32,33 @@ class CustomColors {
   /// UI Kit Color
   static const primary = AppColorPalette(
     c0: Color(0xFF000000),
-    c10: Color(0xFF31020A),
-    c20: Color(0xFF630315),
-    c30: Color(0xFF94051F),
-    c40: Color(0xFFC60629),
-    c50: Color(0xFFF70834),
-    c60: Color(0xFFF94868),
-    c70: Color(0xFFFA6B85),
-    c80: Color(0xFFFC9CAE),
-    c90: Color(0xFFFDCED6),
-    c95: Color(0xFFFEE6EB),
-    c98: Color(0xFFFFF5F7),
+    c10: Color(0xFF171A1C),
+    c20: Color(0xFF2F3337),
+    c30: Color(0xFF464D53),
+    c40: Color(0xFF5E666E),
+    c50: Color(0xFF79838D),
+    c60: Color(0xFF9199A1),
+    c70: Color(0xFFACB3B9),
+    c80: Color(0xFFC8CCD0),
+    c90: Color(0xFFE3E6E8),
+    c95: Color(0xFFF1F2F3),
+    c98: Color(0xFFF9FAFA),
     c100: Color(0xFFFFFFFF),
   );
 
   static const secondary = AppColorPalette(
     c0: Color(0xFF000000),
-    c10: Color(0xFF12092A),
-    c20: Color(0xFF251254),
-    c30: Color(0xFF371C7D),
-    c40: Color(0xFF4A25A7),
-    c50: Color(0xFF5D2FD1),
-    c60: Color(0xFF7D58DA),
-    c70: Color(0xFF9D82E3),
-    c80: Color(0xFFBEABED),
-    c90: Color(0xFFDED5F6),
-    c95: Color(0xFFEFEAFA),
-    c98: Color(0xFFF8F7FD),
+    c10: Color(0xFF332200),
+    c20: Color(0xFF664400),
+    c30: Color(0xFF996600),
+    c40: Color(0xFFcc8800),
+    c50: Color(0xFFffaa00),
+    c60: Color(0xFFffbb32),
+    c70: Color(0xFFffcc66),
+    c80: Color(0xFFffdd99),
+    c90: Color(0xFFffeecc),
+    c95: Color(0xFFfff6e5),
+    c98: Color(0xFFfffbf4),
     c100: Color(0xFFFFFFFF),
   );
 
