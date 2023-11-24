@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:module_common/presentation/bloc/base_bloc.dart';
 import 'package:ui_kit/common/constants/layout_dimen.dart';
 import 'package:ui_kit/theme/app_color_scheme.dart';
 import 'package:ui_kit/theme/bloc/app_theme_bloc.dart';
 import 'package:ui_kit/theme/colors.dart';
-import 'package:ui_kit/theme/text_styles.dart';
 import 'package:ui_kit/utils/screen_utils.dart';
 
 abstract class CustomThemes {
@@ -25,27 +25,28 @@ abstract class CustomThemes {
     cardTheme: CardTheme(
       color: CustomColors.neutral.c100,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(LayoutDimen.dimen_32.w),
+        borderRadius: BorderRadius.circular(LayoutDimen.dimen_10.w),
       ),
       elevation: 0,
     ),
-    textTheme: TextTheme(
-      headlineLarge: TextStyles.appHeadlineLarge,
-      headlineMedium: TextStyles.appHeadlineMedium,
-      headlineSmall: TextStyles.appHeadlineSmall,
-      titleLarge: TextStyles.appTitleLarge,
-      titleMedium: TextStyles.appTitleMedium,
-      titleSmall: TextStyles.appTitleSmall,
-      bodyLarge: TextStyles.appBodyLarge,
-      bodyMedium: TextStyles.appBodyMedium,
-      bodySmall: TextStyles.appBodySmall,
-      // (TextTheme implementation): TextStyle get overline => labelLarge
-      labelLarge: TextStyles.appButtonLarge,
-      // We use label medium for button small
-      labelMedium: TextStyles.appButtonSmall,
-      // (TextTheme implementation): TextStyle get overline => labelSmall
-      labelSmall: TextStyles.appOverline,
-    ),
+    // textTheme: TextTheme(
+    //   headlineLarge: TextStyles.appHeadlineLarge,
+    //   headlineMedium: TextStyles.appHeadlineMedium,
+    //   headlineSmall: TextStyles.appHeadlineSmall,
+    //   titleLarge: TextStyles.appTitleLarge,
+    //   titleMedium: TextStyles.appTitleMedium,
+    //   titleSmall: TextStyles.appTitleSmall,
+    //   bodyLarge: TextStyles.appBodyLarge,
+    //   bodyMedium: TextStyles.appBodyMedium,
+    //   bodySmall: TextStyles.appBodySmall,
+    //   // (TextTheme implementation): TextStyle get overline => labelLarge
+    //   labelLarge: TextStyles.appButtonLarge,
+    //   // We use label medium for button small
+    //   labelMedium: TextStyles.appButtonSmall,
+    //   // (TextTheme implementation): TextStyle get overline => labelSmall
+    //   labelSmall: TextStyles.appOverline,
+    // ),
+    textTheme: GoogleFonts.interTextTheme(),
     colorScheme: AppColorScheme(
       brightness: Brightness.light,
       primary: CustomColors.primary.c0,
