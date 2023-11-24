@@ -1,5 +1,4 @@
-import 'package:feature_login/presentation/routes.dart'
-    as feature_login;
+import 'package:feature_login/presentation/routes.dart' as feature_login;
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:module_common/common/enum/languages.dart';
@@ -77,11 +76,13 @@ class _StokmeApp extends StatelessWidget {
               return BlocBuilder<AppThemeBloc, AppThemeState>(
                 buildWhen: (previous, current) => current is AppThemeLoaded,
                 builder: (context, state) {
-                  final ThemeData data = Theme.of(context);
-                  return Theme(
-                    data: state is AppThemeLoaded ? state.data : data,
-                    child: widget!,
-                  );
+                  if (state is AppThemeLoaded) {
+                    return Theme(
+                      data: state.data,
+                      child: widget!,
+                    );
+                  }
+                  return Container();
                 },
               );
             },
