@@ -13,6 +13,8 @@ dependencies:
     sdk: flutter
   library_injection:
     path: ../../library/injection
+  ui_kit:
+    path: ../../generic/ui_kit
 
 dev_dependencies:
   flutter_lints: ^2.0.0
