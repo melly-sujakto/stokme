@@ -17,6 +17,7 @@ coverage/*
 
 # VS code related
 .vscode/
+launch.json
 
 # Others
 coverage/
