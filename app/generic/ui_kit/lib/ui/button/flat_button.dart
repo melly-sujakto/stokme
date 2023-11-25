@@ -7,9 +7,11 @@ class FlatButton extends StatelessWidget {
   const FlatButton({
     Key? key,
     required this.title,
+    required this.onPressed,
   }) : super(key: key);
 
   final String title;
+  final void Function()? onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +21,7 @@ class FlatButton extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           OutlinedButton(
-            onPressed: () {},
+            onPressed: onPressed,
             style: ButtonStyle(
               backgroundColor: MaterialStatePropertyAll(
                 CustomColors.secondary.c60,

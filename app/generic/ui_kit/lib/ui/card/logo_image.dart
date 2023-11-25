@@ -8,6 +8,7 @@ class LogoImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // coba bikin flutter project tapi yg module
     return Container(
       width: LayoutDimen.dimen_200.w,
       height: LayoutDimen.dimen_175.h,
