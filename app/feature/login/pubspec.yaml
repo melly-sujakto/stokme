@@ -13,6 +13,8 @@ dependencies:
     sdk: flutter
   library_injection:
     path: ../../library/injection
+  module_common:
+    path: ../../generic/module_common
   ui_kit:
     path: ../../generic/ui_kit
 
