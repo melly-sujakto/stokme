@@ -1,9 +1,12 @@
+import 'package:feature_login/presentation/login_constants.dart';
 import 'package:flutter/material.dart';
+import 'package:module_common/i18n/i18n_extension.dart';
 import 'package:ui_kit/common/constants/layout_dimen.dart';
-import 'package:ui_kit/theme/colors.dart';
 import 'package:ui_kit/theme/theme_data.dart';
+import 'package:ui_kit/ui/button/flat_button.dart';
+import 'package:ui_kit/ui/card/logo_image.dart';
+import 'package:ui_kit/ui/input_field/input_basic.dart';
 import 'package:ui_kit/utils/screen_utils.dart';
-import 'package:ui_kit/widgets/logo_image.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -38,8 +41,8 @@ class LoginPage extends StatelessWidget {
                 ),
                 Column(
                   children: [
-                    textFormField(labelText: 'Email'),
-                    textFormField(labelText: 'Password'),
+                    emailTextField(context),
+                    passwordTextField(context),
                   ],
                 ),
                 Padding(
@@ -47,7 +50,9 @@ class LoginPage extends StatelessWidget {
                     top: LayoutDimen.dimen_126.h,
                     bottom: LayoutDimen.dimen_32.h,
                   ),
-                  child: button(),
+                  child: FlatButton(
+                    title: LoginStrings.loginButton.i18n(context),
+                  ),
                 ),
               ],
             ),
@@ -57,70 +62,19 @@ class LoginPage extends StatelessWidget {
     );
   }
 
-  Widget button() {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: LayoutDimen.dimen_16.w),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          OutlinedButton(
-            onPressed: () {},
-            style: ButtonStyle(
-              backgroundColor: MaterialStatePropertyAll(
-                CustomColors.secondary.c60,
-              ),
-              shape: MaterialStatePropertyAll(
-                RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-            ),
-            child: SizedBox(
-              height: LayoutDimen.dimen_50.w,
-              child: Center(
-                child: Text(
-                  'Login',
-                  style: TextStyle(
-                    fontSize: LayoutDimen.dimen_19.minSp,
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
+  Widget emailTextField(BuildContext context) {
+    final controller = TextEditingController();
+    return InputBasic(
+      labelText: LoginStrings.email.i18n(context),
+      controller: controller,
     );
   }
 
-  Widget textFormField({String labelText = ''}) {
-    final textEditingController = TextEditingController();
-    final focusNode = FocusNode();
-    // TODO(Melly): improve with proper height
-    return Padding(
-      padding: EdgeInsets.all(LayoutDimen.dimen_16.w),
-      child: TextFormField(
-        controller: textEditingController,
-        focusNode: focusNode,
-        decoration: InputDecoration(
-          filled: true,
-          fillColor: CustomColors.neutral.c95,
-          focusedBorder: UnderlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide(
-              color: CustomColors.secondary.c60,
-            ),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide(color: CustomColors.neutral.c95),
-          ),
-          labelText: labelText,
-          labelStyle: TextStyle(
-            color: CustomColors.neutral.c60,
-            fontSize: LayoutDimen.dimen_18.minSp,
-          ),
-        ),
-      ),
+  Widget passwordTextField(BuildContext context) {
+    final controller = TextEditingController();
+    return InputBasic(
+      labelText: LoginStrings.password.i18n(context),
+      controller: controller,
     );
   }
 }
