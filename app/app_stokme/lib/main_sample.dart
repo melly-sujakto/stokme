@@ -1,31 +1,17 @@
 import 'package:audioplayers/audioplayers.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_library/firebase_library.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
-import 'package:stokme/firebase_options.dart';
+import 'package:stokme/common/injector/injector.dart';
 
 bool shouldUseFirebaseEmulator = false;
 
-late final FirebaseApp app;
-late final FirebaseAuth auth;
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  app = await _initFirebaseCore();
-  auth = FirebaseAuth.instanceFor(app: app);
-
-  if (shouldUseFirebaseEmulator) {
-    await auth.useAuthEmulator('localhost', 9099);
-  }
+  Injector.init();
+  await Injector.resolve<FirebaseLibrary>().init();
   runApp(const MyApp());
-}
-
-Future<FirebaseApp> _initFirebaseCore() async {
-  return Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
 }
 
 class MyApp extends StatelessWidget {
@@ -40,25 +26,10 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
-      initialRoute: FirstTimeScreen.routeName,
+      initialRoute: MyHomePage.routeName,
       routes: {
-        FirstTimeScreen.routeName: (context) => const FirstTimeScreen(),
         MyHomePage.routeName: (context) => const MyHomePage(title: 'Stokme'),
       },
-    );
-  }
-}
-
-class FirstTimeScreen extends StatelessWidget {
-  static const routeName = 'firstTimeScreen';
-  const FirstTimeScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Material(
-      child: Center(
-        child: Text('hallo'),
-      ),
     );
   }
 }
@@ -80,22 +51,6 @@ class _MyHomePageState extends State<MyHomePage> {
   String code = '';
 
   dynamic product;
-
-  Future<void> getAllData() async {
-    final collectionRef = FirebaseFirestore.instance.collection('store');
-    final querySnapshot = await collectionRef.get();
-    setState(() {
-      product = querySnapshot.docs.map((doc) => doc.data()).toList();
-    });
-  }
-
-  Future<void> getOneData(String code) async {
-    final collectionRef = FirebaseFirestore.instance.collection('product');
-    final querySnapshot = await collectionRef.doc(code).get();
-    setState(() {
-      product = querySnapshot.data();
-    });
-  }
 
   final player = AudioPlayer();
 
@@ -154,7 +109,9 @@ class _MyHomePageState extends State<MyHomePage> {
                     ? constraints.maxWidth / 2
                     : constraints.maxWidth,
                 child: StreamBuilder<User?>(
-                  stream: auth.authStateChanges(),
+                  stream: Injector.resolve<FirebaseLibrary>()
+                      .auth
+                      .authStateChanges(),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       return const Text('Authenticated');
@@ -165,16 +122,18 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               TextButton(
                 onPressed: () async {
-                  await auth.signInWithEmailAndPassword(
-                    email: 'melly.sujakto@gmail.com',
-                    password: 'Stokmemelly123*',
-                  );
+                  await Injector.resolve<FirebaseLibrary>()
+                      .auth
+                      .signInWithEmailAndPassword(
+                        email: 'melly.sujakto@gmail.com',
+                        password: 'Stokmemelly123*',
+                      );
                 },
                 child: const Text('Login'),
               ),
               TextButton(
                 onPressed: () async {
-                  await auth.signOut();
+                  await Injector.resolve<FirebaseLibrary>().auth.signOut();
                 },
                 child: const Text('Logout'),
               ),
@@ -195,7 +154,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       setState(() {
                         if (barcode.rawValue != null) {
                           code = barcode.rawValue!;
-                          getOneData(code);
+                          getOneData();
                         }
                       });
                       debugPrint('Barcode found! ${barcode.rawValue}');
@@ -248,5 +207,12 @@ class _MyHomePageState extends State<MyHomePage> {
         },
       ),
     );
+  }
+
+  Future<void> getOneData() async {
+    final data = await Injector.resolve<FirebaseLibrary>().getOneData(code);
+    setState(() {
+      product = data;
+    });
   }
 }
