@@ -20,4 +20,10 @@ class _$Injector extends Injector {
     final KiwiContainer container = KiwiContainer();
     container.registerSingleton((c) => InteractionNavigationImpl());
   }
+
+  @override
+  void _configureLibraries() {
+    final KiwiContainer container = KiwiContainer();
+    container.registerSingleton((c) => FirebaseLibrary());
+  }
 }

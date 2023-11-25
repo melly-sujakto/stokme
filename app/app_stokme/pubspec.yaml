@@ -43,6 +43,8 @@ dependencies:
     path: ../feature/transaction
   firebase_auth: ^4.10.0
   firebase_core: ^2.16.0
+  firebase_library:
+    path: ../library/firebase_library
   flutter:
     sdk: flutter
   flutter_localizations:

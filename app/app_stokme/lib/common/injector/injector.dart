@@ -1,7 +1,9 @@
 import 'package:feature_dashboard/domain/navigation/interaction_navigation.dart';
+import 'package:feature_login/domain/navigation/interaction_navigation.dart';
 import 'package:feature_product/domain/navigation/interaction_navigation.dart';
 import 'package:feature_stock/domain/navigation/interaction_navigation.dart';
 import 'package:feature_transaction/domain/navigation/interaction_navigation.dart';
+import 'package:firebase_library/firebase_library.dart';
 import 'package:library_injection/annotations.dart';
 import 'package:library_injection/package/kiwi.dart';
 import 'package:module_common/domain/usecase/language_usecase.dart';
@@ -23,11 +25,15 @@ abstract class Injector {
     _configureBloc();
     _configureNavigation();
     _configureDependencies();
+    _configureLibraries();
     _manualInjection();
   }
 
   void _manualInjection() {
     KiwiContainer()
+      ..registerSingleton<LoginInteractionNavigation>(
+        (c) => c<InteractionNavigationImpl>(),
+      )
       ..registerSingleton<DashboardInteractionNavigation>(
         (c) => c<InteractionNavigationImpl>(),
       )
@@ -53,4 +59,7 @@ abstract class Injector {
 
   @Register.singleton(InteractionNavigationImpl)
   void _configureNavigation();
+
+  @Register.singleton(FirebaseLibrary)
+  void _configureLibraries();
 }

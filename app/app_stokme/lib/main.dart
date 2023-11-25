@@ -6,6 +6,7 @@ import 'package:feature_product/common/injector/injector.dart'
 import 'package:feature_stock/common/injector/injector.dart' as stock_injector;
 import 'package:feature_transaction/common/injector/injector.dart'
     as transaction_injector;
+import 'package:firebase_library/firebase_library.dart';
 import 'package:flutter/material.dart';
 import 'package:module_common/common/injector/injector.dart'
     as module_common_injector;
@@ -18,6 +19,7 @@ import 'package:ui_kit/theme/bloc/app_theme_bloc.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   _configureInjector();
+  await app_injector.Injector.resolve<FirebaseLibrary>().init();
 
   final languageBloc = app_injector.Injector.resolve<LanguageBloc>();
   final appThemeBloc = app_injector.Injector.resolve<AppThemeBloc>();
