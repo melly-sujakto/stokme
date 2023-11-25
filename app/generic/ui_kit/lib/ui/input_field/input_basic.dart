@@ -34,7 +34,9 @@ class _InputBasicState extends State<InputBasic> {
   Widget build(BuildContext context) {
     // TODO(Melly): improve with proper height
     return Padding(
-      padding: EdgeInsets.all(LayoutDimen.dimen_16.w),
+      padding: EdgeInsets.symmetric(
+        horizontal: LayoutDimen.dimen_16.w,
+      ),
       child: TextFormField(
         controller: textEditingController,
         focusNode: focusNode,

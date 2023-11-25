@@ -43,43 +43,48 @@ class LoginPage extends StatelessWidget {
           }
         },
         builder: (context, state) {
-          return Scaffold(
-            backgroundColor: Colors.transparent,
-            body: SingleChildScrollView(
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                        vertical: LayoutDimen.dimen_105.h,
+          return SafeArea(
+            child: Scaffold(
+              backgroundColor: Colors.transparent,
+              body: SingleChildScrollView(
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                          vertical: LayoutDimen.dimen_85.h,
+                        ),
+                        child: const LogoImage(),
                       ),
-                      child: const LogoImage(),
-                    ),
-                    Column(
-                      children: [
-                        emailTextField(context),
-                        passwordTextField(context),
-                      ],
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(
-                        top: LayoutDimen.dimen_126.h,
-                        bottom: LayoutDimen.dimen_32.h,
+                      Column(
+                        children: [
+                          emailTextField(context),
+                          SizedBox(
+                            height: LayoutDimen.dimen_40.h,
+                          ),
+                          passwordTextField(context),
+                        ],
                       ),
-                      child: FlatButton(
-                        title: LoginStrings.loginButton.i18n(context),
-                        onPressed: () {
-                          loginBloc.add(
-                            SubmitEmailAndPasswordEvent(
-                              email: 'melly.sujakto@gmail.com',
-                              password: 'Stokmemelly123*',
-                            ),
-                          );
-                        },
+                      Padding(
+                        padding: EdgeInsets.only(
+                          top: LayoutDimen.dimen_126.h,
+                          bottom: LayoutDimen.dimen_32.h,
+                        ),
+                        child: FlatButton(
+                          title: LoginStrings.loginButton.i18n(context),
+                          onPressed: () {
+                            loginBloc.add(
+                              SubmitEmailAndPasswordEvent(
+                                email: 'melly.sujakto@gmail.com',
+                                password: 'Stokmemelly123*',
+                              ),
+                            );
+                          },
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
