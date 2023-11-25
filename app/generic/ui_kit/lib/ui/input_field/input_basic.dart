@@ -49,7 +49,7 @@ class _InputBasicState extends State<InputBasic> {
               color: CustomColors.secondary.c60,
             ),
           ),
-          enabledBorder: OutlineInputBorder(
+          enabledBorder: UnderlineInputBorder(
             borderRadius: BorderRadius.circular(LayoutDimen.dimen_10.w),
             borderSide: BorderSide(color: CustomColors.neutral.c95),
           ),
