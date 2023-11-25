@@ -5,5 +5,8 @@ final Map<String, String> translations = {
   'home.button.stockIn': 'Stock In',
   'home.button.product': 'Products',
   'home.button.stock': 'Stock',
-  'home.button.transaction': 'Transactions'
+  'home.button.transaction': 'Transactions',
+  'login.inputField.email': 'Email',
+  'login.inputField.password': 'Password',
+  'login.button.login': 'Login'
 };
