@@ -8,5 +8,6 @@ final Map<String, String> translations = {
   'home.button.transaction': 'Transaksi',
   'login.inputField.email': 'Email',
   'login.inputField.password': 'Kata sandi',
-  'login.button.login': 'Masuk'
+  'login.button.login': 'Masuk',
+  'login.snacbar.errorMessage': 'Email dan Password tidak sesuai'
 };

@@ -11,7 +11,7 @@ abstract class Routes {
     return {
       login: (context) => BlocProvider<LoginBloc>.value(
             value: Injector.resolve<LoginBloc>(),
-            child: const LoginPage(),
+            child: LoginPage(),
           ),
     };
   }

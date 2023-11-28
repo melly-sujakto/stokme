@@ -10,10 +10,14 @@ import 'package:ui_kit/theme/theme_data.dart';
 import 'package:ui_kit/ui/button/flat_button.dart';
 import 'package:ui_kit/ui/card/logo_image.dart';
 import 'package:ui_kit/ui/input_field/input_basic.dart';
+import 'package:ui_kit/ui/snackbar/snackbar_dialog.dart';
 import 'package:ui_kit/utils/screen_utils.dart';
 
 class LoginPage extends StatelessWidget {
-  const LoginPage({super.key});
+  LoginPage({super.key});
+
+  final emailController = TextEditingController();
+  final passworController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -34,12 +38,15 @@ class LoginPage extends StatelessWidget {
       child: BlocConsumer<LoginBloc, LoginState>(
         listener: (context, state) {
           if (state is LoginSuccess) {
-            //navigate
             Injector.resolve<LoginInteractionNavigation>()
                 .navigateToDashboard(context);
           }
           if (state is LoginFailed) {
-            //snackbar
+            SnackbarDialog().show(
+              context: context,
+              message: LoginStrings.errorMessage.i18n(context),
+              type: SnackbarDialogType.failed,
+            );
           }
         },
         builder: (context, state) {
@@ -53,7 +60,7 @@ class LoginPage extends StatelessWidget {
                     children: [
                       Padding(
                         padding: EdgeInsets.symmetric(
-                          vertical: LayoutDimen.dimen_85.h,
+                          vertical: LayoutDimen.dimen_105.h,
                         ),
                         child: const LogoImage(),
                       ),
@@ -76,8 +83,8 @@ class LoginPage extends StatelessWidget {
                           onPressed: () {
                             loginBloc.add(
                               SubmitEmailAndPasswordEvent(
-                                email: 'melly.sujakto@gmail.com',
-                                password: 'Stokmemelly123*',
+                                email: emailController.text,
+                                password: passworController.text,
                               ),
                             );
                           },
@@ -95,18 +102,16 @@ class LoginPage extends StatelessWidget {
   }
 
   Widget emailTextField(BuildContext context) {
-    final controller = TextEditingController();
     return InputBasic(
       labelText: LoginStrings.email.i18n(context),
-      controller: controller,
+      controller: emailController,
     );
   }
 
   Widget passwordTextField(BuildContext context) {
-    final controller = TextEditingController();
     return InputBasic(
       labelText: LoginStrings.password.i18n(context),
-      controller: controller,
+      controller: passworController,
     );
   }
 }

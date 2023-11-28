@@ -8,5 +8,6 @@ final Map<String, String> translations = {
   'home.button.transaction': 'Transactions',
   'login.inputField.email': 'Email',
   'login.inputField.password': 'Password',
-  'login.button.login': 'Login'
+  'login.button.login': 'Login',
+  'login.snacbar.errorMessage': 'Email and Password is incorrect'
 };
