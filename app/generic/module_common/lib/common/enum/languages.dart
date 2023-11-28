@@ -1,6 +1,6 @@
 enum Languages {
-  en('en', 'ENGLISH', 'common.lang.en', 'EN'),
-  id('id', 'BAHASA', 'common.lang.id', 'ID');
+  en('en', 'English', 'common.lang.en', 'EN'),
+  id('id', 'Bahasa', 'common.lang.id', 'ID');
 
   const Languages(this.code, this.value, this.label, this.labelShort);
 
