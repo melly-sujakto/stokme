@@ -4,13 +4,16 @@ import 'package:firebase_library/firebase_library.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:stokme/common/injector/injector.dart';
+import 'package:stokme/firebase_options.dart';
 
 bool shouldUseFirebaseEmulator = false;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Injector.init();
-  await Injector.resolve<FirebaseLibrary>().init();
+  await Injector.resolve<FirebaseLibrary>().init(
+    DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 

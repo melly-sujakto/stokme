@@ -12,6 +12,7 @@ import 'package:module_common/common/injector/injector.dart'
     as module_common_injector;
 import 'package:module_common/presentation/bloc/language_bloc/language_bloc.dart';
 import 'package:stokme/common/injector/injector.dart' as app_injector;
+import 'package:stokme/firebase_options.dart';
 import 'package:stokme/presentation/app.dart';
 import 'package:ui_kit/common/injector/injector.dart' as ui_kit_injector;
 import 'package:ui_kit/theme/bloc/app_theme_bloc.dart';
@@ -19,7 +20,9 @@ import 'package:ui_kit/theme/bloc/app_theme_bloc.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   _configureInjector();
-  await app_injector.Injector.resolve<FirebaseLibrary>().init();
+  await app_injector.Injector.resolve<FirebaseLibrary>().init(
+    DefaultFirebaseOptions.currentPlatform,
+  );
 
   final languageBloc = app_injector.Injector.resolve<LanguageBloc>();
   final appThemeBloc = app_injector.Injector.resolve<AppThemeBloc>();
