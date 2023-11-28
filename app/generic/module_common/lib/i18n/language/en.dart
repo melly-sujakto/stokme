@@ -1,6 +1,8 @@
 // ignore_for_file: lines_longer_than_80_chars
 
 final Map<String, String> translations = {
+  'common.title.yes': 'Yes',
+  'common.title.no': 'No',
   'home.button.sale': 'Sale',
   'home.button.stockIn': 'Stock In',
   'home.button.product': 'Products',
@@ -12,5 +14,7 @@ final Map<String, String> translations = {
   'login.inputField.email': 'Email',
   'login.inputField.password': 'Password',
   'login.button.login': 'Login',
-  'login.snackbar.errorMessage': 'Email and Password is incorrect'
+  'login.snackbar.errorMessage': 'Email and Password is incorrect',
+  'more.item.logout': 'Logout',
+  'more.dialog.logoutDialogDesc': 'Logout from App?',
 };

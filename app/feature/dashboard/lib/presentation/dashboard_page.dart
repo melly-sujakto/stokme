@@ -4,6 +4,7 @@ import 'package:feature_dashboard/presentation/journey/more/more_page.dart';
 import 'package:feature_dashboard/presentation/journey/profile/profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:module_common/i18n/i18n_extension.dart';
+import 'package:ui_kit/theme/colors.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
@@ -36,6 +37,8 @@ class _DashboardPageState extends State<DashboardPage> {
 
   BottomNavigationBar getBottomNavBar(BuildContext context) {
     return BottomNavigationBar(
+      backgroundColor:
+          activeBottomNavIndex != 0 ? CustomColors.primary.c95 : null,
       currentIndex: activeBottomNavIndex,
       onTap: (index) {
         setState(() {

@@ -10,4 +10,6 @@ abstract class DashboardInteractionNavigation {
   void navigateToStock(BuildContext context);
 
   void navigateToTransaction(BuildContext context);
+
+  void navigateToLogin(BuildContext context);
 }

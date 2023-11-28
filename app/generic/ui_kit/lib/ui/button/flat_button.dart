@@ -8,23 +8,35 @@ class FlatButton extends StatelessWidget {
     Key? key,
     required this.title,
     required this.onPressed,
+    this.stretch = true,
+    this.color,
+    this.titleStyle,
+    this.width,
+    this.margin,
   }) : super(key: key);
 
   final String title;
+  final bool stretch;
+  final Color? color;
+  final TextStyle? titleStyle;
+  final double? width;
+  final EdgeInsetsGeometry? margin;
   final void Function()? onPressed;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: LayoutDimen.dimen_16.w),
+      padding:
+          margin ?? EdgeInsets.symmetric(horizontal: LayoutDimen.dimen_16.w),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+        crossAxisAlignment:
+            stretch ? CrossAxisAlignment.stretch : CrossAxisAlignment.center,
         children: [
           OutlinedButton(
             onPressed: onPressed,
             style: ButtonStyle(
               backgroundColor: MaterialStatePropertyAll(
-                CustomColors.secondary.c60,
+                color ?? CustomColors.secondary.c60,
               ),
               shape: MaterialStatePropertyAll(
                 RoundedRectangleBorder(
@@ -34,12 +46,14 @@ class FlatButton extends StatelessWidget {
             ),
             child: SizedBox(
               height: LayoutDimen.dimen_50.w,
+              width: width,
               child: Center(
                 child: Text(
                   title,
-                  style: TextStyle(
-                    fontSize: LayoutDimen.dimen_19.minSp,
-                  ),
+                  style: titleStyle ??
+                      TextStyle(
+                        fontSize: LayoutDimen.dimen_19.minSp,
+                      ),
                 ),
               ),
             ),

@@ -18,7 +18,7 @@ class InteractionNavigationImpl
         ProductInteractionNavigation,
         StockInteractionNavigation,
         TransactionInteractionNavigation {
-          
+  @override
   void navigateToLogin(BuildContext context) {
     Navigator.of(context).pushNamedAndRemoveUntil(
       login_routes.Routes.login,
