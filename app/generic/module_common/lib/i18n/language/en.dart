@@ -9,5 +9,5 @@ final Map<String, String> translations = {
   'login.inputField.email': 'Email',
   'login.inputField.password': 'Password',
   'login.button.login': 'Login',
-  'login.snacbar.errorMessage': 'Email and Password is incorrect'
+  'login.snackbar.errorMessage': 'Email and Password is incorrect'
 };
