@@ -36,6 +36,7 @@ class _DashboardPageState extends State<DashboardPage> {
 
   BottomNavigationBar getBottomNavBar(BuildContext context) {
     return BottomNavigationBar(
+      currentIndex: activeBottomNavIndex,
       onTap: (index) {
         setState(() {
           activeBottomNavIndex = index;
