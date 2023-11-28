@@ -1,6 +1,5 @@
 import 'package:feature_dashboard/presentation/dashboard_constants.dart';
 import 'package:flutter/material.dart';
-import 'package:module_common/common/enum/languages.dart';
 import 'package:module_common/i18n/i18n_extension.dart';
 import 'package:module_common/presentation/bloc/base_bloc.dart';
 import 'package:module_common/presentation/bloc/language_bloc/language_bloc.dart';
@@ -25,9 +24,7 @@ class MorePage extends StatelessWidget {
               builder: (context, state) {
                 return rowItem(
                   iconPath: 'assets/icons/language_icon.png',
-                  title: state.locale.languageCode == Languages.id.code
-                      ? Languages.id.value
-                      : Languages.en.value,
+                  title: LanguageState.enumValueFromLocale(state.locale),
                   onTap: () {},
                 );
               },
