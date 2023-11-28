@@ -1,4 +1,4 @@
-class HomeStrings {
+abstract class HomeStrings {
   static const saleButtonTitle = 'home.button.sale';
   static const stockInButtonTitle = 'home.button.stockIn';
   static const productButtonTitle = 'home.button.product';

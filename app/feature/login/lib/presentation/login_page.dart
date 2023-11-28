@@ -22,7 +22,7 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = AppTheme.of(context);
-    final colorScheme = theme.colorScheme;
+    final colorScheme = theme.appColorScheme;
     final loginBloc = Injector.resolve<LoginBloc>();
     return Container(
       decoration: BoxDecoration(
