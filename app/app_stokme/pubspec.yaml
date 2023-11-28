@@ -84,8 +84,7 @@ flutter:
   assets:
     - assets/
     - assets/images/
-    - assets/images/logo.png
-    #   - images/a_dot_ham.jpeg
+    - assets/icons/
     - assets/audio/scanner_beep.mp3
 
   # An image asset can refer to one or more resolution-specific "variants", see
