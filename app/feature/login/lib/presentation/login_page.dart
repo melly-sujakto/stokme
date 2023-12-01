@@ -179,6 +179,7 @@ class LoginPage extends StatelessWidget {
     return InputBasic(
       labelText: LoginStrings.password.i18n(context),
       controller: passworController,
+      obscureText: true,
     );
   }
 }

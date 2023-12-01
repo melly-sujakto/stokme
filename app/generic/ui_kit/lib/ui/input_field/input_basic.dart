@@ -9,11 +9,13 @@ class InputBasic extends StatefulWidget {
     required this.labelText,
     this.controller,
     this.focusNode,
+    this.obscureText = false,
   });
 
   final String labelText;
   final TextEditingController? controller;
   final FocusNode? focusNode;
+  final bool obscureText;
 
   @override
   State<InputBasic> createState() => _InputBasicState();
@@ -22,11 +24,13 @@ class InputBasic extends StatefulWidget {
 class _InputBasicState extends State<InputBasic> {
   late final TextEditingController textEditingController;
   late final FocusNode focusNode;
+  late bool visibilityText;
 
   @override
   void initState() {
     textEditingController = widget.controller ?? TextEditingController();
     focusNode = widget.focusNode ?? FocusNode();
+    visibilityText = widget.obscureText;
     super.initState();
   }
 
@@ -40,6 +44,7 @@ class _InputBasicState extends State<InputBasic> {
       child: TextFormField(
         controller: textEditingController,
         focusNode: focusNode,
+        obscureText: visibilityText,
         decoration: InputDecoration(
           filled: true,
           fillColor: CustomColors.neutral.c95,
@@ -58,6 +63,19 @@ class _InputBasicState extends State<InputBasic> {
             color: CustomColors.neutral.c60,
             fontSize: LayoutDimen.dimen_18.minSp,
           ),
+          suffixIcon: widget.obscureText
+              ? InkWell(
+                  onTap: () {
+                    setState(() {
+                      visibilityText = !visibilityText;
+                    });
+                  },
+                  child: Icon(
+                    visibilityText ? Icons.visibility_off : Icons.visibility,
+                    color: CustomColors.neutral.c60,
+                  ),
+                )
+              : null,
         ),
       ),
     );
