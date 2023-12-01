@@ -16,11 +16,17 @@ import 'package:ui_kit/ui/input_field/input_basic.dart';
 import 'package:ui_kit/ui/snackbar/snackbar_dialog.dart';
 import 'package:ui_kit/utils/screen_utils.dart';
 
-class LoginPage extends StatelessWidget {
-  LoginPage({super.key});
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
 
-  final emailController = TextEditingController();
-  final passworController = TextEditingController();
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  String emailText = '';
+
+  String passwordText = '';
 
   @override
   Widget build(BuildContext context) {
@@ -85,14 +91,17 @@ class LoginPage extends StatelessWidget {
                             ),
                             child: FlatButton(
                               title: LoginStrings.loginButton.i18n(context),
-                              onPressed: () {
-                                loginBloc.add(
-                                  SubmitEmailAndPasswordEvent(
-                                    email: emailController.text,
-                                    password: passworController.text,
-                                  ),
-                                );
-                              },
+                              onPressed: emailText.isNotEmpty &&
+                                      passwordText.isNotEmpty
+                                  ? () {
+                                      loginBloc.add(
+                                        SubmitEmailAndPasswordEvent(
+                                          email: emailText,
+                                          password: passwordText,
+                                        ),
+                                      );
+                                    }
+                                  : null,
                             ),
                           ),
                         ],
@@ -171,15 +180,23 @@ class LoginPage extends StatelessWidget {
   Widget emailTextField(BuildContext context) {
     return InputBasic(
       labelText: LoginStrings.email.i18n(context),
-      controller: emailController,
+      onChanged: (value) {
+        setState(() {
+          emailText = value;
+        });
+      },
     );
   }
 
   Widget passwordTextField(BuildContext context) {
     return InputBasic(
       labelText: LoginStrings.password.i18n(context),
-      controller: passworController,
       obscureText: true,
+      onChanged: (value) {
+        setState(() {
+          passwordText = value;
+        });
+      },
     );
   }
 }

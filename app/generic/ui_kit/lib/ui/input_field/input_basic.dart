@@ -10,12 +10,14 @@ class InputBasic extends StatefulWidget {
     this.controller,
     this.focusNode,
     this.obscureText = false,
+    this.onChanged,
   });
 
   final String labelText;
   final TextEditingController? controller;
   final FocusNode? focusNode;
   final bool obscureText;
+  final void Function(String)? onChanged;
 
   @override
   State<InputBasic> createState() => _InputBasicState();
@@ -77,6 +79,7 @@ class _InputBasicState extends State<InputBasic> {
                 )
               : null,
         ),
+        onChanged: widget.onChanged,
       ),
     );
   }
