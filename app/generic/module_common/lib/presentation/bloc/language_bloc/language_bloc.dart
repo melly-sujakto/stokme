@@ -17,6 +17,9 @@ class LanguageBloc extends BaseBloc<LanguageEvent, LanguageState> {
       final Locale locale = await _loadSavedLocale();
       await _handleLoadLanguage(locale, emit);
     });
+    on<ChangeLocale>((event, emit) async {
+      await _handleLoadLanguage(event.locale, emit);
+    });
   }
 
   Future<Locale> _loadSavedLocale() async {
