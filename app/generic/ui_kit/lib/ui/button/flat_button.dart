@@ -25,6 +25,7 @@ class FlatButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDisabled = onPressed == null;
     return Padding(
       padding:
           margin ?? EdgeInsets.symmetric(horizontal: LayoutDimen.dimen_16.w),
@@ -36,7 +37,9 @@ class FlatButton extends StatelessWidget {
             onPressed: onPressed,
             style: ButtonStyle(
               backgroundColor: MaterialStatePropertyAll(
-                color ?? CustomColors.secondary.c60,
+                isDisabled
+                    ? CustomColors.neutral.c80
+                    : color ?? CustomColors.secondary.c60,
               ),
               shape: MaterialStatePropertyAll(
                 RoundedRectangleBorder(
@@ -53,6 +56,9 @@ class FlatButton extends StatelessWidget {
                   style: titleStyle ??
                       TextStyle(
                         fontSize: LayoutDimen.dimen_19.minSp,
+                        color: isDisabled
+                            ? CustomColors.white
+                            : CustomColors.black,
                       ),
                 ),
               ),
