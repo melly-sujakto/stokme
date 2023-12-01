@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:feature_login/domain/usecase/login_usecase.dart';
 import 'package:firebase_library/firebase_library.dart';
 import 'package:module_common/presentation/bloc/base_bloc.dart';
 
@@ -8,10 +9,12 @@ part 'login_state.dart';
 
 class LoginBloc extends BaseBloc<LoginEvent, LoginState> {
   final FirebaseLibrary firebaseLibrary;
+  final LoginUsecase loginUsecase;
 
-  LoginBloc(
-    this.firebaseLibrary,
-  ) : super(LoginInitial()) {
+  LoginBloc({
+    required this.firebaseLibrary,
+    required this.loginUsecase,
+  }) : super(LoginInitial()) {
     on<CheckLoginStatusEvent>(_onCheckLoginStatusEvent);
     on<SubmitEmailAndPasswordEvent>(_onSubmitEmailAndPasswordEvent);
   }
@@ -21,10 +24,12 @@ class LoginBloc extends BaseBloc<LoginEvent, LoginState> {
     emit,
   ) async {
     try {
-      await firebaseLibrary.auth.signInWithEmailAndPassword(
+      final userCredential =
+          await firebaseLibrary.auth.signInWithEmailAndPassword(
         email: event.email,
         password: event.password,
       );
+      unawaited(loginUsecase.saveUserCredentialToLocal(userCredential));
       emit(LoginSuccess());
     } catch (e) {
       emit(LoginFailed());

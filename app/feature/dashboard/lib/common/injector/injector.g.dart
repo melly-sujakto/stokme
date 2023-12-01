@@ -10,6 +10,15 @@ class _$Injector extends Injector {
   @override
   void _configureBloc() {
     final KiwiContainer container = KiwiContainer();
-    container.registerSingleton((c) => MoreBloc(c<FirebaseLibrary>()));
+    container
+      ..registerSingleton((c) => MoreBloc(c<FirebaseLibrary>()))
+      ..registerSingleton((c) => HomeBloc(c<HomeUsecase>()));
+  }
+
+  @override
+  void _configureUsecase() {
+    final KiwiContainer container = KiwiContainer();
+    container
+        .registerSingleton((c) => HomeUsecase(c<SharedPreferencesWrapper>()));
   }
 }

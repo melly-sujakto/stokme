@@ -1,7 +1,9 @@
+import 'package:feature_login/domain/usecase/login_usecase.dart';
 import 'package:feature_login/presentation/bloc/login_bloc.dart';
 import 'package:firebase_library/firebase_library.dart';
 import 'package:library_injection/annotations.dart';
 import 'package:library_injection/package/kiwi.dart';
+import 'package:module_common/wrapper/shared_preferences_wrapper.dart';
 
 part 'injector.g.dart';
 
@@ -14,9 +16,14 @@ abstract class Injector {
 
   void _configure() {
     _configureBloc();
+    _configureUseCase();
   }
 
-  @Dependencies.dependsOn(LoginBloc, [FirebaseLibrary])
+  @Dependencies.dependsOn(LoginBloc, [FirebaseLibrary, LoginUsecase])
   @Register.singleton(LoginBloc)
   void _configureBloc();
+
+  @Dependencies.dependsOn(LoginUsecase, [SharedPreferencesWrapper])
+  @Register.singleton(LoginUsecase)
+  void _configureUseCase();
 }
