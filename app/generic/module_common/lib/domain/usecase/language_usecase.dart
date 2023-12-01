@@ -15,4 +15,9 @@ class LanguageUsecase {
         ? lang
         : Languages.id.code;
   }
+
+  Future<void> saveLanguageToLocal(String languageCode) async {
+    final prefs = await _sharedPreferencesWrapper.getPrefs();
+    await prefs.setString(GenericConstants.languageCode, languageCode);
+  }
 }

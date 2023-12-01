@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:extensions/iterable_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:module_common/common/enum/languages.dart';
@@ -36,6 +38,8 @@ class LanguageBloc extends BaseBloc<LanguageEvent, LanguageState> {
     } else {
       translations.addAll(en.translations);
     }
+
+    unawaited(_languageUsecase.saveLanguageToLocal(locale.languageCode));
 
     emit(
       LanguageLoadedState(
