@@ -33,7 +33,7 @@ class HomePage extends StatelessWidget {
             backgroundColor: Colors.transparent,
             body: SingleChildScrollView(
               child: Padding(
-                padding: EdgeInsets.all(LayoutDimen.dimen_16.w),
+                padding: EdgeInsets.all(LayoutDimen.dimen_14.w),
                 child: Column(
                   children: [
                     if (state is HomeLoaded)
@@ -71,42 +71,52 @@ class HomePage extends StatelessWidget {
                     SizedBox(
                       height: LayoutDimen.dimen_121.h,
                     ),
-                    ElevatedButton(
-                      onPressed: () {
-                        Injector.resolve<DashboardInteractionNavigation>()
-                            .navigateToSale(context);
-                      },
-                      child: Text(HomeStrings.saleButtonTitle.i18n(context)),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        Injector.resolve<DashboardInteractionNavigation>()
-                            .navigateToStockIn(context);
-                      },
-                      child: Text(HomeStrings.stockInButtonTitle.i18n(context)),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        Injector.resolve<DashboardInteractionNavigation>()
-                            .navigateToProduct(context);
-                      },
-                      child: Text(HomeStrings.productButtonTitle.i18n(context)),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        Injector.resolve<DashboardInteractionNavigation>()
-                            .navigateToStock(context);
-                      },
-                      child: Text(HomeStrings.stockButtonTitle.i18n(context)),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        Injector.resolve<DashboardInteractionNavigation>()
-                            .navigateToTransaction(context);
-                      },
-                      child: Text(
-                        HomeStrings.transactionButtonTitle.i18n(context),
-                      ),
+                    Wrap(
+                      spacing: LayoutDimen.dimen_14.w,
+                      runSpacing: LayoutDimen.dimen_13.h,
+                      children: [
+                        accessCard(
+                          title: HomeStrings.saleButtonTitle.i18n(context),
+                          iconPath: HomeAssets.saleIcon,
+                          action: () {
+                            Injector.resolve<DashboardInteractionNavigation>()
+                                .navigateToSale(context);
+                          },
+                        ),
+                        accessCard(
+                          title: HomeStrings.stockInButtonTitle.i18n(context),
+                          iconPath: HomeAssets.stockInIcon,
+                          action: () {
+                            Injector.resolve<DashboardInteractionNavigation>()
+                                .navigateToStockIn(context);
+                          },
+                        ),
+                        accessCard(
+                          title: HomeStrings.productButtonTitle.i18n(context),
+                          iconPath: HomeAssets.productIcon,
+                          action: () {
+                            Injector.resolve<DashboardInteractionNavigation>()
+                                .navigateToProduct(context);
+                          },
+                        ),
+                        accessCard(
+                          title: HomeStrings.stockButtonTitle.i18n(context),
+                          iconPath: HomeAssets.stockIcon,
+                          action: () {
+                            Injector.resolve<DashboardInteractionNavigation>()
+                                .navigateToStock(context);
+                          },
+                        ),
+                        accessCard(
+                          title:
+                              HomeStrings.transactionButtonTitle.i18n(context),
+                          iconPath: HomeAssets.transactionIcon,
+                          action: () {
+                            Injector.resolve<DashboardInteractionNavigation>()
+                                .navigateToTransaction(context);
+                          },
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -114,6 +124,42 @@ class HomePage extends StatelessWidget {
             ),
           );
         },
+      ),
+    );
+  }
+
+  Widget accessCard({
+    required String title,
+    required String iconPath,
+    void Function()? action,
+  }) {
+    return InkWell(
+      onTap: action,
+      child: Material(
+        elevation: 1,
+        borderRadius: BorderRadius.circular(LayoutDimen.dimen_10.w),
+        child: Container(
+          padding: EdgeInsets.all(LayoutDimen.dimen_12.w),
+          width: LayoutDimen.dimen_166.w,
+          height: LayoutDimen.dimen_100.w,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Image.asset(
+                iconPath,
+                width: LayoutDimen.dimen_40.w,
+                fit: BoxFit.fitWidth,
+              ),
+              Text(
+                title,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  fontSize: LayoutDimen.dimen_18.minSp,
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

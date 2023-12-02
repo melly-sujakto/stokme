@@ -12,4 +12,9 @@ abstract class HomeStrings {
 
 abstract class HomeAssets {
   static const logoSmall = 'assets/images/logo_small.png';
+  static const saleIcon = 'assets/icons/sale_icon.png';
+  static const stockInIcon = 'assets/icons/stock_in_icon.png';
+  static const productIcon = 'assets/icons/product_icon.png';
+  static const stockIcon = 'assets/icons/stock_icon.png';
+  static const transactionIcon = 'assets/icons/transaction_icon.png';
 }
