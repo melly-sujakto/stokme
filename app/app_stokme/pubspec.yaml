@@ -31,6 +31,8 @@ dependencies:
   audioplayers: ^5.1.0
   cloud_firestore: ^4.9.2
   cupertino_icons: ^1.0.2
+  data_abstraction:
+    path: ../generic/data_abstraction
   feature_dashboard:
     path: ../feature/dashboard
   feature_login:
@@ -41,8 +43,6 @@ dependencies:
     path: ../feature/stock
   feature_transaction:
     path: ../feature/transaction
-  firebase_auth: ^4.10.0
-  firebase_core: ^2.16.0
   firebase_library:
     path: ../library/firebase_library
   flutter:

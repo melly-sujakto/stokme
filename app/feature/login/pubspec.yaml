@@ -9,6 +9,8 @@ environment:
   flutter: ">=1.17.0"
 
 dependencies:
+  data_abstraction:
+    path: ../../generic/data_abstraction
   firebase_auth: ^4.15.0
   firebase_library:
     path: ../../library/firebase_library
