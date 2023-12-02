@@ -16,7 +16,13 @@ class ProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(ProfileStrings.myProfile.i18n(context)),
+        title: Text(
+          ProfileStrings.myProfile.i18n(context),
+          style: TextStyle(
+            fontSize: LayoutDimen.dimen_19.minSp,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
       body: SingleChildScrollView(
         child: BlocBuilder<ProfileBloc, ProfileState>(

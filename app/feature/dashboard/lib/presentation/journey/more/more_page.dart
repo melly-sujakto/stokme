@@ -29,7 +29,13 @@ class MorePage extends StatelessWidget {
       child: Scaffold(
         backgroundColor: CustomColors.primary.c95,
         appBar: AppBar(
-          title: Text(DashboardStrings.moreBottomNavBar.i18n(context)),
+          title: Text(
+            DashboardStrings.moreBottomNavBar.i18n(context),
+            style: TextStyle(
+              fontSize: LayoutDimen.dimen_19.minSp,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
         ),
         body: SingleChildScrollView(
           child: Column(
