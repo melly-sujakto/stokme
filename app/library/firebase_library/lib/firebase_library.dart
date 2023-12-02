@@ -15,17 +15,26 @@ class FirebaseLibrary {
     );
   }
 
-  // call in library
+// TODO(Melly) will remove
   Future<List<Map<String, dynamic>>> getAllData() async {
     final collectionRef = FirebaseFirestore.instance.collection('store');
     final querySnapshot = await collectionRef.get();
     return querySnapshot.docs.map((doc) => doc.data()).toList();
   }
 
-// call in library
+// TODO(Melly) will remove
   Future<Map<String, dynamic>?> getOneData(String code) async {
     final collectionRef = FirebaseFirestore.instance.collection('product');
     final querySnapshot = await collectionRef.doc(code).get();
+    return querySnapshot.data();
+  }
+
+  Future<Map<String, dynamic>?> get({
+    required String collectionName,
+    required String id,
+  }) async {
+    final collectionRef = FirebaseFirestore.instance.collection(collectionName);
+    final querySnapshot = await collectionRef.doc(id).get();
     return querySnapshot.data();
   }
 }
