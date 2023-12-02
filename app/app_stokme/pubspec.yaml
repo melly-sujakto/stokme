@@ -43,6 +43,7 @@ dependencies:
     path: ../feature/stock
   feature_transaction:
     path: ../feature/transaction
+  firebase_core: ^2.24.0
   firebase_library:
     path: ../library/firebase_library
   flutter:

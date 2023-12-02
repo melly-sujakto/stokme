@@ -105,7 +105,8 @@ class HomePage extends StatelessWidget {
                             .navigateToTransaction(context);
                       },
                       child: Text(
-                          HomeStrings.transactionButtonTitle.i18n(context)),
+                        HomeStrings.transactionButtonTitle.i18n(context),
+                      ),
                     ),
                   ],
                 ),
