@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 
 class ScreenUtil {
   static final ScreenUtil _instance = ScreenUtil._();
-  static const int defaultWidth = 360;
-  static const int defaultHeight = 776;
+  static const int defaultWidth = 376;
+  static const int defaultHeight = 812;
   static final Size defaultScreenSize =
       Size(defaultWidth.toDouble(), defaultHeight.toDouble());
 
