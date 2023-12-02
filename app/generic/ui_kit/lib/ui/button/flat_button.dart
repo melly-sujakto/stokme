@@ -39,7 +39,7 @@ class FlatButton extends StatelessWidget {
               backgroundColor: MaterialStatePropertyAll(
                 isDisabled
                     ? CustomColors.neutral.c80
-                    : color ?? CustomColors.secondary.c60,
+                    : color ?? CustomColors.secondary.c50,
               ),
               shape: MaterialStatePropertyAll(
                 RoundedRectangleBorder(

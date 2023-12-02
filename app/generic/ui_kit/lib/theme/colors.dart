@@ -48,17 +48,17 @@ class CustomColors {
 
   static const secondary = AppColorPalette(
     c0: Color(0xFF000000),
-    c10: Color(0xFF332200),
-    c20: Color(0xFF664400),
-    c30: Color(0xFF996600),
-    c40: Color(0xFFcc8800),
-    c50: Color(0xFFffaa00),
-    c60: Color(0xFFffbb32),
-    c70: Color(0xFFffcc66),
-    c80: Color(0xFFffdd99),
-    c90: Color(0xFFffeecc),
-    c95: Color(0xFFfff6e5),
-    c98: Color(0xFFfffbf4),
+    c10: Color(0xFF322307),
+    c20: Color(0xFF65460f),
+    c30: Color(0xFF976917),
+    c40: Color(0xFFca8c1f),
+    c50: Color(0xFFfdaf27),
+    c60: Color(0xFFfdbf52),
+    c70: Color(0xFFfdcf7d),
+    c80: Color(0xFFfedfa8),
+    c90: Color(0xFFfeefd3),
+    c95: Color(0xFFfef7e9),
+    c98: Color(0xFFfefbf6),
     c100: Color(0xFFFFFFFF),
   );
 

@@ -26,7 +26,7 @@ class ProfilePage extends StatelessWidget {
                 child: Column(
                   children: [
                     SizedBox(
-                      height: LayoutDimen.dimen_60.h,
+                      height: LayoutDimen.dimen_41.h,
                     ),
                     Image.asset(
                       'assets/images/profile.png',
@@ -34,7 +34,7 @@ class ProfilePage extends StatelessWidget {
                       fit: BoxFit.fitWidth,
                     ),
                     SizedBox(
-                      height: LayoutDimen.dimen_44.h,
+                      height: LayoutDimen.dimen_36.h,
                     ),
                     if (state is ProfileLoaded) ...[
                       Text(
@@ -57,7 +57,7 @@ class ProfilePage extends StatelessWidget {
                         ),
                       ),
                       SizedBox(
-                        height: LayoutDimen.dimen_80.h,
+                        height: LayoutDimen.dimen_53.h,
                       ),
                       Container(
                         padding: EdgeInsets.all(
@@ -67,7 +67,7 @@ class ProfilePage extends StatelessWidget {
                           borderRadius: BorderRadius.circular(
                             LayoutDimen.dimen_10.w,
                           ),
-                          color: CustomColors.secondary.c60.withOpacity(0.7),
+                          color: CustomColors.secondary.c50.withOpacity(0.7),
                         ),
                         child: Column(
                           children: [
@@ -79,7 +79,7 @@ class ProfilePage extends StatelessWidget {
                               ],
                             ),
                             SizedBox(
-                              height: LayoutDimen.dimen_20.w,
+                              height: LayoutDimen.dimen_16.w,
                             ),
                             const Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
