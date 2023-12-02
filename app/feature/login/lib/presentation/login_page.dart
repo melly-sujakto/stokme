@@ -133,10 +133,10 @@ class _LoginPageState extends State<LoginPage> {
                                   ),
                                   child: DropdownButton(
                                     value: dropdownValue,
-                                    items: items.map((String items) {
+                                    items: items.map((String item) {
                                       return DropdownMenuItem(
-                                        value: items,
-                                        child: Text(items),
+                                        value: item,
+                                        child: Text(item),
                                       );
                                     }).toList(),
                                     underline: Container(),
