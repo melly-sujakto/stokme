@@ -11,7 +11,7 @@ final Map<String, String> translations = {
   'home.greeting.1': 'Good morning,',
   'home.greeting.2': 'Good afternoon,',
   'home.greeting.3': 'Good afternoon,',
-  'home.greeting.4': 'Good evening',
+  'home.greeting.4': 'Good evening,',
   'dashboard.bottomNavBar.home': 'Home',
   'dashboard.bottomNavBar.profile': 'Profile',
   'dashboard.bottomNavBar.more': 'More',
