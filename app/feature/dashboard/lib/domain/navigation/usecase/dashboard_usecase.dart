@@ -63,7 +63,7 @@ class DashboardUsecase {
   }
 
   Future<List<Feature>> getAvailableFeatures() async {
-    //TODO(Melly): generate features by role
+    // TODO(Melly): generate features by role
     return <Feature>[];
   }
 }
