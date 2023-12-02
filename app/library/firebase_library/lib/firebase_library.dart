@@ -15,6 +15,27 @@ class FirebaseLibrary {
     );
   }
 
+  Future<List<Map<String, dynamic>>> getList({
+    required String collectionName,
+    String orderByField = '',
+    bool asc = true,
+    int limit = 10,
+  }) async {
+    final collectionRef = FirebaseFirestore.instance.collection(collectionName);
+    final querySnapshot = await collectionRef
+        // .where('store_id', isEqualTo: 'vEUxgP9m2RW3mRFIDJWD')
+        // .orderBy(orderByField, descending: !asc)
+        .limit(limit)
+        .get();
+
+    return querySnapshot.docs.map((doc) {
+      final data = doc.data();
+      final id = doc.id;
+      data['id'] = id;
+      return data;
+    }).toList();
+  }
+
 // TODO(Melly): will remove
   Future<List<Map<String, dynamic>>> getAllData() async {
     final collectionRef = FirebaseFirestore.instance.collection('store');
