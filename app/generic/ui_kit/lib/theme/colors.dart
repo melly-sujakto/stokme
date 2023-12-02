@@ -90,7 +90,7 @@ class CustomColors {
     c80: Color(0xFFC8CCD0),
     c90: Color(0xFFE3E6E8),
     c95: Color(0xFFF1F2F3),
-    c98: Color(0xFFF9FAFA),
+    c98: Color(0xFFF9F9F9),
     c100: Color(0xFFFFFFFF),
   );
 
