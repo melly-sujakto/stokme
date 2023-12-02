@@ -5,8 +5,13 @@ sealed class HomeState {}
 final class HomeInitial extends HomeState {}
 
 final class HomeLoaded extends HomeState {
-  final String userName;
+  final UserEntity user;
+  final String greeting;
   final List<Feature> features;
 
-  HomeLoaded({required this.userName, required this.features});
+  HomeLoaded({
+    required this.user,
+    required this.greeting,
+    required this.features,
+  });
 }

@@ -19,11 +19,14 @@ abstract class Injector {
     _configureUseCase();
   }
 
-  @Dependencies.dependsOn(LoginBloc, [FirebaseLibrary, LoginUsecase])
+  @Dependencies.dependsOn(LoginBloc, [LoginUsecase])
   @Register.singleton(LoginBloc)
   void _configureBloc();
 
-  @Dependencies.dependsOn(LoginUsecase, [SharedPreferencesWrapper])
+  @Dependencies.dependsOn(LoginUsecase, [
+    FirebaseLibrary,
+    SharedPreferencesWrapper,
+  ])
   @Register.singleton(LoginUsecase)
   void _configureUseCase();
 }
