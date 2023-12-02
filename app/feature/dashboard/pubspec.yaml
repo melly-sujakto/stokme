@@ -19,6 +19,7 @@ dependencies:
     path: ../../library/injection
   module_common:
     path: ../../generic/module_common
+  recase: ^4.1.0
   ui_kit:
     path: ../../generic/ui_kit
 
