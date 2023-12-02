@@ -19,7 +19,8 @@ class _$Injector extends Injector {
   @override
   void _configureUsecase() {
     final KiwiContainer container = KiwiContainer();
-    container.registerSingleton(
-        (c) => DashboardUsecase(c<SharedPreferencesWrapper>()));
+    container.registerSingleton((c) => DashboardUsecase(
+        sharedPreferencesWrapper: c<SharedPreferencesWrapper>(),
+        firebaseLibrary: c<FirebaseLibrary>()));
   }
 }

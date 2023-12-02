@@ -1,6 +1,9 @@
 import 'package:feature_dashboard/presentation/journey/profile/bloc/profile_bloc.dart';
+import 'package:feature_dashboard/presentation/journey/profile/profile_constants.dart';
 import 'package:flutter/material.dart';
+import 'package:module_common/i18n/i18n_extension.dart';
 import 'package:module_common/presentation/bloc/base_bloc.dart';
+import 'package:recase/recase.dart';
 import 'package:ui_kit/common/constants/layout_dimen.dart';
 import 'package:ui_kit/theme/colors.dart';
 import 'package:ui_kit/utils/screen_utils.dart';
@@ -13,7 +16,7 @@ class ProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Profil Saya'),
+        title: Text(ProfileStrings.myProfile.i18n(context)),
       ),
       body: SingleChildScrollView(
         child: BlocBuilder<ProfileBloc, ProfileState>(
@@ -29,7 +32,7 @@ class ProfilePage extends StatelessWidget {
                       height: LayoutDimen.dimen_41.h,
                     ),
                     Image.asset(
-                      'assets/images/profile.png',
+                      ProfileAssets.profile,
                       width: LayoutDimen.dimen_120.w,
                       fit: BoxFit.fitWidth,
                     ),
@@ -71,21 +74,43 @@ class ProfilePage extends StatelessWidget {
                         ),
                         child: Column(
                           children: [
-                            const Row(
+                            Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text('Perusahaan'),
-                                Text('Toko Adi Jaya Sembako'),
+                                Text(
+                                  ProfileStrings.company.i18n(context),
+                                  style: TextStyle(
+                                    fontSize: LayoutDimen.dimen_14.minSp,
+                                  ),
+                                ),
+                                Text(
+                                  state.store.name,
+                                  style: TextStyle(
+                                    fontSize: LayoutDimen.dimen_14.minSp,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
                               ],
                             ),
                             SizedBox(
                               height: LayoutDimen.dimen_16.w,
                             ),
-                            const Row(
+                            Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text('Posisi'),
-                                Text('Kasir'),
+                                Text(
+                                  ProfileStrings.position.i18n(context),
+                                  style: TextStyle(
+                                    fontSize: LayoutDimen.dimen_14.minSp,
+                                  ),
+                                ),
+                                Text(
+                                  state.role.name.titleCase,
+                                  style: TextStyle(
+                                    fontSize: LayoutDimen.dimen_14.minSp,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
                               ],
                             )
                           ],

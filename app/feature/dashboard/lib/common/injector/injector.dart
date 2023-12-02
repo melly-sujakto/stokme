@@ -29,7 +29,10 @@ abstract class Injector {
   @Register.singleton(HomeBloc)
   void _configureBloc();
 
-  @Dependencies.dependsOn(DashboardUsecase, [SharedPreferencesWrapper])
+  @Dependencies.dependsOn(
+    DashboardUsecase,
+    [FirebaseLibrary, SharedPreferencesWrapper],
+  )
   @Register.singleton(DashboardUsecase)
   void _configureUsecase();
 }
