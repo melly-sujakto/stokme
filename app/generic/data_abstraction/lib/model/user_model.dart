@@ -14,8 +14,8 @@ class UserModel extends UserEntity {
       email: json['email'],
       name: json['name'],
       phone: json['phone'],
-      roleId: json['roleId'],
-      storeId: json['storeId'],
+      roleId: json['role_id'],
+      storeId: json['store_id'],
     );
   }
 }
