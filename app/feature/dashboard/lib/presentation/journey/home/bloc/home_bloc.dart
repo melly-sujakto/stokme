@@ -1,6 +1,6 @@
 import 'package:data_abstraction/entity/user_entity.dart';
 import 'package:feature_dashboard/common/enums/feature.dart';
-import 'package:feature_dashboard/domain/navigation/usecase/home_usecase.dart';
+import 'package:feature_dashboard/domain/navigation/usecase/dashboard_usecase.dart';
 import 'package:feature_dashboard/presentation/journey/home/home_constants.dart';
 import 'package:module_common/presentation/bloc/base_bloc.dart';
 
@@ -8,13 +8,13 @@ part 'home_event.dart';
 part 'home_state.dart';
 
 class HomeBloc extends BaseBloc<HomeEvent, HomeState> {
-  final HomeUsecase homeUsecase;
+  final DashboardUsecase dashboardUsecase;
 
   HomeBloc(
-    this.homeUsecase,
+    this.dashboardUsecase,
   ) : super(HomeInitial()) {
     on<GetFeaturesEvent>((event, emit) async {
-      final user = await homeUsecase.getUserDetail();
+      final user = await dashboardUsecase.getUserDetail();
       final greeting = generateGreeting();
       emit(
         HomeLoaded(

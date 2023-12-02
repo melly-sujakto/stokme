@@ -3,10 +3,10 @@ import 'package:feature_dashboard/common/enums/feature.dart';
 import 'package:module_common/common/constant/generic_constants.dart';
 import 'package:module_common/wrapper/shared_preferences_wrapper.dart';
 
-class HomeUsecase {
+class DashboardUsecase {
   final SharedPreferencesWrapper _sharedPreferencesWrapper;
 
-  HomeUsecase(this._sharedPreferencesWrapper);
+  DashboardUsecase(this._sharedPreferencesWrapper);
 
   Future<UserEntity> getUserDetail() async {
     final prefs = await _sharedPreferencesWrapper.getPrefs();
@@ -26,8 +26,6 @@ class HomeUsecase {
 
     return user;
   }
-
-  
 
   Future<List<Feature>> getAvailableFeatures() async {
     //TODO(Melly): generate features by role
