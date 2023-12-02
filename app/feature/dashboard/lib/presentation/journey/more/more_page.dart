@@ -27,7 +27,7 @@ class MorePage extends StatelessWidget {
         }
       },
       child: Scaffold(
-        backgroundColor: CustomColors.primary.c95,
+      backgroundColor: CustomColors.neutral.c98,
         appBar: AppBar(
           title: Text(
             DashboardStrings.moreBottomNavBar.i18n(context),

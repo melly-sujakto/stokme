@@ -15,6 +15,7 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: CustomColors.neutral.c98,
       appBar: AppBar(
         title: Text(
           ProfileStrings.myProfile.i18n(context),

@@ -40,7 +40,7 @@ class _DashboardPageState extends State<DashboardPage> {
   BottomNavigationBar getBottomNavBar(BuildContext context) {
     return BottomNavigationBar(
       backgroundColor:
-          activeBottomNavIndex != 0 ? CustomColors.primary.c95 : null,
+          activeBottomNavIndex != 0 ? CustomColors.neutral.c98 : null,
       currentIndex: activeBottomNavIndex,
       onTap: (index) {
         setState(() {
