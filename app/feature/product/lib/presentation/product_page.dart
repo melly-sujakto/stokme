@@ -104,6 +104,9 @@ class _ProductPageState extends State<ProductPage> {
                 style: TextStyle(
                   fontSize: LayoutDimen.dimen_13.minSp,
                   fontWeight: FontWeight.w600,
+                  color: activeIndex == 0
+                      ? CustomColors.black
+                      : CustomColors.neutral.c50,
                 ),
               ),
             ),
@@ -141,6 +144,9 @@ class _ProductPageState extends State<ProductPage> {
                 style: TextStyle(
                   fontSize: LayoutDimen.dimen_13.minSp,
                   fontWeight: FontWeight.w600,
+                  color: activeIndex == 0
+                      ? CustomColors.neutral.c50
+                      : CustomColors.black,
                 ),
               ),
             ),
@@ -167,15 +173,7 @@ class _ProductPageState extends State<ProductPage> {
             children: [
               Row(
                 children: [
-                  Container(
-                    width: LayoutDimen.dimen_41.w,
-                    height: LayoutDimen.dimen_41.w,
-                    decoration: BoxDecoration(
-                      color: CustomColors.neutral.c80,
-                      borderRadius:
-                          BorderRadius.circular(LayoutDimen.dimen_50.w),
-                    ),
-                  ),
+                  dummyCircleImage(title: product.name),
                   Padding(
                     padding: EdgeInsets.all(
                       LayoutDimen.dimen_10.w,
@@ -208,13 +206,45 @@ class _ProductPageState extends State<ProductPage> {
                 ],
               ),
               Text(
-                'Rp.${product.saleNet}',
+                'Rp.${product.saleNet ?? '-'}',
                 style: TextStyle(
                   fontSize: LayoutDimen.dimen_13.minSp,
                   fontWeight: FontWeight.w300,
                 ),
               ),
             ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget dummyCircleImage({String title = ''}) {
+    late String logo;
+    logo = title;
+    if (title.isNotEmpty) {
+      final titleSplitted = title.split(' ');
+      if (titleSplitted.length == 1) {
+        logo = titleSplitted.first[0].toUpperCase();
+      }
+      if (titleSplitted.length > 1) {
+        logo = (titleSplitted.first[0] + titleSplitted.last[0]).toUpperCase();
+      }
+    }
+
+    return Container(
+      width: LayoutDimen.dimen_41.w,
+      height: LayoutDimen.dimen_41.w,
+      decoration: BoxDecoration(
+        color: CustomColors.neutral.c90,
+        borderRadius: BorderRadius.circular(LayoutDimen.dimen_50.w),
+      ),
+      child: Center(
+        child: Text(
+          logo,
+          style: TextStyle(
+            fontSize: LayoutDimen.dimen_13.minSp,
+            fontWeight: FontWeight.w600,
           ),
         ),
       ),
