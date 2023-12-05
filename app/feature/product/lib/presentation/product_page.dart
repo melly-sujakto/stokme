@@ -7,6 +7,7 @@ import 'package:module_common/presentation/bloc/base_bloc.dart';
 import 'package:ui_kit/common/constants/layout_dimen.dart';
 import 'package:ui_kit/theme/colors.dart';
 import 'package:ui_kit/ui/loading_indicator/circular_progres.dart';
+import 'package:ui_kit/ui/tab_bar/app_tab_bar.dart';
 import 'package:ui_kit/ui/widgets/dummy_circle_image.dart';
 import 'package:ui_kit/utils/screen_utils.dart';
 
@@ -49,7 +50,24 @@ class _ProductPageState extends State<ProductPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              tabBar(),
+              AppTabBar(
+                activeIndex: activeIndex,
+                items: [
+                  AppTabBarItem(
+                    onTap: () {
+                      widget.bloc.add(GetProductListEvent());
+                    },
+                    title: 'Semua',
+                  ),
+                  AppTabBarItem(
+                    onTap: () {
+                      widget.bloc
+                          .add(GetProductListEvent(filterByUnsetPrice: true));
+                    },
+                    title: 'Belum ada harga default',
+                  ),
+                ],
+              ),
               BlocBuilder<ProductBloc, ProductState>(
                 builder: (context, state) {
                   if (state is ProductLoading) {
