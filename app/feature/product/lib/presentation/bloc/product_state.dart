@@ -4,6 +4,8 @@ sealed class ProductState {}
 
 final class ProductInitial extends ProductState {}
 
+final class ProductLoading extends ProductState {}
+
 final class ProductFailed extends ProductState {}
 
 final class ProductListLoaded extends ProductState {

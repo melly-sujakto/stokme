@@ -10,6 +10,7 @@ class ProductBloc extends BaseBloc<ProductEvent, ProductState> {
 
   ProductBloc(this.productUsecase) : super(ProductInitial()) {
     on<GetProductListEvent>((event, emit) async {
+      emit(ProductLoading());
       try {
         final productList = await productUsecase.getProductList();
         emit(ProductListLoaded(productList));

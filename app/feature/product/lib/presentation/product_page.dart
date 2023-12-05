@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:module_common/presentation/bloc/base_bloc.dart';
 import 'package:ui_kit/common/constants/layout_dimen.dart';
 import 'package:ui_kit/theme/colors.dart';
+import 'package:ui_kit/ui/loading_indicator/circular_progres.dart';
 import 'package:ui_kit/utils/screen_utils.dart';
 
 class ProductPage extends StatelessWidget {
@@ -22,10 +23,13 @@ class ProductPage extends StatelessWidget {
           ),
         ),
       ),
-      body: SingleChildScrollView(
-        child: BlocBuilder<ProductBloc, ProductState>(
-          builder: (context, state) {
-            return Padding(
+      body: BlocBuilder<ProductBloc, ProductState>(
+        builder: (context, state) {
+          if (state is ProductLoading) {
+            return const CircularProgress();
+          }
+          return SingleChildScrollView(
+            child: Padding(
               padding: EdgeInsets.all(LayoutDimen.dimen_16.w),
               child: Column(
                 children: [
@@ -33,9 +37,9 @@ class ProductPage extends StatelessWidget {
                     ...state.productList.map(productCard).toList()
                 ],
               ),
-            );
-          },
-        ),
+            ),
+          );
+        },
       ),
     );
   }

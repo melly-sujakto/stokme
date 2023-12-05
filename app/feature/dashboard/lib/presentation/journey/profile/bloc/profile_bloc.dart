@@ -14,6 +14,7 @@ class ProfileBloc extends BaseBloc<ProfileEvent, ProfileState> {
     this.dashboardUsecase,
   ) : super(ProfileInitial()) {
     on<GetProfileEvent>((event, emit) async {
+      emit(ProfileLoading());
       try {
         final user = await dashboardUsecase.getUserDetail();
         final storeDetail = await dashboardUsecase.getStoreDetail(user.storeId);

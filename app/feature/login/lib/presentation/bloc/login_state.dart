@@ -11,3 +11,7 @@ final class UserloggedOut extends LoginState {}
 final class LoginSuccess extends LoginState {}
 
 final class LoginFailed extends LoginState {}
+
+final class LoginLoading extends LoginState {}
+
+final class CheckLoginStatusLoading extends LoginState {}

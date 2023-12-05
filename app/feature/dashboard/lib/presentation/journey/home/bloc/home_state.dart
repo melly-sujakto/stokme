@@ -4,6 +4,10 @@ sealed class HomeState {}
 
 final class HomeInitial extends HomeState {}
 
+final class HomeLoading extends HomeState {}
+
+final class HomeFailed extends HomeState {}
+
 final class HomeLoaded extends HomeState {
   final UserEntity user;
   final String greeting;

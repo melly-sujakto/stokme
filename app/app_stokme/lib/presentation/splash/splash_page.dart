@@ -3,6 +3,7 @@ import 'package:feature_login/presentation/bloc/login_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:module_common/presentation/bloc/base_bloc.dart';
 import 'package:stokme/data/navigation/interaction_navigation_impl.dart';
+import 'package:ui_kit/ui/loading_indicator/circular_progres.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -31,6 +32,9 @@ class _SplashPageState extends State<SplashPage> {
         }
       },
       builder: (context, state) {
+        if (state is CheckLoginStatusLoading) {
+          return const CircularProgress();
+        }
         // TODO(melly): implement proper splash
         return Container(color: Colors.white);
       },

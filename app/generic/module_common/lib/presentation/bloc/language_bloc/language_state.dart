@@ -34,3 +34,7 @@ class LanguageLoadedState extends LanguageState {
     Map<String, String> translations,
   ) : super(locale, translations);
 }
+
+class LanguageLoading extends LanguageState {
+  const LanguageLoading(super.locale, super.translations);
+}

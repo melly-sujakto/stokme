@@ -13,6 +13,7 @@ import 'package:ui_kit/theme/theme_data.dart';
 import 'package:ui_kit/ui/button/flat_button.dart';
 import 'package:ui_kit/ui/card/logo_image.dart';
 import 'package:ui_kit/ui/input_field/input_basic.dart';
+import 'package:ui_kit/ui/loading_indicator/circular_progres.dart';
 import 'package:ui_kit/ui/snackbar/snackbar_dialog.dart';
 import 'package:ui_kit/utils/screen_utils.dart';
 
@@ -59,118 +60,124 @@ class _LoginPageState extends State<LoginPage> {
           }
         },
         builder: (context, state) {
-          return SafeArea(
-            child: Scaffold(
-              backgroundColor: Colors.transparent,
-              body: SingleChildScrollView(
-                child: Stack(
-                  children: [
-                    Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.symmetric(
-                              vertical: LayoutDimen.dimen_105.h,
-                            ),
-                            child: const LogoImage(),
-                          ),
-                          Column(
+          return Stack(
+            children: [
+              SafeArea(
+                child: Scaffold(
+                  backgroundColor: Colors.transparent,
+                  body: SingleChildScrollView(
+                    child: Stack(
+                      children: [
+                        Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              emailTextField(context),
-                              SizedBox(
-                                height: LayoutDimen.dimen_40.h,
+                              Padding(
+                                padding: EdgeInsets.symmetric(
+                                  vertical: LayoutDimen.dimen_105.h,
+                                ),
+                                child: const LogoImage(),
                               ),
-                              passwordTextField(context),
+                              Column(
+                                children: [
+                                  emailTextField(context),
+                                  SizedBox(
+                                    height: LayoutDimen.dimen_40.h,
+                                  ),
+                                  passwordTextField(context),
+                                ],
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(
+                                  top: LayoutDimen.dimen_126.h,
+                                  bottom: LayoutDimen.dimen_32.h,
+                                ),
+                                child: FlatButton(
+                                  title: LoginStrings.loginButton.i18n(context),
+                                  onPressed: emailText.isNotEmpty &&
+                                          passwordText.isNotEmpty
+                                      ? () {
+                                          loginBloc.add(
+                                            SubmitEmailAndPasswordEvent(
+                                              email: emailText,
+                                              password: passwordText,
+                                            ),
+                                          );
+                                        }
+                                      : null,
+                                ),
+                              ),
                             ],
                           ),
-                          Padding(
-                            padding: EdgeInsets.only(
-                              top: LayoutDimen.dimen_126.h,
-                              bottom: LayoutDimen.dimen_32.h,
-                            ),
-                            child: FlatButton(
-                              title: LoginStrings.loginButton.i18n(context),
-                              onPressed: emailText.isNotEmpty &&
-                                      passwordText.isNotEmpty
-                                  ? () {
-                                      loginBloc.add(
-                                        SubmitEmailAndPasswordEvent(
-                                          email: emailText,
-                                          password: passwordText,
-                                        ),
-                                      );
-                                    }
-                                  : null,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    BlocBuilder<LanguageBloc, LanguageState>(
-                      builder: (context, state) {
-                        if (state is LanguageLoadedState) {
-                          String dropdownValue =
-                              state.locale.languageCode.toUpperCase();
+                        ),
+                        BlocBuilder<LanguageBloc, LanguageState>(
+                          builder: (context, state) {
+                            if (state is LanguageLoadedState) {
+                              String dropdownValue =
+                                  state.locale.languageCode.toUpperCase();
 
-                          final items = [
-                            Languages.id.code.toUpperCase(),
-                            Languages.en.code.toUpperCase(),
-                          ];
+                              final items = [
+                                Languages.id.code.toUpperCase(),
+                                Languages.en.code.toUpperCase(),
+                              ];
 
-                          return Padding(
-                            padding: EdgeInsets.all(LayoutDimen.dimen_16.w),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Container(
-                                  padding: EdgeInsets.all(
-                                    LayoutDimen.dimen_4.w,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(50),
-                                    color: CustomColors.white,
-                                  ),
-                                  child: DropdownButton(
-                                    value: dropdownValue,
-                                    items: items.map((String item) {
-                                      return DropdownMenuItem(
-                                        value: item,
-                                        child: Text(item),
-                                      );
-                                    }).toList(),
-                                    underline: Container(),
-                                    style: TextStyle(
-                                      fontSize: LayoutDimen.dimen_18.minSp,
-                                      fontWeight: FontWeight.w400,
-                                      color: CustomColors.black,
-                                    ),
-                                    borderRadius: BorderRadius.circular(
-                                      LayoutDimen.dimen_10.w,
-                                    ),
-                                    onChanged: (_) {
-                                      Injector.resolve<LanguageBloc>().add(
-                                        ChangeLocale(
-                                          Locale(
-                                            (_ ?? items.first).toLowerCase(),
-                                          ),
+                              return Padding(
+                                padding: EdgeInsets.all(LayoutDimen.dimen_16.w),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Container(
+                                      padding: EdgeInsets.all(
+                                        LayoutDimen.dimen_4.w,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(50),
+                                        color: CustomColors.white,
+                                      ),
+                                      child: DropdownButton(
+                                        value: dropdownValue,
+                                        items: items.map((String item) {
+                                          return DropdownMenuItem(
+                                            value: item,
+                                            child: Text(item),
+                                          );
+                                        }).toList(),
+                                        underline: Container(),
+                                        style: TextStyle(
+                                          fontSize: LayoutDimen.dimen_18.minSp,
+                                          fontWeight: FontWeight.w400,
+                                          color: CustomColors.black,
                                         ),
-                                      );
-                                      dropdownValue = _!;
-                                    },
-                                  ),
+                                        borderRadius: BorderRadius.circular(
+                                          LayoutDimen.dimen_10.w,
+                                        ),
+                                        onChanged: (_) {
+                                          Injector.resolve<LanguageBloc>().add(
+                                            ChangeLocale(
+                                              Locale(
+                                                (_ ?? items.first)
+                                                    .toLowerCase(),
+                                              ),
+                                            ),
+                                          );
+                                          dropdownValue = _!;
+                                        },
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            ),
-                          );
-                        }
-                        return Container();
-                      },
-                    )
-                  ],
+                              );
+                            }
+                            return Container();
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ),
-            ),
+              if (state is LoginLoading) const CircularProgress.fullPage(),
+            ],
           );
         },
       ),

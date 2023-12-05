@@ -14,15 +14,20 @@ class HomeBloc extends BaseBloc<HomeEvent, HomeState> {
     this.dashboardUsecase,
   ) : super(HomeInitial()) {
     on<GetFeaturesEvent>((event, emit) async {
-      final user = await dashboardUsecase.getUserDetail();
-      final greeting = generateGreeting();
-      emit(
-        HomeLoaded(
-          user: user,
-          greeting: greeting,
-          features: [],
-        ),
-      );
+      emit(HomeLoading());
+      try {
+        final user = await dashboardUsecase.getUserDetail();
+        final greeting = generateGreeting();
+        emit(
+          HomeLoaded(
+            user: user,
+            greeting: greeting,
+            features: [],
+          ),
+        );
+      } catch (e) {
+        emit(HomeFailed());
+      }
     });
   }
 

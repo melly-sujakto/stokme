@@ -18,6 +18,7 @@ class LoginBloc extends BaseBloc<LoginEvent, LoginState> {
     SubmitEmailAndPasswordEvent event,
     emit,
   ) async {
+    emit(LoginLoading());
     try {
       await loginUsecase.signInWithEmailAndPassword(
         email: event.email,
@@ -34,6 +35,7 @@ class LoginBloc extends BaseBloc<LoginEvent, LoginState> {
     CheckLoginStatusEvent event,
     emit,
   ) async {
+    emit(CheckLoginStatusLoading());
     try {
       final user = await loginUsecase.checkLoginStatus();
       if (user == null) {

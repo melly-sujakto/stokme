@@ -11,6 +11,7 @@ import 'package:module_common/presentation/bloc/language_bloc/language_bloc.dart
 import 'package:ui_kit/common/constants/layout_dimen.dart';
 import 'package:ui_kit/theme/colors.dart';
 import 'package:ui_kit/ui/button/flat_button.dart';
+import 'package:ui_kit/ui/loading_indicator/circular_progres.dart';
 import 'package:ui_kit/utils/screen_utils.dart';
 
 // TODO(Melly): move to independent feature
@@ -26,26 +27,36 @@ class MorePage extends StatelessWidget {
               .navigateToLogin(context);
         }
       },
-      child: Scaffold(
-      backgroundColor: CustomColors.neutral.c98,
-        appBar: AppBar(
-          title: Text(
-            DashboardStrings.moreBottomNavBar.i18n(context),
-            style: TextStyle(
-              fontSize: LayoutDimen.dimen_19.minSp,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-        body: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+      child: BlocBuilder<LanguageBloc, LanguageState>(
+        builder: (context, languageState) {
+          return Stack(
             children: [
-              rowLanguage(),
-              rowLogout(context),
+              Scaffold(
+                backgroundColor: CustomColors.neutral.c98,
+                appBar: AppBar(
+                  title: Text(
+                    DashboardStrings.moreBottomNavBar.i18n(context),
+                    style: TextStyle(
+                      fontSize: LayoutDimen.dimen_19.minSp,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                body: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      rowLanguage(),
+                      rowLogout(context),
+                    ],
+                  ),
+                ),
+              ),
+              if (languageState is LanguageLoading)
+                const CircularProgress.fullPage()
             ],
-          ),
-        ),
+          );
+        },
       ),
     );
   }

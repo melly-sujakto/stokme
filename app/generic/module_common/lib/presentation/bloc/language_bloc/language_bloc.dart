@@ -20,7 +20,12 @@ class LanguageBloc extends BaseBloc<LanguageEvent, LanguageState> {
       await _handleLoadLanguage(locale, emit);
     });
     on<ChangeLocale>((event, emit) async {
-      await _handleLoadLanguage(event.locale, emit);
+      final currentState = state;
+      emit(LanguageLoading(currentState.locale, currentState.translations));
+      await Future.delayed(
+        const Duration(milliseconds: 300),
+        () => _handleLoadLanguage(event.locale, emit),
+      );
     });
   }
 
