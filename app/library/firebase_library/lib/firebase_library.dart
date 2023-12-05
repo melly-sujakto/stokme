@@ -15,18 +15,18 @@ class FirebaseLibrary {
     );
   }
 
-  Future<List<Map<String, dynamic>>> getList({
+  Future<Map<String, dynamic>?> getById({
     required String collectionName,
-    String orderByField = '',
-    bool asc = true,
-    int limit = 10,
+    required String id,
   }) async {
     final collectionRef = FirebaseFirestore.instance.collection(collectionName);
-    final querySnapshot = await collectionRef
-        // .where('store_id', isEqualTo: 'vEUxgP9m2RW3mRFIDJWD')
-        // .orderBy(orderByField, descending: !asc)
-        .limit(limit)
-        .get();
+    final querySnapshot = await collectionRef.doc(id).get();
+    return querySnapshot.data();
+  }
+
+  Future<List<Map<String, dynamic>>> getList(String collectionName) async {
+    final collectionRef = FirebaseFirestore.instance.collection(collectionName);
+    final querySnapshot = await collectionRef.get();
 
     return querySnapshot.docs.map((doc) {
       final data = doc.data();
@@ -34,6 +34,10 @@ class FirebaseLibrary {
       data['id'] = id;
       return data;
     }).toList();
+  }
+
+  CollectionReference<Map<String, dynamic>> selfQuery(String collectionName) {
+    return FirebaseFirestore.instance.collection(collectionName);
   }
 
 // TODO(Melly): will remove
@@ -47,15 +51,6 @@ class FirebaseLibrary {
   Future<Map<String, dynamic>?> getOneData(String code) async {
     final collectionRef = FirebaseFirestore.instance.collection('product');
     final querySnapshot = await collectionRef.doc(code).get();
-    return querySnapshot.data();
-  }
-
-  Future<Map<String, dynamic>?> get({
-    required String collectionName,
-    required String id,
-  }) async {
-    final collectionRef = FirebaseFirestore.instance.collection(collectionName);
-    final querySnapshot = await collectionRef.doc(id).get();
     return querySnapshot.data();
   }
 }

@@ -47,7 +47,7 @@ class LoginUsecase {
   Future<UserEntity?> getUserDetail(String email) async {
     const collectionName = 'user';
 
-    final json = await firebaseLibrary.get(
+    final json = await firebaseLibrary.getById(
       collectionName: collectionName,
       id: email,
     );
