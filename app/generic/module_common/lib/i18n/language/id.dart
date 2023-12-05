@@ -24,4 +24,5 @@ final Map<String, String> translations = {
   'login.snackbar.errorMessage': 'Email dan Password tidak sesuai',
   'more.item.logout': 'Keluar',
   'more.dialog.logoutDialogDesc': 'Keluar dari aplikasi?',
+  'product.appBar.title': 'Produk dan Harga',
 };

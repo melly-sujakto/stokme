@@ -10,12 +10,10 @@ abstract class Routes {
   static Map<String, WidgetBuilder> get all {
     return {
       productList: (ctx) {
+        final bloc = Injector.resolve<ProductBloc>();
         return BlocProvider(
-          create: (context) => Injector.resolve<ProductBloc>()
-            ..add(
-              GetProductListEvent(),
-            ),
-          child: const ProductPage(),
+          create: (context) => bloc,
+          child: ProductPage(bloc: bloc),
         );
       }
     };

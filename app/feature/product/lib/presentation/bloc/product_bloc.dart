@@ -12,7 +12,9 @@ class ProductBloc extends BaseBloc<ProductEvent, ProductState> {
     on<GetProductListEvent>((event, emit) async {
       emit(ProductLoading());
       try {
-        final productList = await productUsecase.getProductList();
+        final productList = await productUsecase.getProductList(
+          filterByUnsetPrice: event.filterByUnsetPrice,
+        );
         emit(ProductListLoaded(productList));
       } catch (e) {
         emit(ProductFailed());

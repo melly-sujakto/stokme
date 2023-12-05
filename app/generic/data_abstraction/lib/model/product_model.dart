@@ -5,7 +5,7 @@ class ProductModel extends ProductEntity {
     required super.id,
     required super.code,
     required super.name,
-    required super.saleNet,
+    super.saleNet,
     required super.storeId,
   });
 

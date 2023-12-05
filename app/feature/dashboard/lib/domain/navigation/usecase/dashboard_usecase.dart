@@ -39,7 +39,7 @@ class DashboardUsecase {
   Future<StoreEntity> getStoreDetail(String storeId) async {
     const collectionName = 'store';
 
-    final json = await firebaseLibrary.get(
+    final json = await firebaseLibrary.getById(
       collectionName: collectionName,
       id: storeId,
     );
@@ -52,7 +52,7 @@ class DashboardUsecase {
   Future<RoleEntity> getRoleDetail(String roleId) async {
     const collectionName = 'role';
 
-    final json = await firebaseLibrary.get(
+    final json = await firebaseLibrary.getById(
       collectionName: collectionName,
       id: roleId,
     );

@@ -12,10 +12,21 @@ class ProductUsecase {
     required this.sharedPreferencesWrapper,
   });
 
-  Future<List<ProductEntity>> getProductList() async {
-    const collectionName = 'product';
-    final jsonList =
-        await firebaseLibrary.getList(collectionName: collectionName);
+  Future<List<ProductEntity>> getProductList({
+    bool filterByUnsetPrice = false,
+  }) async {
+    final collectionRef = firebaseLibrary.selfQuery('product');
+    final querySnapshot = filterByUnsetPrice
+        ? await collectionRef.where('sale_net', isNull: true).get()
+        : await collectionRef.get();
+
+    final jsonList = querySnapshot.docs.map((doc) {
+      final data = doc.data();
+      final id = doc.id;
+      data['id'] = id;
+      return data;
+    }).toList();
+
     return jsonList.map(ProductModel.fromJson).toList();
   }
 }
