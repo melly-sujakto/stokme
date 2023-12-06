@@ -48,7 +48,7 @@ class FlatButton extends StatelessWidget {
               ),
             ),
             child: SizedBox(
-              height: LayoutDimen.dimen_50.w,
+              height: LayoutDimen.dimen_56.h,
               width: width,
               child: Center(
                 child: Text(
