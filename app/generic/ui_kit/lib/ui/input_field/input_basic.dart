@@ -13,6 +13,7 @@ class InputBasic extends StatefulWidget {
     this.useSearchIcon = false,
     this.onChanged,
     this.margin,
+    this.keyboardType,
   });
 
   final String labelText;
@@ -21,6 +22,7 @@ class InputBasic extends StatefulWidget {
   final bool obscureText;
   final bool useSearchIcon;
   final void Function(String)? onChanged;
+  final TextInputType? keyboardType;
 
   /// if [margin] is null, default value is
   /// EdgeInsets.symmetric(horizontal: LayoutDimen.dimen_16.w)
@@ -55,6 +57,7 @@ class _InputBasicState extends State<InputBasic> {
         controller: textEditingController,
         focusNode: focusNode,
         obscureText: visibilityText,
+        keyboardType: widget.keyboardType,
         decoration: InputDecoration(
           contentPadding: EdgeInsets.symmetric(
             horizontal: LayoutDimen.dimen_10.w,
