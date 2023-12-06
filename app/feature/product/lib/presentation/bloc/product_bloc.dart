@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:data_abstraction/entity/product_entity.dart';
 import 'package:feature_product/domain/usecase/product_usecase.dart';
 import 'package:module_common/presentation/bloc/base_bloc.dart';
@@ -11,44 +13,27 @@ class ProductBloc extends BaseBloc<ProductEvent, ProductState> {
   List<ProductEntity> products = [];
 
   ProductBloc(this.productUsecase) : super(ProductInitial()) {
-    on<GetProductListEvent>((event, emit) async {
-      emit(ProductLoading());
-      try {
-        if (products.isEmpty) {
-          final productList = await productUsecase.getProductList(
-            filterByUnsetPrice: event.filterByUnsetPrice,
-          );
-          products = productList;
-        }
+    on<GetProductListEvent>(_onGetProductListEvent);
+    on<UpdateProductEvent>(_onUpdateProductEvent);
+  }
 
-        if (event.filterByUnsetPrice) {
-          late final List<ProductEntity> productList;
-          if (event.filterValue.isNotEmpty) {
-            productList = products
-                .where(
-                  (element) =>
-                      element.name
-                          .toLowerCase()
-                          .contains(event.filterValue.toLowerCase()) ||
-                      element.code
-                          .toLowerCase()
-                          .contains(event.filterValue.toLowerCase()),
-                )
-                .toList();
-          } else {
-            productList = products;
-          }
+  FutureOr<void> _onGetProductListEvent(
+    GetProductListEvent event,
+    Emitter<ProductState> emit,
+  ) async {
+    emit(ProductLoading());
+    try {
+      if (products.isEmpty) {
+        final productList = await productUsecase.getProductList(
+          filterByUnsetPrice: event.filterByUnsetPrice,
+        );
+        products = productList;
+      }
 
-          final filteredProducts = productList.where((element) {
-            return element.saleNet == null;
-          }).toList();
-
-          emit(ProductListLoaded(filteredProducts));
-          return;
-        }
-
+      if (event.filterByUnsetPrice) {
+        late final List<ProductEntity> productList;
         if (event.filterValue.isNotEmpty) {
-          final filteredProducts = products
+          productList = products
               .where(
                 (element) =>
                     element.name
@@ -59,14 +44,50 @@ class ProductBloc extends BaseBloc<ProductEvent, ProductState> {
                         .contains(event.filterValue.toLowerCase()),
               )
               .toList();
-          emit(ProductListLoaded(filteredProducts));
-          return;
+        } else {
+          productList = products;
         }
 
-        emit(ProductListLoaded(products));
-      } catch (e) {
-        emit(ProductFailed());
+        final filteredProducts = productList.where((element) {
+          return element.saleNet == null;
+        }).toList();
+
+        emit(ProductListLoaded(filteredProducts));
+        return;
       }
-    });
+
+      if (event.filterValue.isNotEmpty) {
+        final filteredProducts = products
+            .where(
+              (element) =>
+                  element.name
+                      .toLowerCase()
+                      .contains(event.filterValue.toLowerCase()) ||
+                  element.code
+                      .toLowerCase()
+                      .contains(event.filterValue.toLowerCase()),
+            )
+            .toList();
+        emit(ProductListLoaded(filteredProducts));
+        return;
+      }
+
+      emit(ProductListLoaded(products));
+    } catch (e) {
+      emit(ProductFailed());
+    }
+  }
+
+  FutureOr<void> _onUpdateProductEvent(
+    UpdateProductEvent event,
+    Emitter<ProductState> emit,
+  ) async {
+    emit(UpdateLoading());
+    try {
+      await productUsecase.updateProduct(event.productEntity);
+      emit(UpdateSuccess());
+    } catch (e) {
+      emit(UpdateFailed());
+    }
   }
 }

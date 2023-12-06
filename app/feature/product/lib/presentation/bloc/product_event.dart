@@ -11,3 +11,9 @@ class GetProductListEvent extends ProductEvent {
     this.filterValue = '',
   });
 }
+
+class UpdateProductEvent extends ProductEvent {
+  final ProductEntity productEntity;
+
+  UpdateProductEvent(this.productEntity);
+}
