@@ -8,10 +8,12 @@ class AppTabBar extends StatefulWidget {
     Key? key,
     required this.activeIndex,
     required this.items,
+    this.onIndexChanged,
   }) : super(key: key);
 
   final int activeIndex;
   final List<AppTabBarItem> items;
+  final void Function(int)? onIndexChanged;
 
   @override
   State<AppTabBar> createState() => _AppTabBarState();
@@ -41,6 +43,9 @@ class _AppTabBarState extends State<AppTabBar> {
                 AppTabBarItemWidget(
                   onTap: () {
                     if (activeIndex != index) {
+                      if (widget.onIndexChanged != null) {
+                        widget.onIndexChanged!(index);
+                      }
                       item.onTap();
                       setState(() {
                         activeIndex = index;
