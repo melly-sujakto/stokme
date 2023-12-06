@@ -7,6 +7,8 @@ class ProductUsecase {
   final FirebaseLibrary firebaseLibrary;
   final SharedPreferencesWrapper sharedPreferencesWrapper;
 
+  final collectionName = 'product';
+
   ProductUsecase({
     required this.firebaseLibrary,
     required this.sharedPreferencesWrapper,
@@ -15,7 +17,7 @@ class ProductUsecase {
   Future<List<ProductEntity>> getProductList({
     bool filterByUnsetPrice = false,
   }) async {
-    final collectionRef = firebaseLibrary.selfQuery('product');
+    final collectionRef = firebaseLibrary.selfQuery(collectionName);
     final querySnapshot = filterByUnsetPrice
         ? await collectionRef.where('sale_net', isNull: true).get()
         : await collectionRef.get();
@@ -28,5 +30,13 @@ class ProductUsecase {
     }).toList();
 
     return jsonList.map(ProductModel.fromJson).toList();
+  }
+
+  Future<void> updateProduct(ProductEntity productEntity) async {
+    await firebaseLibrary.updateDocument(
+      collectionName: collectionName,
+      id: productEntity.id,
+      document: ProductModel.fromEntity(productEntity).toFirestoreJson(),
+    );
   }
 }
