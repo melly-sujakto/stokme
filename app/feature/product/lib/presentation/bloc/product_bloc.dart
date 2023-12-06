@@ -23,7 +23,7 @@ class ProductBloc extends BaseBloc<ProductEvent, ProductState> {
   ) async {
     emit(ProductLoading());
     try {
-      if (products.isEmpty) {
+      if (products.isEmpty || event.forceRemote) {
         final productList = await productUsecase.getProductList(
           filterByUnsetPrice: event.filterByUnsetPrice,
         );

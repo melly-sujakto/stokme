@@ -4,10 +4,12 @@ sealed class ProductEvent {}
 
 class GetProductListEvent extends ProductEvent {
   final bool filterByUnsetPrice;
+  final bool forceRemote;
   final String filterValue;
 
   GetProductListEvent({
     this.filterByUnsetPrice = false,
+    this.forceRemote = false,
     this.filterValue = '',
   });
 }

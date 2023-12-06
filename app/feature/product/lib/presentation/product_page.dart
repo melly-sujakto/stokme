@@ -123,6 +123,7 @@ class _ProductPageState extends State<ProductPage> {
                       GetProductListEvent(
                         filterByUnsetPrice: activeIndex == 1,
                         filterValue: filterValue,
+                        forceRemote: true,
                       ),
                     );
                   }
@@ -131,12 +132,6 @@ class _ProductPageState extends State<ProductPage> {
                       context: context,
                       message: 'Produk gagal diubah, silakan coba lagi',
                       type: SnackbarDialogType.failed,
-                    );
-                    widget.bloc.add(
-                      GetProductListEvent(
-                        filterByUnsetPrice: activeIndex == 1,
-                        filterValue: filterValue,
-                      ),
                     );
                   }
                   if (state is UpdateLoading) {
