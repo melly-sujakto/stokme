@@ -25,6 +25,7 @@ class ProductPage extends StatefulWidget {
 
 class _ProductPageState extends State<ProductPage> {
   int activeIndex = 0;
+  String filterValue = '';
 
   @override
   void initState() {
@@ -51,20 +52,51 @@ class _ProductPageState extends State<ProductPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const ScannerFinder(),
+              ScannerFinder(
+                labelText: 'Cari nama/kode',
+                onChanged: (value) {
+                  filterValue = value;
+                  widget.bloc.add(
+                    GetProductListEvent(
+                      filterByUnsetPrice: activeIndex == 1,
+                      filterValue: filterValue,
+                    ),
+                  );
+                },
+                onScan: (value) {
+                  filterValue = value;
+                  widget.bloc.add(
+                    GetProductListEvent(
+                      filterByUnsetPrice: activeIndex == 1,
+                      filterValue: filterValue,
+                    ),
+                  );
+                },
+              ),
               AppTabBar(
                 activeIndex: activeIndex,
+                onIndexChanged: (index){
+                  activeIndex = index;
+                },
                 items: [
                   AppTabBarItem(
                     onTap: () {
-                      widget.bloc.add(GetProductListEvent());
+                      widget.bloc.add(
+                        GetProductListEvent(
+                          filterValue: filterValue,
+                        ),
+                      );
                     },
                     title: 'Semua',
                   ),
                   AppTabBarItem(
                     onTap: () {
-                      widget.bloc
-                          .add(GetProductListEvent(filterByUnsetPrice: true));
+                      widget.bloc.add(
+                        GetProductListEvent(
+                          filterByUnsetPrice: true,
+                          filterValue: filterValue,
+                        ),
+                      );
                     },
                     title: 'Belum ada harga default',
                   ),
