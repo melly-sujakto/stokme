@@ -12,6 +12,7 @@ class InputBasic extends StatefulWidget {
     this.obscureText = false,
     this.useSearchIcon = false,
     this.onChanged,
+    this.margin,
   });
 
   final String labelText;
@@ -20,6 +21,10 @@ class InputBasic extends StatefulWidget {
   final bool obscureText;
   final bool useSearchIcon;
   final void Function(String)? onChanged;
+
+  /// if [margin] is null, default value is
+  /// EdgeInsets.symmetric(horizontal: LayoutDimen.dimen_16.w)
+  final EdgeInsets? margin;
 
   @override
   State<InputBasic> createState() => _InputBasicState();
@@ -41,15 +46,21 @@ class _InputBasicState extends State<InputBasic> {
   @override
   Widget build(BuildContext context) {
     // TODO(Melly): improve with proper height
-    return Padding(
-      padding: EdgeInsets.symmetric(
-        horizontal: LayoutDimen.dimen_16.w,
-      ),
+    return Container(
+      padding: widget.margin ??
+          EdgeInsets.symmetric(
+            horizontal: LayoutDimen.dimen_16.w,
+          ),
+      height: LayoutDimen.dimen_56.h,
       child: TextFormField(
         controller: textEditingController,
         focusNode: focusNode,
         obscureText: visibilityText,
         decoration: InputDecoration(
+          contentPadding: EdgeInsets.symmetric(
+            horizontal: LayoutDimen.dimen_10.w,
+            vertical: LayoutDimen.dimen_5.h,
+          ),
           filled: true,
           fillColor: CustomColors.neutral.c95,
           focusedBorder: UnderlineInputBorder(
@@ -65,7 +76,9 @@ class _InputBasicState extends State<InputBasic> {
           labelText: widget.labelText,
           labelStyle: TextStyle(
             color: CustomColors.neutral.c60,
-            fontSize: LayoutDimen.dimen_18.minSp,
+            fontSize: focusNode.hasFocus
+                ? LayoutDimen.dimen_14.minSp
+                : LayoutDimen.dimen_18.minSp,
           ),
           prefixIcon: widget.useSearchIcon
               ? Image.asset(
