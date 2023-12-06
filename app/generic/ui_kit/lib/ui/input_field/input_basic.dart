@@ -45,7 +45,6 @@ class _InputBasicState extends State<InputBasic> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO(Melly): improve with proper height
     return Container(
       padding: widget.margin ??
           EdgeInsets.symmetric(
