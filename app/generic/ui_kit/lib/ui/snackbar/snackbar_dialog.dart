@@ -27,6 +27,7 @@ class SnackbarDialog {
           borderRadius: BorderRadius.circular(LayoutDimen.dimen_30.w),
           child: Container(
             padding: EdgeInsets.all(LayoutDimen.dimen_12.w),
+            width: ScreenUtil.screenWidth,
             decoration: BoxDecoration(
               color: CustomColors.whiteSmoke,
               borderRadius: BorderRadius.circular(LayoutDimen.dimen_30.w),
@@ -42,10 +43,13 @@ class SnackbarDialog {
                 SizedBox(
                   width: LayoutDimen.dimen_16.w,
                 ),
-                Text(
-                  message,
-                  style: const TextStyle(
-                    color: CustomColors.black,
+                Flexible(
+                  child: Text(
+                    message,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      color: CustomColors.black,
+                    ),
                   ),
                 )
               ],
