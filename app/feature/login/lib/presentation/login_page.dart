@@ -187,6 +187,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget emailTextField(BuildContext context) {
     return InputBasic(
       labelText: LoginStrings.email.i18n(context),
+      keyboardType: TextInputType.emailAddress,
       onChanged: (value) {
         setState(() {
           emailText = value;
@@ -198,6 +199,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget passwordTextField(BuildContext context) {
     return InputBasic(
       labelText: LoginStrings.password.i18n(context),
+      keyboardType: TextInputType.visiblePassword,
       obscureText: true,
       onChanged: (value) {
         setState(() {
