@@ -40,6 +40,15 @@ class FirebaseLibrary {
     return FirebaseFirestore.instance.collection(collectionName);
   }
 
+  Future<void> updateDocument({
+    required String collectionName,
+    required String id,
+    required Map<String, dynamic> document,
+  }) async {
+    final collectionRef = FirebaseFirestore.instance.collection(collectionName);
+    await collectionRef.doc(id).update(document);
+  }
+
 // TODO(Melly): will remove
   Future<List<Map<String, dynamic>>> getAllData() async {
     final collectionRef = FirebaseFirestore.instance.collection('store');
