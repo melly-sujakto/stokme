@@ -61,7 +61,7 @@ class _InputBasicState extends State<InputBasic> {
             vertical: LayoutDimen.dimen_5.h,
           ),
           filled: true,
-          fillColor: CustomColors.neutral.c95,
+          fillColor: CustomColors.neutral.c90,
           focusedBorder: UnderlineInputBorder(
             borderRadius: BorderRadius.circular(LayoutDimen.dimen_10.w),
             borderSide: BorderSide(
