@@ -7,8 +7,24 @@ import 'package:ui_kit/theme/colors.dart';
 import 'package:ui_kit/ui/input_field/input_basic.dart';
 import 'package:ui_kit/utils/screen_utils.dart';
 
+abstract class ScannerFinderConstants {
+  static const closeScannerAsset = 'assets/icons/close_scanner_icon.png';
+  static const openScannerAsset = 'assets/icons/open_scanner_icon.png';
+  static const scannerOverlayAsset = 'assets/icons/scanner_overlay.png';
+  static const beepSoundAsset = 'audio/scanner_beep.mp3';
+}
+
 class ScannerFinder extends StatefulWidget {
-  const ScannerFinder({super.key});
+  const ScannerFinder({
+    super.key,
+    required this.labelText,
+    required this.onChanged,
+    required this.onScan,
+  });
+
+  final String labelText;
+  final void Function(String) onChanged;
+  final void Function(String) onScan;
 
   @override
   State<ScannerFinder> createState() => _ScannerFinderState();
@@ -20,8 +36,8 @@ class _ScannerFinderState extends State<ScannerFinder> {
     // returnImage: true,
   );
   final player = AudioPlayer();
-
   bool scannerActive = false;
+  final textEditController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +59,7 @@ class _ScannerFinderState extends State<ScannerFinder> {
                   horizontal: LayoutDimen.dimen_32.w,
                   vertical: LayoutDimen.dimen_12.h,
                 ),
-                child: Image.asset('assets/icons/scanner_overlay.png'),
+                child: Image.asset(ScannerFinderConstants.scannerOverlayAsset),
               ),
               fit: BoxFit.fitWidth,
               controller: cameraController,
@@ -53,15 +69,20 @@ class _ScannerFinderState extends State<ScannerFinder> {
                   player
                     ..setVolume(1)
                     ..play(
-                      AssetSource('audio/scanner_beep.mp3'),
+                      AssetSource(ScannerFinderConstants.beepSoundAsset),
                     );
-                  setState(() {
-                    if (barcode.rawValue != null) {
-                      if (kDebugMode) {
-                        print(barcode.rawValue);
-                      }
+
+                  if (barcode.rawValue != null) {
+                    if (kDebugMode) {
+                      print('Scanned barcode: ${barcode.rawValue}');
                     }
-                  });
+
+                    setState(() {
+                      textEditController.text = barcode.rawValue!;
+                    });
+
+                    widget.onScan(barcode.rawValue!);
+                  }
                 }
               },
             ),
@@ -72,8 +93,9 @@ class _ScannerFinderState extends State<ScannerFinder> {
             Flexible(
               flex: 6,
               child: InputBasic(
-                labelText: 'Cari nama/kode',
-                onChanged: (value) {},
+                controller: textEditController,
+                labelText: widget.labelText,
+                onChanged: widget.onChanged,
                 margin: EdgeInsets.zero,
               ),
             ),
@@ -92,8 +114,8 @@ class _ScannerFinderState extends State<ScannerFinder> {
                       EdgeInsets.symmetric(horizontal: LayoutDimen.dimen_8.w),
                   child: Image.asset(
                     scannerActive
-                        ? 'assets/icons/close_scanner_icon.png'
-                        : 'assets/icons/open_scanner_icon.png',
+                        ? ScannerFinderConstants.closeScannerAsset
+                        : ScannerFinderConstants.openScannerAsset,
                     width: LayoutDimen.dimen_30.w,
                   ),
                 ),
