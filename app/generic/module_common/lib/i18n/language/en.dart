@@ -24,5 +24,14 @@ final Map<String, String> translations = {
   'login.snackbar.errorMessage': 'Email and Password is incorrect',
   'more.item.logout': 'Logout',
   'more.dialog.logoutDialogDesc': 'Logout from App?',
-  'product.appBar.title': 'Produk dan Harga',
+  'product.appBar.title': 'Products',
+  'product.detail.nameLabelText': 'Name',
+  'product.detail.priceLabelText': 'Price (optional)',
+  'product.detail.buttonEdit': 'Edit',
+  'product.scanner.label': 'Search by name/code',
+  'product.tabItem.all': 'All',
+  'product.tabItem.unsetPrice': 'Unsetted default price',
+  'product.snackbar.updateSuccess': 'Product has been successfully updated',
+  'product.snackbar.updateFailed':
+      'Product failed to update, please try again',
 };
