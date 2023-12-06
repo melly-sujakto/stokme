@@ -10,6 +10,7 @@ class InputBasic extends StatefulWidget {
     this.controller,
     this.focusNode,
     this.obscureText = false,
+    this.useSearchIcon = false,
     this.onChanged,
   });
 
@@ -17,6 +18,7 @@ class InputBasic extends StatefulWidget {
   final TextEditingController? controller;
   final FocusNode? focusNode;
   final bool obscureText;
+  final bool useSearchIcon;
   final void Function(String)? onChanged;
 
   @override
@@ -65,6 +67,13 @@ class _InputBasicState extends State<InputBasic> {
             color: CustomColors.neutral.c60,
             fontSize: LayoutDimen.dimen_18.minSp,
           ),
+          prefixIcon: widget.useSearchIcon
+              ? Image.asset(
+                  'assets/icons/search_icon.png',
+                  width: LayoutDimen.dimen_24.w,
+                  fit: BoxFit.fitWidth,
+                )
+              : null,
           suffixIcon: widget.obscureText
               ? InkWell(
                   onTap: () {
