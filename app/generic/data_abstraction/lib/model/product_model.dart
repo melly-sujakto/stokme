@@ -18,4 +18,23 @@ class ProductModel extends ProductEntity {
       storeId: json['store_id'],
     );
   }
+
+  factory ProductModel.fromEntity(ProductEntity entity) {
+    return ProductModel(
+      id: entity.id,
+      code: entity.code,
+      saleNet: entity.saleNet,
+      name: entity.name,
+      storeId: entity.storeId,
+    );
+  }
+
+  Map<String, dynamic> toFirestoreJson() {
+    return {
+      'code': code,
+      'name': name,
+      'sale_net': saleNet,
+      'store_id': storeId,
+    };
+  }
 }
