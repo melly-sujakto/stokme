@@ -9,6 +9,7 @@ environment:
   flutter: ">=1.17.0"
 
 dependencies:
+  audioplayers: ^5.2.1
   equatable: ^2.0.5
   extensions:
     path: ../../library/extensions
@@ -18,6 +19,7 @@ dependencies:
   google_fonts: ^6.1.0
   library_injection:
     path: ../../library/injection
+  mobile_scanner: ^3.5.5
   module_common:
     path: ../module_common
 

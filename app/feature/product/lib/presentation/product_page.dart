@@ -7,6 +7,7 @@ import 'package:module_common/presentation/bloc/base_bloc.dart';
 import 'package:ui_kit/common/constants/layout_dimen.dart';
 import 'package:ui_kit/theme/colors.dart';
 import 'package:ui_kit/ui/loading_indicator/circular_progres.dart';
+import 'package:ui_kit/ui/scanner/scanner_finder.dart';
 import 'package:ui_kit/ui/tab_bar/app_tab_bar.dart';
 import 'package:ui_kit/ui/widgets/dummy_circle_image.dart';
 import 'package:ui_kit/utils/screen_utils.dart';
@@ -50,6 +51,7 @@ class _ProductPageState extends State<ProductPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              const ScannerFinder(),
               AppTabBar(
                 activeIndex: activeIndex,
                 items: [
@@ -85,92 +87,6 @@ class _ProductPageState extends State<ProductPage> {
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  Widget tabBar() {
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      padding: EdgeInsets.symmetric(
-        vertical: LayoutDimen.dimen_19.h,
-      ),
-      child: Row(
-        children: [
-          InkWell(
-            onTap: () {
-              if (activeIndex != 0) {
-                setState(() {
-                  activeIndex = 0;
-                });
-                widget.bloc.add(GetProductListEvent());
-              }
-            },
-            customBorder: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30),
-            ),
-            child: Container(
-              padding: EdgeInsets.symmetric(
-                horizontal: LayoutDimen.dimen_18.w,
-                vertical: LayoutDimen.dimen_6.w,
-              ),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(30),
-                color: activeIndex == 0 ? CustomColors.neutral.c90 : null,
-              ),
-              child: Text(
-                'Semua',
-                style: TextStyle(
-                  fontSize: LayoutDimen.dimen_13.minSp,
-                  fontWeight: FontWeight.w600,
-                  color: activeIndex == 0
-                      ? CustomColors.black
-                      : CustomColors.neutral.c50,
-                ),
-              ),
-            ),
-          ),
-          SizedBox(
-            width: LayoutDimen.dimen_16.w,
-          ),
-          InkWell(
-            onTap: () {
-              if (activeIndex != 1) {
-                setState(() {
-                  activeIndex = 1;
-                });
-                widget.bloc.add(
-                  GetProductListEvent(
-                    filterByUnsetPrice: true,
-                  ),
-                );
-              }
-            },
-            customBorder: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30),
-            ),
-            child: Container(
-              padding: EdgeInsets.symmetric(
-                horizontal: LayoutDimen.dimen_18.w,
-                vertical: LayoutDimen.dimen_6.w,
-              ),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(30),
-                color: activeIndex == 1 ? CustomColors.neutral.c90 : null,
-              ),
-              child: Text(
-                'Belum ada harga default',
-                style: TextStyle(
-                  fontSize: LayoutDimen.dimen_13.minSp,
-                  fontWeight: FontWeight.w600,
-                  color: activeIndex == 0
-                      ? CustomColors.neutral.c50
-                      : CustomColors.black,
-                ),
-              ),
-            ),
-          ),
-        ],
       ),
     );
   }
