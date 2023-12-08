@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 abstract class Routes {
   static String get stockIn => StockInRoutes.stockIn;
-  static String get sale => SaleRoutes.sale;
+  static String get sale => SaleRoutes.salesInput;
   static String get transactionList => TransactionListRoutes.transactionList;
 
   static Map<String, WidgetBuilder> get all {
