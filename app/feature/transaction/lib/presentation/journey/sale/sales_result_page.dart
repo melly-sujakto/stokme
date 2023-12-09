@@ -1,3 +1,6 @@
+import 'package:feature_transaction/common/injector/injector.dart';
+import 'package:feature_transaction/domain/navigation/interaction_navigation.dart';
+import 'package:feature_transaction/presentation/journey/sale/sale_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:ui_kit/common/constants/layout_dimen.dart';
 import 'package:ui_kit/extensions/string_extension.dart';
@@ -115,7 +118,7 @@ class _SalesResultPageState extends State<SalesResultPage> {
                               ),
                               Padding(
                                 padding: EdgeInsets.all(LayoutDimen.dimen_8.w),
-                                child: Row(
+                                child: const Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
@@ -168,7 +171,11 @@ class _SalesResultPageState extends State<SalesResultPage> {
                   ),
                   child: FlatButton(
                     title: 'Selesai',
-                    onPressed: () {},
+                    onPressed: () {
+                      Injector.resolve<TransactionInteractionNavigation>()
+                          .navigateToDashboardFromTransaction(context);
+                      Navigator.pushNamed(context, SaleRoutes.salesInput);
+                    },
                     margin: EdgeInsets.zero,
                   ),
                 ),

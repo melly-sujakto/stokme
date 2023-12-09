@@ -1,4 +1,6 @@
 import 'package:data_abstraction/entity/product_entity.dart';
+import 'package:feature_transaction/common/injector/injector.dart';
+import 'package:feature_transaction/domain/navigation/interaction_navigation.dart';
 import 'package:feature_transaction/presentation/journey/sale/sale_routes.dart';
 import 'package:feature_transaction/presentation/journey/sale/widgets/sales_product_card.dart';
 import 'package:flutter/material.dart';
@@ -97,7 +99,8 @@ class _SalesReviewPageState extends State<SalesReviewPage> {
                   child: FlatButton(
                     title: 'Proses',
                     onPressed: () {
-                      // will be change to push replace util
+                      Injector.resolve<TransactionInteractionNavigation>()
+                          .navigateToDashboardFromTransaction(context);
                       Navigator.pushNamed(context, SaleRoutes.salesResult);
                     },
                     margin: EdgeInsets.zero,

@@ -59,4 +59,12 @@ class InteractionNavigationImpl
   void navigateToTransaction(BuildContext context) {
     Navigator.of(context).pushNamed(transaction_routes.Routes.transactionList);
   }
+
+  @override
+  void navigateToDashboardFromTransaction(BuildContext context) {
+    Navigator.of(context).pushNamedAndRemoveUntil(
+      dashboard_routes.Routes.initial,
+      (route) => false,
+    );
+  }
 }
