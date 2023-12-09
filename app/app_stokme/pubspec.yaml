@@ -28,8 +28,6 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
-  audioplayers: ^5.1.0
-  cloud_firestore: ^4.9.2
   cupertino_icons: ^1.0.2
   data_abstraction:
     path: ../generic/data_abstraction
@@ -52,7 +50,6 @@ dependencies:
     sdk: flutter
   library_injection:
     path: ../library/injection
-  mobile_scanner: ^3.4.1
   module_common:
     path: ../generic/module_common
   ui_kit:
