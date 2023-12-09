@@ -1,4 +1,5 @@
 import 'package:data_abstraction/entity/product_entity.dart';
+import 'package:feature_transaction/presentation/journey/sale/sale_routes.dart';
 import 'package:feature_transaction/presentation/journey/sale/widgets/sales_product_card.dart';
 import 'package:flutter/material.dart';
 import 'package:ui_kit/common/constants/layout_dimen.dart';
@@ -95,7 +96,10 @@ class _SalesReviewPageState extends State<SalesReviewPage> {
                   ),
                   child: FlatButton(
                     title: 'Proses',
-                    onPressed: () {},
+                    onPressed: () {
+                      // will be change to push replace util
+                      Navigator.pushNamed(context, SaleRoutes.salesResult);
+                    },
                     margin: EdgeInsets.zero,
                   ),
                 ),
