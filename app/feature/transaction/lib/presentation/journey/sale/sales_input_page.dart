@@ -1,6 +1,7 @@
 import 'package:data_abstraction/entity/product_entity.dart';
 import 'package:feature_transaction/presentation/journey/sale/sale_routes.dart';
 import 'package:feature_transaction/presentation/journey/sale/sales_review_page.dart';
+import 'package:feature_transaction/presentation/journey/sale/widgets/sales_product_card.dart';
 import 'package:flutter/material.dart';
 import 'package:ui_kit/common/constants/layout_dimen.dart';
 import 'package:ui_kit/theme/colors.dart';
@@ -92,7 +93,7 @@ class _SalesInputPageState extends State<SalesInputPage> {
       child: ListView(
         children: List.generate(
           listproduct.length,
-          (index) => SaleProductCard(
+          (index) => SalesProductCard(
             product: listproduct[index],
             orderNumber: index + 1,
             totalPcs: 5,
@@ -107,80 +108,3 @@ class _SalesInputPageState extends State<SalesInputPage> {
     );
   }
 }
-
-// class SaleProductCard extends StatelessWidget {
-//   const SaleProductCard({
-//     Key? key,
-//     required this.product,
-//     required this.orderNumber,
-//     required this.totalPcs,
-//     required this.onDelete,
-//   }) : super(key: key);
-
-//   final ProductEntity product;
-//   final int orderNumber;
-//   final int totalPcs;
-//   final void Function() onDelete;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       padding: EdgeInsets.symmetric(
-//         vertical: LayoutDimen.dimen_8.w,
-//         horizontal: LayoutDimen.dimen_4.w,
-//       ),
-//       decoration: BoxDecoration(
-//         border: Border(
-//           bottom: BorderSide(
-//             color: CustomColors.neutral.c90,
-//           ),
-//         ),
-//       ),
-//       child: Row(
-//         crossAxisAlignment: CrossAxisAlignment.start,
-//         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//         children: [
-//           Text(
-//             '$orderNumber. ${product.name}',
-//             style: TextStyle(
-//               fontSize: LayoutDimen.dimen_13.minSp,
-//               fontWeight: FontWeight.w500,
-//             ),
-//           ),
-//           Row(
-//             children: [
-//               Column(
-//                 crossAxisAlignment: CrossAxisAlignment.end,
-//                 children: [
-//                   Text(
-//                     '$totalPcs pcs',
-//                     style: TextStyle(
-//                       fontSize: LayoutDimen.dimen_13.minSp,
-//                       fontWeight: FontWeight.w600,
-//                     ),
-//                   ),
-//                   Text(
-//                     (product.saleNet ?? '').toString().toRupiahCurrency(),
-//                     style: TextStyle(
-//                       fontSize: LayoutDimen.dimen_13.minSp,
-//                     ),
-//                   ),
-//                 ],
-//               ),
-//               SizedBox(
-//                 width: LayoutDimen.dimen_16.w,
-//               ),
-//               InkWell(
-//                 onTap: onDelete,
-//                 child: Icon(
-//                   Icons.close_rounded,
-//                   size: LayoutDimen.dimen_24.w,
-//                 ),
-//               )
-//             ],
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }
