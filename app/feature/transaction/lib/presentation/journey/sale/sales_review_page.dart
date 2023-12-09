@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:ui_kit/common/constants/layout_dimen.dart';
 import 'package:ui_kit/extensions/string_extension.dart';
 import 'package:ui_kit/theme/colors.dart';
+import 'package:ui_kit/ui/app_bar/app_bar_with_title_only.dart';
 import 'package:ui_kit/ui/button/flat_button.dart';
 import 'package:ui_kit/utils/screen_utils.dart';
 
@@ -30,15 +31,7 @@ class _SalesReviewPageState extends State<SalesReviewPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: CustomColors.neutral.c95,
-      appBar: AppBar(
-        title: Text(
-          'Review Penjualan',
-          style: TextStyle(
-            fontSize: LayoutDimen.dimen_19.minSp,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
+      appBar: const AppBarWithTitleOnly(appBarTitle: 'Review Penjualan'),
       body: Stack(
         children: [
           SingleChildScrollView(

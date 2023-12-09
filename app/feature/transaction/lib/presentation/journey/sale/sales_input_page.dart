@@ -5,6 +5,7 @@ import 'package:feature_transaction/presentation/journey/sale/widgets/sales_prod
 import 'package:flutter/material.dart';
 import 'package:ui_kit/common/constants/layout_dimen.dart';
 import 'package:ui_kit/theme/colors.dart';
+import 'package:ui_kit/ui/app_bar/app_bar_with_title_only.dart';
 import 'package:ui_kit/ui/button/flat_button.dart';
 import 'package:ui_kit/ui/scanner/scanner_finder.dart';
 import 'package:ui_kit/utils/screen_utils.dart';
@@ -21,15 +22,7 @@ class _SalesInputPageState extends State<SalesInputPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: CustomColors.neutral.c95,
-      appBar: AppBar(
-        title: Text(
-          'Penjualan',
-          style: TextStyle(
-            fontSize: LayoutDimen.dimen_19.minSp,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
+      appBar: const AppBarWithTitleOnly(appBarTitle: 'Penjualan'),
       body: Stack(
         children: [
           Container(
