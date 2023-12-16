@@ -1,7 +1,10 @@
+import 'package:feature_transaction/presentation/journey/transaction_list/transaction_list_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:ui_kit/common/constants/layout_dimen.dart';
 import 'package:ui_kit/theme/colors.dart';
+import 'package:ui_kit/ui/scanner/scanner_finder.dart';
+import 'package:ui_kit/ui/widgets/dummy_circle_image.dart';
 import 'package:ui_kit/utils/screen_utils.dart';
 
 class TransactionListPage extends StatefulWidget {
@@ -44,8 +47,118 @@ class _TransactionListPageState extends State<TransactionListPage> {
                     'Rp.197.650.000',
                     '1411 pcs',
                     '155 stok masuk',
-                  ])
+                  ]),
+            thSales(),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget thSales() {
+    return Container(
+      padding: EdgeInsets.symmetric(
+        vertical: LayoutDimen.dimen_16.h,
+      ),
+      margin: EdgeInsets.only(top: LayoutDimen.dimen_35.h),
+      color: CustomColors.white.withOpacity(0.5),
+      child: Column(
+        children: [
+          Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: LayoutDimen.dimen_16.w,
+            ),
+            child: ScannerFinder(
+              labelText: 'Cari kasir/tanggal',
+              onChanged: (_) {},
+              onScan: (_) {},
+            ),
+          ),
+          ...List.generate(
+            5,
+            (index) => thSalesCard(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget thSalesCard() {
+    return InkWell(
+      onTap: () {
+        Navigator.pushNamed(
+          context,
+          TransactionListRoutes.transactionSaleDetail,
+        );
+      },
+      child: Padding(
+        padding: EdgeInsets.only(
+          top: LayoutDimen.dimen_14.h,
+          left: LayoutDimen.dimen_16.w,
+          right: LayoutDimen.dimen_16.w,
+        ),
+        child: Container(
+          padding: EdgeInsets.all(LayoutDimen.dimen_10.w),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  const DummyCircleImage(title: 'M S'),
+                  Padding(
+                    padding: EdgeInsets.all(
+                      LayoutDimen.dimen_10.w,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Melly Sujakto',
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: LayoutDimen.dimen_13.minSp,
+                            fontWeight: FontWeight.w100,
+                          ),
+                        ),
+                        SizedBox(
+                          height: LayoutDimen.dimen_7.h,
+                        ),
+                        Text(
+                          '9 November 2023 • 21:22',
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: LayoutDimen.dimen_12.minSp,
+                            fontWeight: FontWeight.w200,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Total',
+                    style: TextStyle(
+                      fontSize: LayoutDimen.dimen_12.minSp,
+                      fontWeight: FontWeight.w200,
+                    ),
+                  ),
+                  Text(
+                    'Rp.20.000',
+                    style: TextStyle(
+                      fontSize: LayoutDimen.dimen_16.minSp,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
