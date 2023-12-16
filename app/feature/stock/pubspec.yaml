@@ -9,6 +9,8 @@ environment:
   flutter: ">=1.17.0"
 
 dependencies:
+  data_abstraction:
+    path: ../../generic/data_abstraction
   firebase_library:
     path: ../../library/firebase_library
   flutter:
@@ -16,6 +18,8 @@ dependencies:
   flutter_bloc: ^8.1.3
   library_injection:
     path: ../../library/injection
+  module_common:
+    path: ../../generic/module_common
   ui_kit:
     path: ../../generic/ui_kit
 

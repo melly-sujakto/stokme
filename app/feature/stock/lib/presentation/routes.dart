@@ -8,12 +8,15 @@ abstract class Routes {
   static const stockList = 'stock_list';
 
   static Map<String, WidgetBuilder> get all {
-    final bloc = Injector.resolve<StockBloc>();
     return {
-      stockList: (ctx) => BlocProvider(
-            create: (context) => bloc,
-            child: const StockPage(),
-          ),
+      stockList: (ctx) {
+        final bloc = Injector.resolve<StockBloc>();
+
+        return BlocProvider(
+          create: (context) => bloc,
+          child: StockPage(bloc: bloc),
+        );
+      }
     };
   }
 }

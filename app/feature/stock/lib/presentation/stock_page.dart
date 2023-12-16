@@ -1,15 +1,22 @@
+import 'package:data_abstraction/entity/stock_entity.dart';
 import 'package:feature_stock/presentation/bloc/stock_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ui_kit/common/constants/layout_dimen.dart';
 import 'package:ui_kit/theme/colors.dart';
+import 'package:ui_kit/ui/loading_indicator/circular_progres.dart';
 import 'package:ui_kit/ui/scanner/scanner_finder.dart';
 import 'package:ui_kit/ui/tab_bar/app_tab_bar.dart';
 import 'package:ui_kit/ui/widgets/dummy_circle_image.dart';
 import 'package:ui_kit/utils/screen_utils.dart';
 
 class StockPage extends StatefulWidget {
-  const StockPage({super.key});
+  const StockPage({
+    super.key,
+    required this.bloc,
+  });
+
+  final StockBloc bloc;
 
   @override
   State<StockPage> createState() => _StockPageState();
@@ -22,7 +29,7 @@ class _StockPageState extends State<StockPage> {
   @override
   void initState() {
     super.initState();
-    // widget.bloc.add(GetProductListEvent());
+    widget.bloc.add(GetStockListEvent(limit: 10, index: 0));
   }
 
   @override
@@ -107,19 +114,16 @@ class _StockPageState extends State<StockPage> {
               ),
               BlocBuilder<StockBloc, StockState>(
                 builder: (context, state) {
-                  // if (state is StockLoading) {
-                  //   return const CircularProgress();
-                  // }
-                  // if (state is StockLoaded) {
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: List.generate(
-                      2,
-                      (index) => stockCard(),
-                    ),
-                  );
-                  // }
-                  // return Container();
+                  if (state is StockLoading) {
+                    return const CircularProgress();
+                  }
+                  if (state is StockLoaded) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: state.stockList.map(stockCard).toList(),
+                    );
+                  }
+                  return Container();
                 },
               ),
             ],
@@ -129,7 +133,7 @@ class _StockPageState extends State<StockPage> {
     );
   }
 
-  Widget stockCard() {
+  Widget stockCard(StockEntity stockEntity) {
     return Padding(
       padding: EdgeInsets.only(bottom: LayoutDimen.dimen_14.h),
       child: Container(
@@ -146,7 +150,7 @@ class _StockPageState extends State<StockPage> {
           children: [
             Row(
               children: [
-                const DummyCircleImage(title: 'PP'),
+                DummyCircleImage(title: stockEntity.productEntity.name),
                 Padding(
                   padding: EdgeInsets.all(
                     LayoutDimen.dimen_10.w,
@@ -155,7 +159,7 @@ class _StockPageState extends State<StockPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'product.name',
+                        stockEntity.productEntity.name,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
                           fontSize: LayoutDimen.dimen_13.minSp,
@@ -166,7 +170,7 @@ class _StockPageState extends State<StockPage> {
                         height: LayoutDimen.dimen_7.h,
                       ),
                       Text(
-                        'product.code',
+                        stockEntity.productEntity.code,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
                           fontSize: LayoutDimen.dimen_13.minSp,
@@ -179,7 +183,7 @@ class _StockPageState extends State<StockPage> {
               ],
             ),
             Text(
-              '20 pcs',
+              '${stockEntity.totalPcs} pcs',
               style: TextStyle(
                 fontSize: LayoutDimen.dimen_13.minSp,
                 fontWeight: FontWeight.w300,
