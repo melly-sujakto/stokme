@@ -21,7 +21,9 @@ class FirebaseLibrary {
   }) async {
     final collectionRef = FirebaseFirestore.instance.collection(collectionName);
     final querySnapshot = await collectionRef.doc(id).get();
-    return querySnapshot.data();
+    final data = querySnapshot.data();
+    data?['id'] = id;
+    return data;
   }
 
   Future<List<Map<String, dynamic>>> getList(String collectionName) async {
