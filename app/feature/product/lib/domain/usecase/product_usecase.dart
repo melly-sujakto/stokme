@@ -40,4 +40,11 @@ class ProductUsecase {
       document: ProductModel.fromEntity(productEntity).toFirestoreJson(),
     );
   }
+
+  Future<void> deleteProduct(String productId) async {
+    await firebaseLibrary.deleteDocument(
+      collectionName: collectionName,
+      id: productId,
+    );
+  }
 }

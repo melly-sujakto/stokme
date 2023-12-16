@@ -71,7 +71,7 @@ class ProductDetailContent extends StatelessWidget {
                       ),
                       InkWell(
                         onTap: () {
-                          // TODO(melly): implement delete event
+                          bloc.add(DeleteProductEvent(product));
                         },
                         child: Icon(
                           Icons.delete,

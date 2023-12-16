@@ -107,17 +107,18 @@ class _ProductPageState extends State<ProductPage> {
               ),
               BlocConsumer<ProductBloc, ProductState>(
                 listenWhen: (previous, current) {
-                  if (previous is UpdateLoading) {
+                  if (previous is UpdateLoading || previous is DeleteLoading) {
                     Navigator.pop(context);
                   }
                   return true;
                 },
                 listener: (context, state) {
-                  if (state is UpdateSuccess) {
+                  if (state is UpdateSuccess || state is DeleteSuccess) {
                     SnackbarDialog().show(
                       context: context,
-                      message:
-                          ProductStrings.updateSuccessSnackbar.i18n(context),
+                      message: state is UpdateSuccess
+                          ? ProductStrings.updateSuccessSnackbar.i18n(context)
+                          : ProductStrings.deleteSuccessSnackbar.i18n(context),
                       type: SnackbarDialogType.success,
                     );
                     widget.bloc.add(
@@ -128,15 +129,16 @@ class _ProductPageState extends State<ProductPage> {
                       ),
                     );
                   }
-                  if (state is UpdateFailed) {
+                  if (state is UpdateFailed || state is DeleteFailed) {
                     SnackbarDialog().show(
                       context: context,
-                      message:
-                          ProductStrings.updateFailedSnackbar.i18n(context),
+                      message: state is UpdateSuccess
+                          ? ProductStrings.updateFailedSnackbar.i18n(context)
+                          : ProductStrings.deleteFailedSnackbar.i18n(context),
                       type: SnackbarDialogType.failed,
                     );
                   }
-                  if (state is UpdateLoading) {
+                  if (state is UpdateLoading || state is DeleteLoading) {
                     Navigator.pop(context);
                     showDialog(
                       context: context,

@@ -14,6 +14,12 @@ final class UpdateFailed extends ProductState {}
 
 final class UpdateSuccess extends ProductState {}
 
+final class DeleteLoading extends ProductState {}
+
+final class DeleteFailed extends ProductState {}
+
+final class DeleteSuccess extends ProductState {}
+
 final class ProductListLoaded extends ProductState {
   final List<ProductEntity> productList;
 

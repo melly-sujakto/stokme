@@ -33,4 +33,6 @@ final Map<String, String> translations = {
   'product.tabItem.unsetPrice': 'Belum ada harga default',
   'product.snackbar.updateSuccess': 'Produk berhasil diubah',
   'product.snackbar.updateFailed': 'Produk gagal diubah, silakan coba lagi',
+  'product.snackbar.deleteSuccess': 'Produk berhasil dihapus',
+  'product.snackbar.deleteFailed': 'Produk gagal dihapus, silakan coba lagi',
 };
