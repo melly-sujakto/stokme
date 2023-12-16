@@ -23,6 +23,7 @@ class StockBloc extends BaseBloc<StockEvent, StockState> {
     try {
       final stockList = await stockUsecase.getStockList(
         stockFilterType: event.filterType,
+        filterNameOrCodeValue: event.filterNameOrCodeValue,
       );
       emit(StockLoaded(stockList));
     } catch (e) {

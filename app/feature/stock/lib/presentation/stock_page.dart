@@ -26,15 +26,21 @@ class StockPage extends StatefulWidget {
 class _StockPageState extends State<StockPage> {
   int activeIndex = 0;
   String filterValue = '';
+  StockFilterType currentFilterType = StockFilterType.lowestStock;
 
   @override
   void initState() {
     super.initState();
+    addGetStockListEvent();
+  }
+
+  void addGetStockListEvent() {
     widget.bloc.add(
       GetStockListEvent(
         limit: 10,
         index: 0,
-        filterType: StockFilterType.lowestStock,
+        filterType: currentFilterType,
+        filterNameOrCodeValue: filterValue,
       ),
     );
   }
@@ -62,21 +68,11 @@ class _StockPageState extends State<StockPage> {
                 labelText: 'Cari nama/kode',
                 onChanged: (value) {
                   filterValue = value;
-                  // widget.bloc.add(
-                  //   GetProductListEvent(
-                  //     filterByUnsetPrice: activeIndex == 1,
-                  //     filterValue: filterValue,
-                  //   ),
-                  // );
+                  addGetStockListEvent();
                 },
                 onScan: (value) {
                   filterValue = value;
-                  // widget.bloc.add(
-                  //   GetProductListEvent(
-                  //     filterByUnsetPrice: activeIndex == 1,
-                  //     filterValue: filterValue,
-                  //   ),
-                  // );
+                  addGetStockListEvent();
                 },
               ),
               AppTabBar(
@@ -87,25 +83,15 @@ class _StockPageState extends State<StockPage> {
                 items: [
                   AppTabBarItem(
                     onTap: () {
-                      widget.bloc.add(
-                        GetStockListEvent(
-                          limit: 10,
-                          index: 0,
-                          filterType: StockFilterType.lowestStock,
-                        ),
-                      );
+                      currentFilterType = StockFilterType.lowestStock;
+                      addGetStockListEvent();
                     },
                     title: 'Stok sedikit',
                   ),
                   AppTabBarItem(
                     onTap: () {
-                      widget.bloc.add(
-                        GetStockListEvent(
-                          limit: 10,
-                          index: 0,
-                          filterType: StockFilterType.mostStock,
-                        ),
-                      );
+                      currentFilterType = StockFilterType.mostStock;
+                      addGetStockListEvent();
                     },
                     title: 'Stok terbanyak',
                   ),

@@ -21,6 +21,7 @@ class StockUsecase {
 
   Future<List<StockEntity>> getStockList({
     required StockFilterType stockFilterType,
+    required String filterNameOrCodeValue,
   }) async {
     final collectionRef = firebaseLibrary.selfQuery(collectionName);
     final querySnapshot = await collectionRef
@@ -47,6 +48,14 @@ class StockUsecase {
       result.add(StockModel.fromJson(json));
     }
 
-    return result;
+    return result
+        .where(
+          (element) =>
+              element.productEntity.code.toLowerCase()
+                  .contains(filterNameOrCodeValue.toLowerCase()) ||
+              element.productEntity.name.toLowerCase()
+                  .contains(filterNameOrCodeValue.toLowerCase()),
+        )
+        .toList();
   }
 }
