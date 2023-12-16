@@ -41,20 +41,26 @@ class StockUsecase {
 
     final result = <StockEntity>[];
     for (final json in jsonList) {
-      final product = await firebaseLibrary.getById(
-        collectionName: 'product',
-        id: json['product_id'],
-      );
-      json['product'] = product;
-      result.add(StockModel.fromJson(json));
+      try {
+        final product = await firebaseLibrary.getById(
+          collectionName: 'product',
+          id: json['product_id'],
+        );
+        json['product'] = product;
+        result.add(StockModel.fromJson(json));
+      } catch (e) {
+        // just continue if there is error or product is deleted
+      }
     }
 
     return result
         .where(
           (element) =>
-              element.productEntity.code.toLowerCase()
+              element.productEntity.code
+                  .toLowerCase()
                   .contains(filterNameOrCodeValue.toLowerCase()) ||
-              element.productEntity.name.toLowerCase()
+              element.productEntity.name
+                  .toLowerCase()
                   .contains(filterNameOrCodeValue.toLowerCase()),
         )
         .toList();
