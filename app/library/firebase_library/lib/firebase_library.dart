@@ -51,6 +51,14 @@ class FirebaseLibrary {
     await collectionRef.doc(id).update(document);
   }
 
+  Future<void> deleteDocument({
+    required String collectionName,
+    required String id,
+  }) async {
+    final collectionRef = FirebaseFirestore.instance.collection(collectionName);
+    await collectionRef.doc(id).delete();
+  }
+
 // TODO(Melly): will remove
   Future<List<Map<String, dynamic>>> getAllData() async {
     final collectionRef = FirebaseFirestore.instance.collection('store');
