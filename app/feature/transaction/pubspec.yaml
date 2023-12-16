@@ -18,6 +18,7 @@ dependencies:
     path: ../../library/injection
   module_common:
     path: ../../generic/module_common
+  percent_indicator: ^4.2.3
   ui_kit:
     path: ../../generic/ui_kit
 
