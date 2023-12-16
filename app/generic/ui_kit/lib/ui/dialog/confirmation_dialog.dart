@@ -5,14 +5,14 @@ import 'package:ui_kit/ui/button/flat_button.dart';
 import 'package:ui_kit/utils/screen_utils.dart';
 
 class ConfirmationDialog {
-  final String assetPath;
+  final String? assetPath;
   final String descriptionText;
   final String cancelText;
   final String confirmText;
   final void Function()? onConfirmed;
 
   ConfirmationDialog({
-    required this.assetPath,
+    this.assetPath,
     required this.descriptionText,
     required this.cancelText,
     required this.confirmText,
@@ -50,12 +50,13 @@ class ConfirmationDialog {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Image.asset(
-                      assetPath,
-                      height: LayoutDimen.dimen_60.w,
-                      width: LayoutDimen.dimen_60.w,
-                      fit: BoxFit.fitHeight,
-                    ),
+                    if (assetPath != null)
+                      Image.asset(
+                        assetPath!,
+                        height: LayoutDimen.dimen_60.w,
+                        width: LayoutDimen.dimen_60.w,
+                        fit: BoxFit.fitHeight,
+                      ),
                     SizedBox(
                       height: LayoutDimen.dimen_8.h,
                     ),
