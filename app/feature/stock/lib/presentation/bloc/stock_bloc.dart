@@ -21,7 +21,9 @@ class StockBloc extends BaseBloc<StockEvent, StockState> {
   ) async {
     emit(StockLoading());
     try {
-      final stockList = await stockUsecase.getStockList();
+      final stockList = await stockUsecase.getStockList(
+        stockFilterType: event.filterType,
+      );
       emit(StockLoaded(stockList));
     } catch (e) {
       emit(StockFailed());

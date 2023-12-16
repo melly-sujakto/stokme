@@ -1,4 +1,5 @@
 import 'package:data_abstraction/entity/stock_entity.dart';
+import 'package:feature_stock/domain/usecase/stock_usecase.dart';
 import 'package:feature_stock/presentation/bloc/stock_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -29,7 +30,13 @@ class _StockPageState extends State<StockPage> {
   @override
   void initState() {
     super.initState();
-    widget.bloc.add(GetStockListEvent(limit: 10, index: 0));
+    widget.bloc.add(
+      GetStockListEvent(
+        limit: 10,
+        index: 0,
+        filterType: StockFilterType.lowestStock,
+      ),
+    );
   }
 
   @override
@@ -80,35 +87,27 @@ class _StockPageState extends State<StockPage> {
                 items: [
                   AppTabBarItem(
                     onTap: () {
-                      // widget.bloc.add(
-                      //   GetProductListEvent(
-                      //     filterValue: filterValue,
-                      //   ),
-                      // );
+                      widget.bloc.add(
+                        GetStockListEvent(
+                          limit: 10,
+                          index: 0,
+                          filterType: StockFilterType.lowestStock,
+                        ),
+                      );
                     },
                     title: 'Stok sedikit',
                   ),
                   AppTabBarItem(
                     onTap: () {
-                      // widget.bloc.add(
-                      //   GetProductListEvent(
-                      //     filterByUnsetPrice: true,
-                      //     filterValue: filterValue,
-                      //   ),
-                      // );
+                      widget.bloc.add(
+                        GetStockListEvent(
+                          limit: 10,
+                          index: 0,
+                          filterType: StockFilterType.mostStock,
+                        ),
+                      );
                     },
                     title: 'Stok terbanyak',
-                  ),
-                  AppTabBarItem(
-                    onTap: () {
-                      // widget.bloc.add(
-                      //   GetProductListEvent(
-                      //     filterByUnsetPrice: true,
-                      //     filterValue: filterValue,
-                      //   ),
-                      // );
-                    },
-                    title: 'Nama',
                   ),
                 ],
               ),

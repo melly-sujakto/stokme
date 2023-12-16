@@ -3,6 +3,11 @@ import 'package:data_abstraction/model/stock_model.dart';
 import 'package:firebase_library/firebase_library.dart';
 import 'package:module_common/wrapper/shared_preferences_wrapper.dart';
 
+enum StockFilterType {
+  mostStock,
+  lowestStock,
+}
+
 class StockUsecase {
   final FirebaseLibrary firebaseLibrary;
   final SharedPreferencesWrapper sharedPreferencesWrapper;
@@ -14,10 +19,16 @@ class StockUsecase {
     required this.sharedPreferencesWrapper,
   });
 
-  Future<List<StockEntity>> getStockList() async {
+  Future<List<StockEntity>> getStockList({
+    required StockFilterType stockFilterType,
+  }) async {
     final collectionRef = firebaseLibrary.selfQuery(collectionName);
-    final querySnapshot =
-        await collectionRef.orderBy('total_pcs', descending: false).get();
+    final querySnapshot = await collectionRef
+        .orderBy(
+          'total_pcs',
+          descending: stockFilterType == StockFilterType.mostStock,
+        )
+        .get();
 
     final jsonList = querySnapshot.docs.map((doc) {
       final data = doc.data();
