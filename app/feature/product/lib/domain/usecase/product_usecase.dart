@@ -14,6 +14,7 @@ class ProductUsecase {
     required this.sharedPreferencesWrapper,
   });
 
+  // TODO(Melly): implement index and limit
   Future<List<ProductEntity>> getProductList({
     bool filterByUnsetPrice = false,
   }) async {

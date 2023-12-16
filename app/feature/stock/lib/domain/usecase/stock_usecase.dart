@@ -19,6 +19,7 @@ class StockUsecase {
     required this.sharedPreferencesWrapper,
   });
 
+  // TODO(Melly): implement index and limit
   Future<List<StockEntity>> getStockList({
     required StockFilterType stockFilterType,
     required String filterNameOrCodeValue,
