@@ -8,6 +8,7 @@ import 'package:ui_kit/theme/colors.dart';
 import 'package:ui_kit/ui/button/flat_button.dart';
 import 'package:ui_kit/ui/input_field/input_basic.dart';
 import 'package:ui_kit/utils/screen_utils.dart';
+import 'package:ui_kit/ui/dialog/confirmation_dialog.dart';
 
 class ProductDetailContent extends StatelessWidget {
   const ProductDetailContent({
@@ -71,7 +72,16 @@ class ProductDetailContent extends StatelessWidget {
                       ),
                       InkWell(
                         onTap: () {
-                          bloc.add(DeleteProductEvent(product));
+                          // TODO(Melly): move to strings class
+                          ConfirmationDialog(
+                            descriptionText: 'Hapus produk ini?',
+                            cancelText: 'No',
+                            confirmText: 'Yes',
+                            onConfirmed: () {
+                              Navigator.pop(context);
+                              bloc.add(DeleteProductEvent(product));
+                            },
+                          ).show(context);
                         },
                         child: Icon(
                           Icons.delete,
@@ -110,17 +120,27 @@ class ProductDetailContent extends StatelessWidget {
                   FlatButton(
                     title: ProductStrings.editButtonTitle.i18n(context),
                     onPressed: () {
-                      bloc.add(
-                        UpdateProductEvent(
-                          ProductEntity(
-                            id: product.id,
-                            code: product.code,
-                            storeId: product.storeId,
-                            name: name,
-                            saleNet: price.isEmpty ? null : int.parse(price),
-                          ),
-                        ),
-                      );
+                      // TODO(Melly): move to strings class
+                      ConfirmationDialog(
+                        descriptionText: 'Ubah produk ini?',
+                        cancelText: 'No',
+                        confirmText: 'Yes',
+                        onConfirmed: () {
+                          Navigator.pop(context);
+                          bloc.add(
+                            UpdateProductEvent(
+                              ProductEntity(
+                                id: product.id,
+                                code: product.code,
+                                storeId: product.storeId,
+                                name: name,
+                                saleNet:
+                                    price.isEmpty ? null : int.parse(price),
+                              ),
+                            ),
+                          );
+                        },
+                      ).show(context);
                     },
                     margin: EdgeInsets.zero,
                   ),
