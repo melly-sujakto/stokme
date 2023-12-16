@@ -27,6 +27,6 @@ abstract class Injector {
     ProductUsecase,
     [FirebaseLibrary, SharedPreferencesWrapper],
   )
-  @Register.singleton(ProductUsecase)
+  @Register.factory(ProductUsecase)
   void _configureUsecase();
 }

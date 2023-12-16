@@ -10,14 +10,6 @@ class _$Injector extends Injector {
   @override
   void _configureBloc() {
     final KiwiContainer container = KiwiContainer();
-    container.registerFactory((c) => ProductBloc(c<ProductUsecase>()));
-  }
-
-  @override
-  void _configureUsecase() {
-    final KiwiContainer container = KiwiContainer();
-    container.registerFactory((c) => ProductUsecase(
-        firebaseLibrary: c<FirebaseLibrary>(),
-        sharedPreferencesWrapper: c<SharedPreferencesWrapper>()));
+    container.registerFactory((c) => StockBloc());
   }
 }
