@@ -10,7 +10,7 @@ import 'package:module_common/presentation/bloc/base_bloc.dart';
 import 'package:module_common/presentation/bloc/language_bloc/language_bloc.dart';
 import 'package:ui_kit/common/constants/layout_dimen.dart';
 import 'package:ui_kit/theme/colors.dart';
-import 'package:ui_kit/ui/button/flat_button.dart';
+import 'package:ui_kit/ui/dialog/confirmation_dialog.dart';
 import 'package:ui_kit/ui/loading_indicator/circular_progres.dart';
 import 'package:ui_kit/utils/screen_utils.dart';
 
@@ -107,88 +107,15 @@ class MorePage extends StatelessWidget {
       iconPath: MoreAssets.logoutIcon,
       child: InkWell(
         onTap: () {
-          showDialog(
-            context: context,
-            barrierColor: CustomColors.black.withOpacity(0.2),
-            builder: (context) => Stack(
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  child: Container(),
-                ),
-                Center(
-                  child: Material(
-                    elevation: 2,
-                    borderRadius: BorderRadius.circular(
-                      LayoutDimen.dimen_10.w,
-                    ),
-                    child: Container(
-                      height: LayoutDimen.dimen_230.h,
-                      width: LayoutDimen.dimen_320.w,
-                      padding: EdgeInsets.all(LayoutDimen.dimen_28.w),
-                      decoration: BoxDecoration(
-                        color: CustomColors.white,
-                        borderRadius: BorderRadius.circular(
-                          LayoutDimen.dimen_10.w,
-                        ),
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Image.asset(
-                            MoreAssets.logoutDialogIcon,
-                            height: LayoutDimen.dimen_60.w,
-                            width: LayoutDimen.dimen_60.w,
-                            fit: BoxFit.fitHeight,
-                          ),
-                          SizedBox(
-                            height: LayoutDimen.dimen_8.h,
-                          ),
-                          Text(
-                            MoreStrings.logoutDialogDesc.i18n(context),
-                            style: TextStyle(
-                              fontSize: LayoutDimen.dimen_18.minSp,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          SizedBox(
-                            height: LayoutDimen.dimen_8.h,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              FlatButton(
-                                width: LayoutDimen.dimen_70.w,
-                                title: MoreStrings.no.i18n(context),
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                stretch: false,
-                                color: CustomColors.secondary.c90,
-                                margin: EdgeInsets.zero,
-                              ),
-                              FlatButton(
-                                width: LayoutDimen.dimen_70.w,
-                                title: MoreStrings.yes.i18n(context),
-                                onPressed: () {
-                                  Injector.resolve<MoreBloc>()
-                                      .add(LogoutEvent());
-                                },
-                                stretch: false,
-                                margin: EdgeInsets.zero,
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          );
+          ConfirmationDialog(
+            assetPath: MoreAssets.logoutDialogIcon,
+            descriptionText: MoreStrings.logoutDialogDesc.i18n(context),
+            cancelText: MoreStrings.no.i18n(context),
+            confirmText: MoreStrings.yes.i18n(context),
+            onConfirmed: () {
+              Injector.resolve<MoreBloc>().add(LogoutEvent());
+            },
+          ).show(context);
         },
         child: Row(
           children: [
