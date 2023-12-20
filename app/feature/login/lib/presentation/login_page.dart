@@ -132,7 +132,7 @@ class _LoginPageState extends State<LoginPage> {
                                       ),
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(50),
-                                        color: CustomColors.white,
+                                        color: CustomColors.whiteSmoke,
                                       ),
                                       child: DropdownButton(
                                         value: dropdownValue,
