@@ -13,3 +13,9 @@ final class GetProductListLoaded extends SaleState {
 
   GetProductListLoaded(this.products);
 }
+
+final class CalculationSuccess extends SaleState {
+  final SaleEntity saleEntity;
+
+  CalculationSuccess(this.saleEntity);
+}

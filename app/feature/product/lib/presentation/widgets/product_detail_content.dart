@@ -135,7 +135,7 @@ class ProductDetailContent extends StatelessWidget {
                                 storeId: product.storeId,
                                 name: name,
                                 saleNet:
-                                    price.isEmpty ? null : int.parse(price),
+                                    price.isEmpty ? null : double.parse(price),
                               ),
                             ),
                           );

@@ -1,4 +1,5 @@
 import 'package:data_abstraction/entity/product_entity.dart';
+import 'package:data_abstraction/entity/sale_entity.dart';
 import 'package:feature_transaction/presentation/journey/sale/bloc/sale_bloc.dart';
 import 'package:feature_transaction/presentation/journey/sale/sale_routes.dart';
 import 'package:feature_transaction/presentation/journey/sale/sales_review_page.dart';
@@ -26,7 +27,7 @@ class SalesInputPage extends StatefulWidget {
 }
 
 class _SalesInputPageState extends State<SalesInputPage> {
-  List<ProductEntity> recordedProducts = [];
+  List<SaleEntity> recordedProducts = [];
   List<ProductEntity> choiceProducts = [];
 
   @override
@@ -38,6 +39,9 @@ class _SalesInputPageState extends State<SalesInputPage> {
         listener: (context, state) {
           if (state is GetProductListLoaded) {
             choiceProducts = state.products;
+          }
+          if (state is CalculationSuccess) {
+            recordedProducts.add(state.saleEntity);
           }
         },
         builder: (context, state) => Stack(
@@ -159,9 +163,9 @@ class _SalesInputPageState extends State<SalesInputPage> {
         children: List.generate(
           recordedProducts.length,
           (index) => SaleProductCard(
-            product: recordedProducts[index],
+            product: recordedProducts[index].productEntity,
             orderNumber: index + 1,
-            totalPcs: 5,
+            totalPcs: recordedProducts[index].total,
             onDelete: () {
               setState(() {
                 recordedProducts.removeAt(index);

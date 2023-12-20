@@ -12,14 +12,14 @@ class SaleProductCard extends StatelessWidget {
     required this.orderNumber,
     required this.totalPcs,
     this.onDelete,
-    this.useTotalNet = false,
+    this.totalNet,
   }) : super(key: key);
 
   final ProductEntity product;
   final int orderNumber;
   final int totalPcs;
   final void Function()? onDelete;
-  final bool useTotalNet;
+  final double? totalNet;
 
   @override
   Widget build(BuildContext context) {
@@ -73,11 +73,9 @@ class SaleProductCard extends StatelessWidget {
                   SizedBox(
                     height: LayoutDimen.dimen_2.h,
                   ),
-                  if (useTotalNet)
+                  if (totalNet != null)
                     Text(
-                      ((product.saleNet ?? 0) * totalPcs)
-                          .toString()
-                          .toRupiahCurrency(),
+                      totalNet.toString().toRupiahCurrency(),
                       style: TextStyle(
                         fontSize: LayoutDimen.dimen_16.minSp,
                         fontWeight: FontWeight.bold,

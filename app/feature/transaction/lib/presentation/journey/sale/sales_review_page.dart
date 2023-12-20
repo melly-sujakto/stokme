@@ -1,4 +1,4 @@
-import 'package:data_abstraction/entity/product_entity.dart';
+import 'package:data_abstraction/entity/sale_entity.dart';
 import 'package:feature_transaction/common/injector/injector.dart';
 import 'package:feature_transaction/domain/navigation/interaction_navigation.dart';
 import 'package:feature_transaction/presentation/journey/sale/sale_routes.dart';
@@ -12,9 +12,9 @@ import 'package:ui_kit/ui/button/flat_button.dart';
 import 'package:ui_kit/utils/screen_utils.dart';
 
 class SalesReviewArgument {
-  final List<ProductEntity> products;
+  final List<SaleEntity> saleEntityList;
 
-  SalesReviewArgument(this.products);
+  SalesReviewArgument(this.saleEntityList);
 }
 
 class SalesReviewPage extends StatefulWidget {
@@ -47,13 +47,17 @@ class _SalesReviewPageState extends State<SalesReviewPage> {
               ),
               child: Column(
                 children: List.generate(
-                  widget.salesReviewArgument.products.length,
-                  (index) => SaleProductCard(
-                    product: widget.salesReviewArgument.products[index],
-                    orderNumber: index + 1,
-                    totalPcs: 5,
-                    useTotalNet: true,
-                  ),
+                  widget.salesReviewArgument.saleEntityList.length,
+                  (index) {
+                    final saleEntity =
+                        widget.salesReviewArgument.saleEntityList[index];
+                    return SaleProductCard(
+                      product: saleEntity.productEntity,
+                      orderNumber: index + 1,
+                      totalPcs: saleEntity.total,
+                      totalNet: saleEntity.totalNet,
+                    );
+                  },
                 ),
               ),
             ),

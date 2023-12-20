@@ -110,8 +110,19 @@ class SaleProductModalContent extends StatelessWidget {
                 FlatButton(
                   title: 'Masukan',
                   onPressed: () {
-                    // ignore: avoid_print
-                    print('harga: $price, total: $total');
+                    bloc.add(
+                      CalculatePriceProductEvent(
+                        product: ProductEntity(
+                          id: product.id,
+                          code: product.code,
+                          name: product.name,
+                          storeId: product.storeId,
+                          saleNet: double.parse(price),
+                        ),
+                        total: total,
+                      ),
+                    );
+                    Navigator.pop(context);
                   },
                   margin: EdgeInsets.zero,
                 ),

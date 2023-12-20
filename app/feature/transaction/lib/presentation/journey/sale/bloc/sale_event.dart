@@ -8,3 +8,13 @@ class GetProductListEvent extends SaleEvent {
     required this.filterValue,
   });
 }
+
+class CalculatePriceProductEvent extends SaleEvent {
+  final ProductEntity product;
+  final int total;
+
+  CalculatePriceProductEvent({
+    required this.product,
+    required this.total,
+  });
+}
