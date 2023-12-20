@@ -14,7 +14,9 @@ class ProductModel extends ProductEntity {
       id: json['id'],
       code: json['code'],
       name: json['name'],
-      saleNet: json['sale_net'],
+      saleNet: json['sale_net'] is int
+          ? json['sale_net'].toDouble()
+          : json['sale_net'],
       storeId: json['store_id'],
     );
   }

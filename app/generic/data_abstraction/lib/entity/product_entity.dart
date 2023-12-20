@@ -2,7 +2,7 @@ class ProductEntity {
   final String id;
   final String code;
   final String name;
-  final int? saleNet;
+  final double? saleNet;
   final String storeId;
 
   ProductEntity({
