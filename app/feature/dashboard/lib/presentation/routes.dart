@@ -14,7 +14,8 @@ abstract class Routes {
       initial: (context) => MultiBlocProvider(
             providers: [
               BlocProvider.value(
-                value: Injector.resolve<HomeBloc>()..add(GetFeaturesEvent()),
+                value: Injector.resolve<HomeBloc>()
+                  ..add(GetFeaturesEvent(context)),
               ),
               BlocProvider.value(
                 value: Injector.resolve<MoreBloc>(),

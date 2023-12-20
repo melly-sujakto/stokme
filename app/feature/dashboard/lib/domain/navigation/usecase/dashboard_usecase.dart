@@ -57,13 +57,21 @@ class DashboardUsecase {
       id: roleId,
     );
 
-    json!['id'] = roleId;
-
-    return RoleModel.fromJson(json);
+    return RoleModel.fromJson(json!);
   }
 
   Future<List<Feature>> getAvailableFeatures() async {
-    // TODO(Melly): generate features by role
-    return <Feature>[];
+    final prefs = await sharedPreferencesWrapper.getPrefs();
+    final roleId = prefs.getInt(GenericConstants.roleId);
+    switch (roleId) {
+      case 1:
+        return Feature.values;
+      case 2:
+        return [Feature.sale];
+      case 3:
+        return [Feature.stockIn];
+      default:
+        return <Feature>[];
+    }
   }
 }
