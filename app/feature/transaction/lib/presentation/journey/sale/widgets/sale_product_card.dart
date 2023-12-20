@@ -5,8 +5,8 @@ import 'package:ui_kit/extensions/string_extension.dart';
 import 'package:ui_kit/theme/colors.dart';
 import 'package:ui_kit/utils/screen_utils.dart';
 
-class SalesProductCard extends StatelessWidget {
-  const SalesProductCard({
+class SaleProductCard extends StatelessWidget {
+  const SaleProductCard({
     Key? key,
     required this.product,
     required this.orderNumber,
