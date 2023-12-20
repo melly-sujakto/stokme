@@ -12,6 +12,8 @@ dependencies:
   bluetooth_print: ^4.3.0
   data_abstraction:
     path: ../../generic/data_abstraction
+  firebase_library:
+    path: ../../library/firebase_library
   flutter:
     sdk: flutter
   library_injection:

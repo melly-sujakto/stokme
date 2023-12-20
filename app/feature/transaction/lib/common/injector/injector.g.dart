@@ -7,17 +7,17 @@ part of 'injector.dart';
 // **************************************************************************
 
 class _$Injector extends Injector {
-  // @override
-  // void _configureBloc() {
-  //   final KiwiContainer container = KiwiContainer();
-  //   container.registerFactory((c) => ProductBloc(c<ProductUsecase>()));
-  // }
+  @override
+  void _configureBloc() {
+    final KiwiContainer container = KiwiContainer();
+    container.registerFactory((c) => SaleBloc(c<SaleUsecase>()));
+  }
 
-  // @override
-  // void _configureUsecase() {
-  //   final KiwiContainer container = KiwiContainer();
-  //   container.registerSingleton((c) => ProductUsecase(
-  //       firebaseLibrary: c<FirebaseLibrary>(),
-  //       sharedPreferencesWrapper: c<SharedPreferencesWrapper>()));
-  // }
+  @override
+  void _configureUsecase() {
+    final KiwiContainer container = KiwiContainer();
+    container.registerFactory((c) => SaleUsecase(
+        firebaseLibrary: c<FirebaseLibrary>(),
+        sharedPreferencesWrapper: c<SharedPreferencesWrapper>()));
+  }
 }
