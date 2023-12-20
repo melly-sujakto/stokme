@@ -16,15 +16,19 @@ abstract class ScannerFinderConstants {
 
 class ScannerFinder extends StatefulWidget {
   const ScannerFinder({
-    super.key,
+    Key? key,
     required this.labelText,
     required this.onChanged,
     required this.onScan,
-  });
+    this.optionList = const [],
+    this.onSelected,
+  }) : super(key: key);
 
   final String labelText;
   final void Function(String) onChanged;
   final void Function(String) onScan;
+  final List<Widget> optionList;
+  final void Function(int)? onSelected;
 
   @override
   State<ScannerFinder> createState() => _ScannerFinderState();
@@ -89,14 +93,56 @@ class _ScannerFinderState extends State<ScannerFinder> {
           ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Flexible(
               flex: 6,
-              child: InputBasic(
-                controller: textEditController,
-                labelText: widget.labelText,
-                onChanged: widget.onChanged,
-                margin: EdgeInsets.zero,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  InputBasic(
+                    controller: textEditController,
+                    labelText: widget.labelText,
+                    onChanged: widget.onChanged,
+                    margin: EdgeInsets.zero,
+                  ),
+                  if (widget.optionList.isNotEmpty)
+                    Material(
+                      elevation: 2,
+                      borderRadius: BorderRadius.circular(
+                        LayoutDimen.dimen_10.w,
+                      ),
+                      color: CustomColors.white,
+                      child: Container(
+                        padding: EdgeInsets.symmetric(
+                          vertical: LayoutDimen.dimen_16.h,
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: List.generate(
+                            widget.optionList.length,
+                            (index) => InkWell(
+                              onTap: () {
+                                if (widget.onSelected != null) {
+                                  widget.onSelected!(index);
+                                }
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  border: Border(
+                                    bottom: BorderSide(
+                                      color: CustomColors.neutral.c80,
+                                    ),
+                                  ),
+                                ),
+                                child: widget.optionList[index],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                ],
               ),
             ),
             SizedBox(
@@ -110,8 +156,10 @@ class _ScannerFinderState extends State<ScannerFinder> {
                   });
                 },
                 child: Padding(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: LayoutDimen.dimen_8.w),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: LayoutDimen.dimen_8.w,
+                    vertical: LayoutDimen.dimen_10.h,
+                  ),
                   child: Image.asset(
                     scannerActive
                         ? ScannerFinderConstants.closeScannerAsset
