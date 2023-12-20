@@ -19,6 +19,7 @@ class MoreBloc extends BaseBloc<MoreEvent, MoreState> {
     emit,
   ) async {
     try {
+      // TODO(melly): use usecase and clear shared pref
       await firebaseLibrary.auth.signOut();
       emit(LogoutSuccess());
     } catch (e) {
