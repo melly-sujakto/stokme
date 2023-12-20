@@ -6,9 +6,9 @@ import 'package:module_common/i18n/i18n_extension.dart';
 import 'package:ui_kit/common/constants/layout_dimen.dart';
 import 'package:ui_kit/theme/colors.dart';
 import 'package:ui_kit/ui/button/flat_button.dart';
+import 'package:ui_kit/ui/dialog/confirmation_dialog.dart';
 import 'package:ui_kit/ui/input_field/input_basic.dart';
 import 'package:ui_kit/utils/screen_utils.dart';
-import 'package:ui_kit/ui/dialog/confirmation_dialog.dart';
 
 class ProductDetailContent extends StatelessWidget {
   const ProductDetailContent({
