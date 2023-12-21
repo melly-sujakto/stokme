@@ -1,6 +1,7 @@
 import 'package:data_abstraction/entity/product_entity.dart';
 import 'package:data_abstraction/model/product_model.dart';
 import 'package:firebase_library/firebase_library.dart';
+import 'package:module_common/common/constant/generic_constants.dart';
 import 'package:module_common/wrapper/shared_preferences_wrapper.dart';
 
 class SaleUsecase {
@@ -31,5 +32,10 @@ class SaleUsecase {
     }).toList();
 
     return jsonList.map(ProductModel.fromJson).toList();
+  }
+
+  Future<String> getUserEmail() async {
+    final pref = await sharedPreferencesWrapper.getPrefs();
+    return pref.getString(GenericConstants.email)!;
   }
 }
