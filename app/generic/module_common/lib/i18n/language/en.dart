@@ -1,38 +1,27 @@
-// ignore_for_file: lines_longer_than_80_chars
+import 'package:module_common/i18n/language/en/en_common_translations.dart'
+    as common;
+import 'package:module_common/i18n/language/en/en_dashboard_translations.dart'
+    as dashboard;
+import 'package:module_common/i18n/language/en/en_home_translations.dart'
+    as home;
+import 'package:module_common/i18n/language/en/en_login_translations.dart'
+    as login;
+import 'package:module_common/i18n/language/en/en_more_translations.dart'
+    as more;
+import 'package:module_common/i18n/language/en/en_product_translations.dart'
+    as product;
+import 'package:module_common/i18n/language/en/en_profile_translations.dart'
+    as profile;
+import 'package:module_common/i18n/language/en/en_sale_translations.dart'
+    as sale;
 
 final Map<String, String> translations = {
-  'common.title.yes': 'Yes',
-  'common.title.no': 'No',
-  'home.button.sale': 'Sale',
-  'home.button.stockIn': 'Stock In',
-  'home.button.product': 'Products',
-  'home.button.stock': 'Stock',
-  'home.button.transaction': 'Transactions',
-  'home.greeting.1': 'Good morning,',
-  'home.greeting.2': 'Good afternoon,',
-  'home.greeting.3': 'Good afternoon,',
-  'home.greeting.4': 'Good evening,',
-  'profile.title.myProfile': 'My Profile',
-  'profile.card.company': 'Company',
-  'profile.card.position': 'Position',
-  'dashboard.bottomNavBar.home': 'Home',
-  'dashboard.bottomNavBar.profile': 'Profile',
-  'dashboard.bottomNavBar.more': 'More',
-  'login.inputField.email': 'Email',
-  'login.inputField.password': 'Password',
-  'login.button.login': 'Login',
-  'login.snackbar.errorMessage': 'Email and Password is incorrect',
-  'more.item.logout': 'Logout',
-  'more.dialog.logoutDialogDesc': 'Logout from App?',
-  'product.appBar.title': 'Products',
-  'product.detail.nameLabelText': 'Name',
-  'product.detail.priceLabelText': 'Price (optional)',
-  'product.detail.buttonEdit': 'Edit',
-  'product.scanner.label': 'Search by name/code',
-  'product.tabItem.all': 'All',
-  'product.tabItem.unsetPrice': 'Unsetted default price',
-  'product.snackbar.updateSuccess': 'Product has been successfully updated',
-  'product.snackbar.updateFailed': 'Product failed to update, please try again',
-  'product.snackbar.deleteSuccess': 'Product has been successfully deleted',
-  'product.snackbar.deleteFailed': 'Product failed to delete, please try again',
+  ...common.translations,
+  ...dashboard.translations,
+  ...home.translations,
+  ...login.translations,
+  ...more.translations,
+  ...product.translations,
+  ...profile.translations,
+  ...sale.translations,
 };

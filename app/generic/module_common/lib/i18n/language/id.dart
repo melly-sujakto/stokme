@@ -1,38 +1,27 @@
-// ignore_for_file: lines_longer_than_80_chars
+import 'package:module_common/i18n/language/id/id_common_translations.dart'
+    as common;
+import 'package:module_common/i18n/language/id/id_dashboard_translations.dart'
+    as dashboard;
+import 'package:module_common/i18n/language/id/id_home_translations.dart'
+    as home;
+import 'package:module_common/i18n/language/id/id_login_translations.dart'
+    as login;
+import 'package:module_common/i18n/language/id/id_more_translations.dart'
+    as more;
+import 'package:module_common/i18n/language/id/id_product_translations.dart'
+    as product;
+import 'package:module_common/i18n/language/id/id_profile_translations.dart'
+    as profile;
+import 'package:module_common/i18n/language/id/id_sale_translations.dart'
+    as sale;
 
 final Map<String, String> translations = {
-  'common.title.yes': 'Ya',
-  'common.title.no': 'Tidak',
-  'home.button.sale': 'Penjualan',
-  'home.button.stockIn': 'Stok Masuk',
-  'home.button.product': 'Produk dan Harga',
-  'home.button.stock': 'Stok Produk',
-  'home.button.transaction': 'Transaksi',
-  'home.greeting.1': 'Selamat pagi,',
-  'home.greeting.2': 'Selamat siang,',
-  'home.greeting.3': 'Selamat sore,',
-  'home.greeting.4': 'Selamat malam,',
-  'profile.title.myProfile': 'Profil Saya',
-  'profile.card.company': 'Perusahaan',
-  'profile.card.position': 'Posisi',
-  'dashboard.bottomNavBar.home': 'Home',
-  'dashboard.bottomNavBar.profile': 'Profil',
-  'dashboard.bottomNavBar.more': 'Lainnya',
-  'login.inputField.email': 'Email',
-  'login.inputField.password': 'Kata sandi',
-  'login.button.login': 'Masuk',
-  'login.snackbar.errorMessage': 'Email dan Password tidak sesuai',
-  'more.item.logout': 'Keluar',
-  'more.dialog.logoutDialogDesc': 'Keluar dari aplikasi?',
-  'product.appBar.title': 'Produk dan Harga',
-  'product.detail.nameLabelText': 'Nama',
-  'product.detail.priceLabelText': 'Harga jual (opsional)',
-  'product.detail.buttonEdit': 'Ubah',
-  'product.scanner.label': 'Cari nama/kode',
-  'product.tabItem.all': 'Semua',
-  'product.tabItem.unsetPrice': 'Belum ada harga default',
-  'product.snackbar.updateSuccess': 'Produk berhasil diubah',
-  'product.snackbar.updateFailed': 'Produk gagal diubah, silakan coba lagi',
-  'product.snackbar.deleteSuccess': 'Produk berhasil dihapus',
-  'product.snackbar.deleteFailed': 'Produk gagal dihapus, silakan coba lagi',
+  ...common.translations,
+  ...dashboard.translations,
+  ...home.translations,
+  ...login.translations,
+  ...more.translations,
+  ...product.translations,
+  ...profile.translations,
+  ...sale.translations,
 };
