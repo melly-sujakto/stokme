@@ -1,8 +1,8 @@
 import 'package:feature_transaction/common/injector/injector.dart';
 import 'package:feature_transaction/presentation/journey/sale/bloc/sale_bloc.dart';
-import 'package:feature_transaction/presentation/journey/sale/sale_input_page.dart';
-import 'package:feature_transaction/presentation/journey/sale/sale_result_page.dart';
-import 'package:feature_transaction/presentation/journey/sale/sale_review_page.dart';
+import 'package:feature_transaction/presentation/journey/sale/screens/sale_input_page.dart';
+import 'package:feature_transaction/presentation/journey/sale/screens/sale_result_page.dart';
+import 'package:feature_transaction/presentation/journey/sale/screens/sale_review_page.dart';
 import 'package:flutter/material.dart';
 import 'package:module_common/presentation/bloc/base_bloc.dart';
 

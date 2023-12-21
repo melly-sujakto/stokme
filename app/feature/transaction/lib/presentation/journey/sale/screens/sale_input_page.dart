@@ -1,8 +1,8 @@
 import 'package:data_abstraction/entity/product_entity.dart';
 import 'package:data_abstraction/entity/sale_entity.dart';
 import 'package:feature_transaction/presentation/journey/sale/bloc/sale_bloc.dart';
-import 'package:feature_transaction/presentation/journey/sale/sale_review_page.dart';
 import 'package:feature_transaction/presentation/journey/sale/sale_routes.dart';
+import 'package:feature_transaction/presentation/journey/sale/screens/sale_review_page.dart';
 import 'package:feature_transaction/presentation/journey/sale/widgets/sale_product_card.dart';
 import 'package:feature_transaction/presentation/journey/sale/widgets/sale_product_modal_content.dart';
 import 'package:flutter/material.dart';
