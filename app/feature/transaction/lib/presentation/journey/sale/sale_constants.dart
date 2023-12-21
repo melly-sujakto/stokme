@@ -1,20 +1,20 @@
 abstract class SaleStrings {
-  static const inputPageTitle = 'Penjualan';
-  static const code = 'Kode';
-  static const continueBtnTitle = 'Lanjut';
-  static const successResultText = 'Penjualan berhasil dicatat';
-  static const cashier = 'Kasir';
-  static const transactionDate = 'Tanggal Transaksi';
-  static const transactionTime = 'Waktu';
-  static const printReceipt = 'Cetak Struk';
-  static const done = 'Selesai';
-  static const saleReviewTitle = 'Review Penjualan';
-  static const totalPrice = 'Total';
-  static const process = 'Proses';
-  static const pcs = 'pcs';
-  static const price = 'Harga';
-  static const totalPcs = 'Jumlah';
-  static const input = 'Masukan';
+  static const inputPageTitle = 'sale.title.saleInput';
+  static const code = 'sale.inputBasic.code';
+  static const continueBtnTitle = 'sale.button.continueTitle';
+  static const successResultText = 'sale.snackbard.successResultText';
+  static const cashier = 'sale.receipt.cashier';
+  static const transactionDate = 'sale.receipt.transactionDate';
+  static const transactionTime = 'sale.receipt.transactionTime';
+  static const printReceipt = 'sale.receipt.printReceipt';
+  static const done = 'sale.button.done';
+  static const saleReviewTitle = 'sale.title.saleReview';
+  static const totalPrice = 'sale.review.totalPrice';
+  static const process = 'sale.button.process';
+  static const pcs = 'sale.review.pcs';
+  static const price = 'sale.review.price';
+  static const totalPcs = 'sale.review.totalPcs';
+  static const input = 'sale.button.input';
 }
 
 abstract class SaleAssets {
