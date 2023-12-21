@@ -20,4 +20,5 @@ abstract class SaleStrings {
 abstract class SaleAssets {
   static const successResultImage = 'assets/images/success_result.png';
   static const priceTagIcon = 'assets/icons/price_tag_icon.png';
+  static const pencilEditIcon = 'assets/icons/pencil_icon.png';
 }
