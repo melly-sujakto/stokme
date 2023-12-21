@@ -19,3 +19,13 @@ final class CalculationSuccess extends SaleState {
 
   CalculationSuccess(this.saleEntity);
 }
+
+final class CalculationTotalPriceSuccess extends SaleState {
+  final List<SaleEntity> saleEntityList;
+  final ReceiptEntity receiptEntity;
+
+  CalculationTotalPriceSuccess({
+    required this.saleEntityList,
+    required this.receiptEntity,
+  });
+}

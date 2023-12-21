@@ -18,3 +18,9 @@ class CalculatePriceProductEvent extends SaleEvent {
     required this.total,
   });
 }
+
+class CalculateTotalPriceEvent extends SaleEvent {
+  final List<SaleEntity> saleEntityList;
+
+  CalculateTotalPriceEvent(this.saleEntityList);
+}

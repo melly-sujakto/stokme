@@ -142,7 +142,10 @@ class _SaleInputPageState extends State<SaleInputPage> {
                       Navigator.pushNamed(
                         context,
                         SaleRoutes.salesReview,
-                        arguments: SaleReviewArgument(recordedProducts),
+                        arguments: SaleReviewArgument(
+                          saleEntityList: recordedProducts,
+                          saleBloc: widget.saleBloc,
+                        ),
                       );
                     },
                   ),

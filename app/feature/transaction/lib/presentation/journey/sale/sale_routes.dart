@@ -24,8 +24,11 @@ abstract class SaleRoutes {
     salesReview: (ctx) {
       final argument =
           ModalRoute.of(ctx)!.settings.arguments as SaleReviewArgument;
-      return SaleReviewPage(
-        salesReviewArgument: argument,
+      return BlocProvider.value(
+        value: argument.saleBloc,
+        child: SaleReviewPage(
+          salesReviewArgument: argument,
+        ),
       );
     },
     salesResult: (context) => const SaleResultPage(),
