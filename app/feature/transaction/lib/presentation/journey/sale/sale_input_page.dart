@@ -1,8 +1,8 @@
 import 'package:data_abstraction/entity/product_entity.dart';
 import 'package:data_abstraction/entity/sale_entity.dart';
 import 'package:feature_transaction/presentation/journey/sale/bloc/sale_bloc.dart';
+import 'package:feature_transaction/presentation/journey/sale/sale_review_page.dart';
 import 'package:feature_transaction/presentation/journey/sale/sale_routes.dart';
-import 'package:feature_transaction/presentation/journey/sale/sales_review_page.dart';
 import 'package:feature_transaction/presentation/journey/sale/widgets/sale_product_card.dart';
 import 'package:feature_transaction/presentation/journey/sale/widgets/sale_product_modal_content.dart';
 import 'package:flutter/material.dart';
@@ -14,8 +14,8 @@ import 'package:ui_kit/ui/button/flat_button.dart';
 import 'package:ui_kit/ui/scanner/scanner_finder.dart';
 import 'package:ui_kit/utils/screen_utils.dart';
 
-class SalesInputPage extends StatefulWidget {
-  const SalesInputPage({
+class SaleInputPage extends StatefulWidget {
+  const SaleInputPage({
     Key? key,
     required this.saleBloc,
   }) : super(key: key);
@@ -23,10 +23,10 @@ class SalesInputPage extends StatefulWidget {
   final SaleBloc saleBloc;
 
   @override
-  State<SalesInputPage> createState() => _SalesInputPageState();
+  State<SaleInputPage> createState() => _SaleInputPageState();
 }
 
-class _SalesInputPageState extends State<SalesInputPage> {
+class _SaleInputPageState extends State<SaleInputPage> {
   List<SaleEntity> recordedProducts = [];
   List<ProductEntity> choiceProducts = [];
 
@@ -137,7 +137,7 @@ class _SalesInputPageState extends State<SalesInputPage> {
                       Navigator.pushNamed(
                         context,
                         SaleRoutes.salesReview,
-                        arguments: SalesReviewArgument(recordedProducts),
+                        arguments: SaleReviewArgument(recordedProducts),
                       );
                     },
                   ),

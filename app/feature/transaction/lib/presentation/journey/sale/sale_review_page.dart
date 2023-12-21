@@ -11,25 +11,25 @@ import 'package:ui_kit/ui/app_bar/app_bar_with_title_only.dart';
 import 'package:ui_kit/ui/button/flat_button.dart';
 import 'package:ui_kit/utils/screen_utils.dart';
 
-class SalesReviewArgument {
+class SaleReviewArgument {
   final List<SaleEntity> saleEntityList;
 
-  SalesReviewArgument(this.saleEntityList);
+  SaleReviewArgument(this.saleEntityList);
 }
 
-class SalesReviewPage extends StatefulWidget {
-  const SalesReviewPage({
+class SaleReviewPage extends StatefulWidget {
+  const SaleReviewPage({
     Key? key,
     required this.salesReviewArgument,
   }) : super(key: key);
 
-  final SalesReviewArgument salesReviewArgument;
+  final SaleReviewArgument salesReviewArgument;
 
   @override
-  State<SalesReviewPage> createState() => _SalesReviewPageState();
+  State<SaleReviewPage> createState() => _SaleReviewPageState();
 }
 
-class _SalesReviewPageState extends State<SalesReviewPage> {
+class _SaleReviewPageState extends State<SaleReviewPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

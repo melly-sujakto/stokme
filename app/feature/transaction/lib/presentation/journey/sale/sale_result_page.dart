@@ -12,16 +12,16 @@ import 'package:ui_kit/theme/colors.dart';
 import 'package:ui_kit/ui/button/flat_button.dart';
 import 'package:ui_kit/utils/screen_utils.dart';
 
-class SalesResultPage extends StatefulWidget {
-  const SalesResultPage({
+class SaleResultPage extends StatefulWidget {
+  const SaleResultPage({
     Key? key,
   }) : super(key: key);
 
   @override
-  State<SalesResultPage> createState() => _SalesResultPageState();
+  State<SaleResultPage> createState() => _SaleResultPageState();
 }
 
-class _SalesResultPageState extends State<SalesResultPage> {
+class _SaleResultPageState extends State<SaleResultPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
