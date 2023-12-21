@@ -66,6 +66,7 @@ class _SaleInputPageState extends State<SaleInputPage> {
                   ScannerFinder(
                     labelText: SaleStrings.code.i18n(context),
                     textEditController: scannerTextEditController,
+                    keyboardType: TextInputType.number,
                     optionList: choiceProducts
                         .map(
                           (e) => Padding(

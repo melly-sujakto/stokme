@@ -23,6 +23,7 @@ class ScannerFinder extends StatefulWidget {
     this.optionList = const [],
     this.onSelected,
     this.textEditController,
+    this.keyboardType,
   }) : super(key: key);
 
   final String labelText;
@@ -31,6 +32,7 @@ class ScannerFinder extends StatefulWidget {
   final List<Widget> optionList;
   final void Function(int)? onSelected;
   final TextEditingController? textEditController;
+  final TextInputType? keyboardType;
   @override
   State<ScannerFinder> createState() => _ScannerFinderState();
 }
@@ -118,6 +120,7 @@ class _ScannerFinderState extends State<ScannerFinder> {
                     labelText: widget.labelText,
                     onChanged: widget.onChanged,
                     margin: EdgeInsets.zero,
+                    keyboardType: widget.keyboardType,
                   ),
                   if (widget.optionList.isNotEmpty)
                     Material(
