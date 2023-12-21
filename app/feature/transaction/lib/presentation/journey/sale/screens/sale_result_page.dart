@@ -3,9 +3,11 @@ import 'package:bluetooth_print/bluetooth_print_model.dart';
 import 'package:data_abstraction/entity/product_entity.dart';
 import 'package:feature_transaction/common/injector/injector.dart';
 import 'package:feature_transaction/domain/navigation/interaction_navigation.dart';
+import 'package:feature_transaction/presentation/journey/sale/sale_constants.dart';
 import 'package:feature_transaction/presentation/journey/sale/sale_routes.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:module_common/i18n/i18n_extension.dart';
 import 'package:ui_kit/common/constants/layout_dimen.dart';
 import 'package:ui_kit/extensions/string_extension.dart';
 import 'package:ui_kit/theme/colors.dart';
@@ -39,7 +41,7 @@ class _SaleResultPageState extends State<SaleResultPage> {
               child: Column(
                 children: [
                   Image.asset(
-                    'assets/images/success_result.png',
+                    SaleAssets.successResultImage,
                     width: LayoutDimen.dimen_94.w,
                   ),
                   Padding(
@@ -47,7 +49,7 @@ class _SaleResultPageState extends State<SaleResultPage> {
                       vertical: LayoutDimen.dimen_32.h,
                     ),
                     child: Text(
-                      'Penjualan berhasil dicatat',
+                      SaleStrings.successResultText.i18n(context),
                       style: TextStyle(
                         fontSize: LayoutDimen.dimen_20.minSp,
                         fontWeight: FontWeight.bold,
@@ -74,7 +76,7 @@ class _SaleResultPageState extends State<SaleResultPage> {
                               Column(
                                 children: [
                                   Image.asset(
-                                    'assets/icons/price_tag_icon.png',
+                                    SaleAssets.priceTagIcon,
                                     width: LayoutDimen.dimen_45.w,
                                   ),
                                 ],
@@ -84,13 +86,14 @@ class _SaleResultPageState extends State<SaleResultPage> {
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
                                   Text(
-                                    'Kasir',
+                                    SaleStrings.cashier.i18n(context),
                                     style: TextStyle(
                                       fontSize: LayoutDimen.dimen_18.minSp,
                                       fontWeight: FontWeight.w200,
                                     ),
                                   ),
                                   Text(
+                                    // TODO(melly): get from state
                                     'Melly Sujakto',
                                     style: TextStyle(
                                       fontSize: LayoutDimen.dimen_18.minSp,
@@ -114,6 +117,7 @@ class _SaleResultPageState extends State<SaleResultPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
+                                // TODO(melly): get from state
                                 '20000'.toRupiahCurrency(),
                                 style: TextStyle(
                                   fontSize: LayoutDimen.dimen_24.minSp,
@@ -122,7 +126,7 @@ class _SaleResultPageState extends State<SaleResultPage> {
                               ),
                               Padding(
                                 padding: EdgeInsets.all(LayoutDimen.dimen_8.w),
-                                child: const Row(
+                                child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
@@ -130,23 +134,31 @@ class _SaleResultPageState extends State<SaleResultPage> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Text('Tanggal Transaksi'),
-                                        Text('Senin, 6 November 2023'),
+                                        Text(
+                                          SaleStrings.transactionDate
+                                              .i18n(context),
+                                        ),
+                                        // TODO(melly): get from state
+                                        const Text('Senin, 6 November 2023'),
                                       ],
                                     ),
                                     Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.end,
                                       children: [
-                                        Text('Waktu'),
-                                        Text('21:22'),
+                                        Text(
+                                          SaleStrings.transactionTime
+                                              .i18n(context),
+                                        ),
+                                        // TODO(melly): get from state
+                                        const Text('21:22'),
                                       ],
                                     ),
                                   ],
                                 ),
                               ),
                               FlatButton(
-                                title: 'Cetak Struk',
+                                title: SaleStrings.printReceipt.i18n(context),
                                 onPressed: () async {
                                   final printManager = PrintSomeText();
                                   await printManager.scan();
@@ -181,7 +193,7 @@ class _SaleResultPageState extends State<SaleResultPage> {
                     LayoutDimen.dimen_32.h,
                   ),
                   child: FlatButton(
-                    title: 'Selesai',
+                    title: SaleStrings.done.i18n(context),
                     onPressed: () {
                       Injector.resolve<TransactionInteractionNavigation>()
                           .navigateToDashboardFromTransaction(context);
@@ -334,6 +346,7 @@ class PrintSomeText {
     });
 
     final List<LineText> list = [
+      // TODO(melly): get from state
       LineText(
         type: LineText.TYPE_TEXT,
         content: 'Toko Adi Jaya Sembako',

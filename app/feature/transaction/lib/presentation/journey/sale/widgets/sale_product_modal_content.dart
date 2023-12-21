@@ -1,6 +1,8 @@
 import 'package:data_abstraction/entity/product_entity.dart';
 import 'package:feature_transaction/presentation/journey/sale/bloc/sale_bloc.dart';
+import 'package:feature_transaction/presentation/journey/sale/sale_constants.dart';
 import 'package:flutter/material.dart';
+import 'package:module_common/i18n/i18n_extension.dart';
 import 'package:ui_kit/common/constants/layout_dimen.dart';
 import 'package:ui_kit/theme/colors.dart';
 import 'package:ui_kit/ui/button/flat_button.dart';
@@ -82,7 +84,7 @@ class SaleProductModalContent extends StatelessWidget {
                 InputBasic(
                   controller: priceTextEditController,
                   keyboardType: TextInputType.number,
-                  labelText: 'Harga',
+                  labelText: SaleStrings.price.i18n(context),
                   margin: EdgeInsets.zero,
                   onChanged: (value) {
                     price = value;
@@ -94,7 +96,7 @@ class SaleProductModalContent extends StatelessWidget {
                 InputBasic(
                   controller: totalTextEditController,
                   keyboardType: TextInputType.number,
-                  labelText: 'Jumlah',
+                  labelText: SaleStrings.totalPcs.i18n(context),
                   margin: EdgeInsets.zero,
                   onChanged: (value) {
                     if (value.isEmpty) {
@@ -108,7 +110,7 @@ class SaleProductModalContent extends StatelessWidget {
                   height: LayoutDimen.dimen_18.h,
                 ),
                 FlatButton(
-                  title: 'Masukan',
+                  title: SaleStrings.input.i18n(context),
                   onPressed: () {
                     bloc.add(
                       CalculatePriceProductEvent(

@@ -1,11 +1,13 @@
 import 'package:data_abstraction/entity/product_entity.dart';
 import 'package:data_abstraction/entity/sale_entity.dart';
 import 'package:feature_transaction/presentation/journey/sale/bloc/sale_bloc.dart';
+import 'package:feature_transaction/presentation/journey/sale/sale_constants.dart';
 import 'package:feature_transaction/presentation/journey/sale/sale_routes.dart';
 import 'package:feature_transaction/presentation/journey/sale/screens/sale_review_page.dart';
 import 'package:feature_transaction/presentation/journey/sale/widgets/sale_product_card.dart';
 import 'package:feature_transaction/presentation/journey/sale/widgets/sale_product_modal_content.dart';
 import 'package:flutter/material.dart';
+import 'package:module_common/i18n/i18n_extension.dart';
 import 'package:module_common/presentation/bloc/base_bloc.dart';
 import 'package:ui_kit/common/constants/layout_dimen.dart';
 import 'package:ui_kit/theme/colors.dart';
@@ -36,7 +38,9 @@ class _SaleInputPageState extends State<SaleInputPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: CustomColors.neutral.c95,
-      appBar: const AppBarWithTitleOnly(appBarTitle: 'Penjualan'),
+      appBar: AppBarWithTitleOnly(
+        appBarTitle: SaleStrings.inputPageTitle.i18n(context),
+      ),
       body: BlocConsumer<SaleBloc, SaleState>(
         listener: (context, state) {
           if (state is GetProductListLoaded) {
@@ -60,7 +64,7 @@ class _SaleInputPageState extends State<SaleInputPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   ScannerFinder(
-                    labelText: 'Kode',
+                    labelText: SaleStrings.code.i18n(context),
                     textEditController: scannerTextEditController,
                     optionList: choiceProducts
                         .map(
@@ -132,7 +136,7 @@ class _SaleInputPageState extends State<SaleInputPage> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   FlatButton(
-                    title: 'Lanjut',
+                    title: SaleStrings.continueBtnTitle.i18n(context),
                     onPressed: () {
                       Navigator.pushNamed(
                         context,
@@ -168,19 +172,19 @@ class _SaleInputPageState extends State<SaleInputPage> {
         bottom: LayoutDimen.dimen_100.h,
       ),
       child: ListView(
-        children: List.generate(
-          recordedProducts.length,
-          (index) => SaleProductCard(
+        children: List.generate(recordedProducts.length, (index) {
+          final orderNumber = index + 1;
+          return SaleProductCard(
             product: recordedProducts[index].productEntity,
-            orderNumber: index + 1,
+            orderNumber: orderNumber,
             totalPcs: recordedProducts[index].total,
             onDelete: () {
               setState(() {
                 recordedProducts.removeAt(index);
               });
             },
-          ),
-        ),
+          );
+        }),
       ),
     );
   }

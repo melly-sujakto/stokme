@@ -1,9 +1,11 @@
 import 'package:data_abstraction/entity/sale_entity.dart';
 import 'package:feature_transaction/common/injector/injector.dart';
 import 'package:feature_transaction/domain/navigation/interaction_navigation.dart';
+import 'package:feature_transaction/presentation/journey/sale/sale_constants.dart';
 import 'package:feature_transaction/presentation/journey/sale/sale_routes.dart';
 import 'package:feature_transaction/presentation/journey/sale/widgets/sale_product_card.dart';
 import 'package:flutter/material.dart';
+import 'package:module_common/i18n/i18n_extension.dart';
 import 'package:ui_kit/common/constants/layout_dimen.dart';
 import 'package:ui_kit/extensions/string_extension.dart';
 import 'package:ui_kit/theme/colors.dart';
@@ -34,7 +36,9 @@ class _SaleReviewPageState extends State<SaleReviewPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: CustomColors.neutral.c95,
-      appBar: const AppBarWithTitleOnly(appBarTitle: 'Review Penjualan'),
+      appBar: AppBarWithTitleOnly(
+        appBarTitle: SaleStrings.saleReviewTitle.i18n(context),
+      ),
       body: Stack(
         children: [
           SingleChildScrollView(
@@ -76,13 +80,14 @@ class _SaleReviewPageState extends State<SaleReviewPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Total',
+                        SaleStrings.totalPrice.i18n(context),
                         style: TextStyle(
                           fontSize: LayoutDimen.dimen_18.minSp,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       Text(
+                        // TODO(melly): get from state
                         '200000'.toRupiahCurrency(),
                         style: TextStyle(
                           fontSize: LayoutDimen.dimen_24.minSp,
@@ -101,7 +106,7 @@ class _SaleReviewPageState extends State<SaleReviewPage> {
                     LayoutDimen.dimen_32.h,
                   ),
                   child: FlatButton(
-                    title: 'Proses',
+                    title: SaleStrings.process.i18n(context),
                     onPressed: () {
                       Injector.resolve<TransactionInteractionNavigation>()
                           .navigateToDashboardFromTransaction(context);

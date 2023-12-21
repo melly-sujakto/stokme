@@ -1,5 +1,7 @@
 import 'package:data_abstraction/entity/product_entity.dart';
+import 'package:feature_transaction/presentation/journey/sale/sale_constants.dart';
 import 'package:flutter/material.dart';
+import 'package:module_common/i18n/i18n_extension.dart';
 import 'package:ui_kit/common/constants/layout_dimen.dart';
 import 'package:ui_kit/extensions/string_extension.dart';
 import 'package:ui_kit/theme/colors.dart';
@@ -55,7 +57,7 @@ class SaleProductCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Text(
-                    '$totalPcs pcs',
+                    '$totalPcs ${SaleStrings.pcs.i18n(context)}',
                     style: TextStyle(
                       fontSize: LayoutDimen.dimen_13.minSp,
                       fontWeight: FontWeight.w600,
