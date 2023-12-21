@@ -15,7 +15,7 @@ abstract class SaleRoutes {
     salesInput: (ctx) {
       final saleBloc = Injector.resolve<SaleBloc>();
       return BlocProvider(
-        create: (context) => saleBloc,
+        create: (context) => saleBloc..add(GenerateReceiptEvent()),
         child: SaleInputPage(
           saleBloc: saleBloc,
         ),

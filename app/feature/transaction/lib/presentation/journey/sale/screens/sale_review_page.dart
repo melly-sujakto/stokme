@@ -13,6 +13,7 @@ import 'package:ui_kit/extensions/string_extension.dart';
 import 'package:ui_kit/theme/colors.dart';
 import 'package:ui_kit/ui/app_bar/app_bar_with_title_only.dart';
 import 'package:ui_kit/ui/button/flat_button.dart';
+import 'package:ui_kit/ui/loading_indicator/circular_progres.dart';
 import 'package:ui_kit/utils/screen_utils.dart';
 
 class SaleReviewArgument {
@@ -61,6 +62,11 @@ class _SaleReviewPageState extends State<SaleReviewPage> {
         listener: (context, state) {
           if (state is CalculationTotalPriceSuccess) {
             total = state.receiptEntity.totalNet;
+          }
+          if (state is SubmitSuccess) {
+            Injector.resolve<TransactionInteractionNavigation>()
+                .navigateToDashboardFromTransaction(context);
+            Navigator.pushNamed(context, SaleRoutes.salesResult);
           }
         },
         builder: (context, state) {
@@ -131,15 +137,19 @@ class _SaleReviewPageState extends State<SaleReviewPage> {
                         LayoutDimen.dimen_16.w,
                         LayoutDimen.dimen_32.h,
                       ),
-                      child: FlatButton(
-                        title: SaleStrings.process.i18n(context),
-                        onPressed: () {
-                          Injector.resolve<TransactionInteractionNavigation>()
-                              .navigateToDashboardFromTransaction(context);
-                          Navigator.pushNamed(context, SaleRoutes.salesResult);
-                        },
-                        margin: EdgeInsets.zero,
-                      ),
+                      child: state is SubmitLoading
+                          ? const CircularProgress()
+                          : FlatButton(
+                              title: SaleStrings.process.i18n(context),
+                              onPressed: () {
+                                widget.salesReviewArgument.saleBloc.add(
+                                  SubmitReceiptAndSalesEvent(
+                                    widget.salesReviewArgument.saleEntityList,
+                                  ),
+                                );
+                              },
+                              margin: EdgeInsets.zero,
+                            ),
                     ),
                   ],
                 ),

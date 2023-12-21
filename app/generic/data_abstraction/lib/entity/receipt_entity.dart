@@ -16,4 +16,24 @@ class ReceiptEntity {
     required this.totalNet,
     required this.userEmail,
   });
+
+  ReceiptEntity copyWith({
+    String? id,
+    double? cash,
+    double? change,
+    double? totalGross,
+    double? discount,
+    double? totalNet,
+    String? userEmail,
+  }) {
+    return ReceiptEntity(
+      id: id ?? this.id,
+      cash: cash ?? this.cash,
+      change: change ?? this.change,
+      totalGross: totalGross ?? this.totalGross,
+      discount: discount ?? this.discount,
+      totalNet: totalNet ?? this.totalNet,
+      userEmail: userEmail ?? this.userEmail,
+    );
+  }
 }

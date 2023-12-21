@@ -5,6 +5,7 @@ import 'package:data_abstraction/entity/receipt_entity.dart';
 import 'package:data_abstraction/entity/sale_entity.dart';
 import 'package:feature_transaction/domain/usecase/sale_usecase.dart';
 import 'package:module_common/presentation/bloc/base_bloc.dart';
+import 'package:uuid/uuid.dart';
 
 part 'sale_event.dart';
 part 'sale_state.dart';
@@ -18,7 +19,31 @@ class SaleBloc extends BaseBloc<SaleEvent, SaleState> {
     on<GetProductListEvent>(_onGetProductListEvent);
     on<CalculatePriceProductEvent>(_onCalculatePriceProductEvent);
     on<CalculateTotalPriceEvent>(_onCalculateTotalPriceEvent);
+    on<GenerateReceiptEvent>(_onGenerateReceiptIdEvent);
+    on<SubmitReceiptAndSalesEvent>(_onSubmitReceiptAndSalesEvent);
   }
+
+  late ReceiptEntity receipt;
+
+  FutureOr<void> _onGenerateReceiptIdEvent(
+    GenerateReceiptEvent event,
+    Emitter<SaleState> emit,
+  ) async {
+    const uuid = Uuid();
+    receipt = ReceiptEntity(
+      id: uuid.v4(),
+      cash: 0.0,
+      change: 0.0,
+      totalGross: 0.0,
+      discount: 0.0,
+      totalNet: 0.0,
+      userEmail: await saleUsecase.getUserEmail(),
+    );
+
+    emit(GenerateReceiptFinished());
+  }
+
+  // TODO(melly): regenerate receipt id and update all sale.receipt_id
 
   FutureOr<void> _onGetProductListEvent(
     GetProductListEvent event,
@@ -41,8 +66,7 @@ class SaleBloc extends BaseBloc<SaleEvent, SaleState> {
     final totalNet = event.product.saleNet! * event.total;
     final saleEntity = SaleEntity(
       productEntity: event.product,
-      // TODO(Melly): should receive from event
-      receiptId: 'receiptId',
+      receiptId: receipt.id!,
       total: event.total,
       totalNet: totalNet,
     );
@@ -59,20 +83,35 @@ class SaleBloc extends BaseBloc<SaleEvent, SaleState> {
       totalPrice += saleEntity.totalNet;
     }
 
-    final receiptEntity = ReceiptEntity(
+    // update current receipt
+    receipt = receipt.copyWith(
       cash: totalPrice,
-      change: 0.0,
       totalGross: totalPrice,
-      discount: 0.0,
       totalNet: totalPrice,
-      userEmail: await saleUsecase.getUserEmail(),
     );
 
     emit(
       CalculationTotalPriceSuccess(
         saleEntityList: event.saleEntityList,
-        receiptEntity: receiptEntity,
+        receiptEntity: receipt,
       ),
     );
+  }
+
+  FutureOr<void> _onSubmitReceiptAndSalesEvent(
+    SubmitReceiptAndSalesEvent event,
+    Emitter<SaleState> emit,
+  ) async {
+    emit(SubmitLoading());
+    try {
+      await saleUsecase.submitReceiptAndSales(
+        receiptEntity: receipt,
+        saleEntityList: event.saleEntityList,
+      );
+      emit(SubmitSuccess());
+    } catch (e) {
+      // TODO(melly): add regenerate receipt id
+      emit(SubmitFailed());
+    }
   }
 }

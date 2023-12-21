@@ -4,6 +4,8 @@ sealed class SaleState {}
 
 final class SaleInitial extends SaleState {}
 
+final class GenerateReceiptFinished extends SaleState {}
+
 final class GetProductListLoading extends SaleState {}
 
 final class GetProductListFailed extends SaleState {}
@@ -29,3 +31,9 @@ final class CalculationTotalPriceSuccess extends SaleState {
     required this.receiptEntity,
   });
 }
+
+final class SubmitLoading extends SaleState {}
+
+final class SubmitSuccess extends SaleState {}
+
+final class SubmitFailed extends SaleState {}
