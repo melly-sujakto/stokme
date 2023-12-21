@@ -15,6 +15,6 @@ final Map<String, String> translations = {
   'sale.button.process': 'Process',
   'sale.review.pcs': 'pcs',
   'sale.review.price': 'Price',
-  'sale.review.totalPcs': 'Total',
+  'sale.review.totalPcs': 'Total Pcs',
   'sale.button.input': 'Input',
 };
