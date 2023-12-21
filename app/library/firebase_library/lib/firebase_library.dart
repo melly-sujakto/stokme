@@ -51,6 +51,29 @@ class FirebaseLibrary {
     await collectionRef.doc(id).update(document);
   }
 
+  Future<void> createDocument({
+    required String collectionName,
+    required Map<String, dynamic> data,
+    String? id,
+  }) async {
+    final collectionRef = FirebaseFirestore.instance.collection(collectionName);
+    if (id != null) {
+      // check is does exist or not
+      final querySnapshot = await collectionRef.doc(id).get();
+      final existingData = querySnapshot.data();
+      if (existingData != null) {
+        throw Exception('Data does exist');
+      }
+      await collectionRef.doc(id).set(data).onError(
+        (e, _) {
+          throw Exception('Error writing document: $e');
+        },
+      );
+    } else {
+      await collectionRef.add(data);
+    }
+  }
+
   Future<void> deleteDocument({
     required String collectionName,
     required String id,
