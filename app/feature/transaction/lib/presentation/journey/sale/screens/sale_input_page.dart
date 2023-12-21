@@ -31,6 +31,8 @@ class SaleInputPage extends StatefulWidget {
 class _SaleInputPageState extends State<SaleInputPage> {
   List<SaleEntity> recordedProducts = [];
   List<ProductEntity> choiceProducts = [];
+  bool isFromOnScan = false;
+  bool holdScannerFlag = false;
 
   final scannerTextEditController = TextEditingController();
 
@@ -45,6 +47,9 @@ class _SaleInputPageState extends State<SaleInputPage> {
         listener: (context, state) {
           if (state is GetProductListLoaded) {
             choiceProducts = state.products;
+            if (isFromOnScan && choiceProducts.length == 1) {
+              onSelectedProduct(choiceProducts.first);
+            }
           }
           if (state is CalculationSuccess) {
             choiceProducts = [];
@@ -67,6 +72,7 @@ class _SaleInputPageState extends State<SaleInputPage> {
                     labelText: SaleStrings.code.i18n(context),
                     textEditController: scannerTextEditController,
                     keyboardType: TextInputType.number,
+                    holdScanner: holdScannerFlag,
                     optionList: choiceProducts
                         .map(
                           (e) => Padding(
@@ -101,27 +107,20 @@ class _SaleInputPageState extends State<SaleInputPage> {
                         )
                         .toList(),
                     onSelected: (index) {
-                      showModalBottomSheet(
-                        context: context,
-                        isScrollControlled: true,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(
-                              LayoutDimen.dimen_30.w,
-                            ),
-                            topRight: Radius.circular(
-                              LayoutDimen.dimen_30.w,
-                            ),
-                          ),
-                        ),
-                        builder: (context) => SaleProductModalContent(
-                          product: choiceProducts[index],
-                          bloc: widget.saleBloc,
-                        ),
-                      );
+                      onSelectedProduct(choiceProducts[index]);
                     },
-                    onChanged: addEventGetProducts,
-                    onScan: addEventGetProducts,
+                    onChanged: (value) {
+                      addEventGetProducts(value);
+                      setState(() {
+                        isFromOnScan = false;
+                      });
+                    },
+                    onScan: (value) {
+                      addEventGetProducts(value);
+                      setState(() {
+                        isFromOnScan = true;
+                      });
+                    },
                   ),
                   SizedBox(
                     height: LayoutDimen.dimen_32.h,
@@ -156,6 +155,34 @@ class _SaleInputPageState extends State<SaleInputPage> {
         ),
       ),
     );
+  }
+
+  void onSelectedProduct(ProductEntity productEntity) {
+    setState(() {
+      holdScannerFlag = true;
+    });
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(
+            LayoutDimen.dimen_30.w,
+          ),
+          topRight: Radius.circular(
+            LayoutDimen.dimen_30.w,
+          ),
+        ),
+      ),
+      builder: (context) => SaleProductModalContent(
+        product: productEntity,
+        bloc: widget.saleBloc,
+      ),
+    ).then((value) {
+      setState(() {
+        holdScannerFlag = false;
+      });
+    });
   }
 
   void addEventGetProducts(String value) {

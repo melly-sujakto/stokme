@@ -24,6 +24,7 @@ class ScannerFinder extends StatefulWidget {
     this.onSelected,
     this.textEditController,
     this.keyboardType,
+    this.holdScanner = false,
   }) : super(key: key);
 
   final String labelText;
@@ -33,6 +34,10 @@ class ScannerFinder extends StatefulWidget {
   final void Function(int)? onSelected;
   final TextEditingController? textEditController;
   final TextInputType? keyboardType;
+
+  /// Set false to inactivate scanner sistem
+  final bool holdScanner;
+
   @override
   State<ScannerFinder> createState() => _ScannerFinderState();
 }
@@ -83,24 +88,26 @@ class _ScannerFinderState extends State<ScannerFinder> {
               fit: BoxFit.fitWidth,
               controller: cameraController,
               onDetect: (capture) {
-                final List<Barcode> barcodes = capture.barcodes;
-                for (final barcode in barcodes) {
-                  player
-                    ..setVolume(1)
-                    ..play(
-                      AssetSource(ScannerFinderConstants.beepSoundAsset),
-                    );
+                if (!widget.holdScanner) {
+                  final List<Barcode> barcodes = capture.barcodes;
+                  for (final barcode in barcodes) {
+                    player
+                      ..setVolume(1)
+                      ..play(
+                        AssetSource(ScannerFinderConstants.beepSoundAsset),
+                      );
 
-                  if (barcode.rawValue != null) {
-                    if (kDebugMode) {
-                      print('Scanned barcode: ${barcode.rawValue}');
+                    if (barcode.rawValue != null) {
+                      if (kDebugMode) {
+                        print('Scanned barcode: ${barcode.rawValue}');
+                      }
+
+                      setState(() {
+                        textEditController.text = barcode.rawValue!;
+                      });
+
+                      widget.onScan(barcode.rawValue!);
                     }
-
-                    setState(() {
-                      textEditController.text = barcode.rawValue!;
-                    });
-
-                    widget.onScan(barcode.rawValue!);
                   }
                 }
               },
