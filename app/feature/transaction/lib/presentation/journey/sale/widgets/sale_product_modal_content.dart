@@ -122,6 +122,7 @@ class SaleProductModalContent extends StatelessWidget {
                         total: total,
                       ),
                     );
+                    FocusManager.instance.primaryFocus?.unfocus();
                     Navigator.pop(context);
                   },
                   margin: EdgeInsets.zero,

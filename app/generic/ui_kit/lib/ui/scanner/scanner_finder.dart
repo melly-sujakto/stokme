@@ -22,6 +22,7 @@ class ScannerFinder extends StatefulWidget {
     required this.onScan,
     this.optionList = const [],
     this.onSelected,
+    this.textEditController,
   }) : super(key: key);
 
   final String labelText;
@@ -29,7 +30,7 @@ class ScannerFinder extends StatefulWidget {
   final void Function(String) onScan;
   final List<Widget> optionList;
   final void Function(int)? onSelected;
-
+  final TextEditingController? textEditController;
   @override
   State<ScannerFinder> createState() => _ScannerFinderState();
 }
@@ -41,7 +42,19 @@ class _ScannerFinderState extends State<ScannerFinder> {
   );
   final player = AudioPlayer();
   bool scannerActive = false;
-  final textEditController = TextEditingController();
+  late final TextEditingController textEditController;
+
+  @override
+  void initState() {
+    textEditController = widget.textEditController ?? TextEditingController();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    textEditController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

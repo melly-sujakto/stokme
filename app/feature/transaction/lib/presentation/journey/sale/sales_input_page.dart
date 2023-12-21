@@ -30,6 +30,8 @@ class _SalesInputPageState extends State<SalesInputPage> {
   List<SaleEntity> recordedProducts = [];
   List<ProductEntity> choiceProducts = [];
 
+  final scannerTextEditController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,6 +43,11 @@ class _SalesInputPageState extends State<SalesInputPage> {
             choiceProducts = state.products;
           }
           if (state is CalculationSuccess) {
+            choiceProducts = [];
+            scannerTextEditController.clear();
+            //close Keyboard
+            // TODO(melly): will check, is it disturb end user or not?
+            FocusManager.instance.primaryFocus?.unfocus();
             recordedProducts.add(state.saleEntity);
           }
         },
@@ -54,6 +61,7 @@ class _SalesInputPageState extends State<SalesInputPage> {
                 children: [
                   ScannerFinder(
                     labelText: 'Kode',
+                    textEditController: scannerTextEditController,
                     optionList: choiceProducts
                         .map(
                           (e) => Padding(
