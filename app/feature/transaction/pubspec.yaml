@@ -23,6 +23,7 @@ dependencies:
   percent_indicator: ^4.2.3
   ui_kit:
     path: ../../generic/ui_kit
+  uuid: ^4.2.2
 
 dev_dependencies:
   build_runner: ^2.4.6
