@@ -116,8 +116,9 @@ class SaleBloc extends BaseBloc<SaleEvent, SaleState> {
       // TODO(melly): move to an utils
       final dateTimeNow = DateTime.now();
       final dateFormat = DateFormat('EEEE, dd MMMM yyyy');
+      final timeFormat = DateFormat('HH:mm');
       final date = dateFormat.format(dateTimeNow);
-      final time = '${dateTimeNow.hour}:${dateTimeNow.minute}';
+      final time = timeFormat.format(dateTimeNow);
       emit(
         SubmitSuccess(
           saleEntityList: event.saleEntityList,
