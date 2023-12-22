@@ -100,7 +100,7 @@ class PrintBloc extends BaseBloc<PrintEvent, PrintState> {
               type: LineText.TYPE_TEXT,
               content: generateAlignBetween(
                 '${e.productEntity.name}|'
-                '${e.productEntity.saleNet.toString().toRupiahCurrency()}',
+                '${e.totalNet.toString().toRupiahCurrency()}',
               ),
               align: LineText.ALIGN_CENTER,
               linefeed: 1,
