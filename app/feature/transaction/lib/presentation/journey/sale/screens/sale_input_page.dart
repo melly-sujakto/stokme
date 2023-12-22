@@ -62,71 +62,73 @@ class _SaleInputPageState extends State<SaleInputPage> {
         },
         builder: (context, state) => Stack(
           children: [
-            Container(
-              height: ScreenUtil.screenHeight,
-              padding: EdgeInsets.all(LayoutDimen.dimen_16.w),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ScannerFinder(
-                    labelText: SaleStrings.code.i18n(context),
-                    textEditController: scannerTextEditController,
-                    keyboardType: TextInputType.number,
-                    holdScanner: holdScannerFlag,
-                    optionList: choiceProducts
-                        .map(
-                          (e) => Padding(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: LayoutDimen.dimen_16.w,
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  e.code,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                    fontSize: LayoutDimen.dimen_18.minSp,
-                                    fontWeight: FontWeight.w200,
+            SingleChildScrollView(
+              child: Container(
+                height: ScreenUtil.screenHeight,
+                padding: EdgeInsets.all(LayoutDimen.dimen_16.w),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ScannerFinder(
+                      labelText: SaleStrings.code.i18n(context),
+                      textEditController: scannerTextEditController,
+                      keyboardType: TextInputType.number,
+                      holdScanner: holdScannerFlag,
+                      optionList: choiceProducts
+                          .map(
+                            (e) => Padding(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: LayoutDimen.dimen_16.w,
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    e.code,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      fontSize: LayoutDimen.dimen_18.minSp,
+                                      fontWeight: FontWeight.w200,
+                                    ),
                                   ),
-                                ),
-                                Text(
-                                  e.name,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                    fontSize: LayoutDimen.dimen_16.minSp,
-                                    fontWeight: FontWeight.w600,
+                                  Text(
+                                    e.name,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      fontSize: LayoutDimen.dimen_16.minSp,
+                                      fontWeight: FontWeight.w600,
+                                    ),
                                   ),
-                                ),
-                                SizedBox(
-                                  height: LayoutDimen.dimen_8.h,
-                                )
-                              ],
+                                  SizedBox(
+                                    height: LayoutDimen.dimen_8.h,
+                                  )
+                                ],
+                              ),
                             ),
-                          ),
-                        )
-                        .toList(),
-                    onSelected: (index) {
-                      onSelectedProduct(choiceProducts[index]);
-                    },
-                    onChanged: (value) {
-                      addEventGetProducts(value);
-                      setState(() {
-                        isFromOnScan = false;
-                      });
-                    },
-                    onScan: (value) {
-                      addEventGetProducts(value);
-                      setState(() {
-                        isFromOnScan = true;
-                      });
-                    },
-                  ),
-                  SizedBox(
-                    height: LayoutDimen.dimen_32.h,
-                  ),
-                  Expanded(child: productListCard()),
-                ],
+                          )
+                          .toList(),
+                      onSelected: (index) {
+                        onSelectedProduct(choiceProducts[index]);
+                      },
+                      onChanged: (value) {
+                        addEventGetProducts(value);
+                        setState(() {
+                          isFromOnScan = false;
+                        });
+                      },
+                      onScan: (value) {
+                        addEventGetProducts(value);
+                        setState(() {
+                          isFromOnScan = true;
+                        });
+                      },
+                    ),
+                    SizedBox(
+                      height: LayoutDimen.dimen_32.h,
+                    ),
+                    Expanded(child: productListCard()),
+                  ],
+                ),
               ),
             ),
             Container(
