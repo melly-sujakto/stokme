@@ -77,40 +77,61 @@ class _ScannerFinderState extends State<ScannerFinder> {
             decoration: BoxDecoration(
               border: Border.all(color: CustomColors.neutral.c80),
             ),
-            child: MobileScanner(
-              overlay: Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: LayoutDimen.dimen_32.w,
-                  vertical: LayoutDimen.dimen_12.h,
-                ),
-                child: Image.asset(ScannerFinderConstants.scannerOverlayAsset),
-              ),
-              fit: BoxFit.fitWidth,
-              controller: cameraController,
-              onDetect: (capture) {
-                if (!widget.holdScanner) {
-                  final List<Barcode> barcodes = capture.barcodes;
-                  for (final barcode in barcodes) {
-                    player
-                      ..setVolume(1)
-                      ..play(
-                        AssetSource(ScannerFinderConstants.beepSoundAsset),
-                      );
+            child: Stack(
+              children: [
+                MobileScanner(
+                  overlay: Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: LayoutDimen.dimen_32.w,
+                      vertical: LayoutDimen.dimen_12.h,
+                    ),
+                    child:
+                        Image.asset(ScannerFinderConstants.scannerOverlayAsset),
+                  ),
+                  fit: BoxFit.fitWidth,
+                  controller: cameraController,
+                  onDetect: (capture) {
+                    if (!widget.holdScanner) {
+                      final List<Barcode> barcodes = capture.barcodes;
+                      for (final barcode in barcodes) {
+                        player
+                          ..setVolume(1)
+                          ..play(
+                            AssetSource(ScannerFinderConstants.beepSoundAsset),
+                          );
 
-                    if (barcode.rawValue != null) {
-                      if (kDebugMode) {
-                        print('Scanned barcode: ${barcode.rawValue}');
+                        if (barcode.rawValue != null) {
+                          if (kDebugMode) {
+                            print('Scanned barcode: ${barcode.rawValue}');
+                          }
+
+                          setState(() {
+                            textEditController.text = barcode.rawValue!;
+                          });
+
+                          widget.onScan(barcode.rawValue!);
+                        }
                       }
-
-                      setState(() {
-                        textEditController.text = barcode.rawValue!;
-                      });
-
-                      widget.onScan(barcode.rawValue!);
                     }
-                  }
-                }
-              },
+                  },
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    InkWell(
+                      onTap: cameraController.switchCamera,
+                      child: Padding(
+                        padding: EdgeInsets.all(LayoutDimen.dimen_8.w),
+                        child: Icon(
+                          Icons.cameraswitch_rounded,
+                          size: LayoutDimen.dimen_20.h,
+                          color: CustomColors.neutral.c60,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
         Row(
