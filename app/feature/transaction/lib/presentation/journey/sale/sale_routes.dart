@@ -1,4 +1,5 @@
 import 'package:feature_transaction/common/injector/injector.dart';
+import 'package:feature_transaction/presentation/bloc/print_bloc.dart';
 import 'package:feature_transaction/presentation/journey/sale/bloc/sale_bloc.dart';
 import 'package:feature_transaction/presentation/journey/sale/screens/sale_input_page.dart';
 import 'package:feature_transaction/presentation/journey/sale/screens/sale_result_page.dart';
@@ -15,7 +16,7 @@ abstract class SaleRoutes {
     salesInput: (ctx) {
       final saleBloc = Injector.resolve<SaleBloc>();
       return BlocProvider(
-        create: (context) => saleBloc..add(GenerateReceiptEvent()),
+        create: (context) => saleBloc..add(SetupEvent()),
         child: SaleInputPage(
           saleBloc: saleBloc,
         ),
@@ -31,6 +32,20 @@ abstract class SaleRoutes {
         ),
       );
     },
-    salesResult: (context) => const SaleResultPage(),
+    salesResult: (ctx) {
+      final argument =
+          ModalRoute.of(ctx)!.settings.arguments as SaleResultArgument;
+      return MultiBlocProvider(
+        providers: [
+          BlocProvider.value(value: argument.saleBloc),
+          BlocProvider(
+            create: (context) => Injector.resolve<PrintBloc>(),
+          )
+        ],
+        child: SaleResultPage(
+          saleResultArgument: argument,
+        ),
+      );
+    },
   };
 }

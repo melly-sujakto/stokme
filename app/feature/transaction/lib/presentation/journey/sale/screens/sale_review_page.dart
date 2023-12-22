@@ -4,6 +4,7 @@ import 'package:feature_transaction/domain/navigation/interaction_navigation.dar
 import 'package:feature_transaction/presentation/journey/sale/bloc/sale_bloc.dart';
 import 'package:feature_transaction/presentation/journey/sale/sale_constants.dart';
 import 'package:feature_transaction/presentation/journey/sale/sale_routes.dart';
+import 'package:feature_transaction/presentation/journey/sale/screens/sale_result_page.dart';
 import 'package:feature_transaction/presentation/journey/sale/widgets/sale_product_card.dart';
 import 'package:flutter/material.dart';
 import 'package:module_common/i18n/i18n_extension.dart';
@@ -66,7 +67,13 @@ class _SaleReviewPageState extends State<SaleReviewPage> {
           if (state is SubmitSuccess) {
             Injector.resolve<TransactionInteractionNavigation>()
                 .navigateToDashboardFromTransaction(context);
-            Navigator.pushNamed(context, SaleRoutes.salesResult);
+            Navigator.pushNamed(
+              context,
+              SaleRoutes.salesResult,
+              arguments: SaleResultArgument(
+                widget.salesReviewArgument.saleBloc,
+              ),
+            );
           }
         },
         builder: (context, state) {

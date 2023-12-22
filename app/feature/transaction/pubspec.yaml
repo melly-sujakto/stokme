@@ -16,6 +16,7 @@ dependencies:
     path: ../../library/firebase_library
   flutter:
     sdk: flutter
+  intl: ^0.18.0
   library_injection:
     path: ../../library/injection
   module_common:

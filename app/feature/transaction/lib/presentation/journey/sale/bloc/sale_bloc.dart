@@ -4,6 +4,7 @@ import 'package:data_abstraction/entity/product_entity.dart';
 import 'package:data_abstraction/entity/receipt_entity.dart';
 import 'package:data_abstraction/entity/sale_entity.dart';
 import 'package:feature_transaction/domain/usecase/sale_usecase.dart';
+import 'package:intl/intl.dart';
 import 'package:module_common/presentation/bloc/base_bloc.dart';
 import 'package:uuid/uuid.dart';
 
@@ -19,16 +20,20 @@ class SaleBloc extends BaseBloc<SaleEvent, SaleState> {
     on<GetProductListEvent>(_onGetProductListEvent);
     on<CalculatePriceProductEvent>(_onCalculatePriceProductEvent);
     on<CalculateTotalPriceEvent>(_onCalculateTotalPriceEvent);
-    on<GenerateReceiptEvent>(_onGenerateReceiptIdEvent);
+    on<SetupEvent>(_onSetupEvent);
     on<SubmitReceiptAndSalesEvent>(_onSubmitReceiptAndSalesEvent);
   }
 
   late ReceiptEntity receipt;
+  late String userEmail;
+  late String userName;
 
-  FutureOr<void> _onGenerateReceiptIdEvent(
-    GenerateReceiptEvent event,
+  FutureOr<void> _onSetupEvent(
+    SetupEvent event,
     Emitter<SaleState> emit,
   ) async {
+    userEmail = await saleUsecase.getUserEmail();
+    userName = await saleUsecase.getUserName();
     const uuid = Uuid();
     receipt = ReceiptEntity(
       id: uuid.v4(),
@@ -37,7 +42,7 @@ class SaleBloc extends BaseBloc<SaleEvent, SaleState> {
       totalGross: 0.0,
       discount: 0.0,
       totalNet: 0.0,
-      userEmail: await saleUsecase.getUserEmail(),
+      userEmail: userEmail,
     );
 
     emit(GenerateReceiptFinished());
@@ -108,7 +113,18 @@ class SaleBloc extends BaseBloc<SaleEvent, SaleState> {
         receiptEntity: receipt,
         saleEntityList: event.saleEntityList,
       );
-      emit(SubmitSuccess());
+      // TODO(melly): move to an utils
+      final dateTimeNow = DateTime.now();
+      final dateFormat = DateFormat('EEEE, dd MMMM yyyy');
+      final date = dateFormat.format(dateTimeNow);
+      final time = '${dateTimeNow.hour}:${dateTimeNow.minute}';
+      emit(
+        SubmitSuccess(
+          saleEntityList: event.saleEntityList,
+          dateText: date,
+          timeText: time,
+        ),
+      );
     } catch (e) {
       // TODO(melly): add regenerate receipt id
       emit(SubmitFailed());

@@ -45,6 +45,11 @@ class SaleUsecase {
     return pref.getString(GenericConstants.email)!;
   }
 
+  Future<String> getUserName() async {
+    final pref = await sharedPreferencesWrapper.getPrefs();
+    return pref.getString(GenericConstants.userName)!;
+  }
+
   Future<void> submitReceiptAndSales({
     required ReceiptEntity receiptEntity,
     required List<SaleEntity> saleEntityList,

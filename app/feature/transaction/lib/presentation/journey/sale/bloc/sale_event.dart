@@ -2,7 +2,7 @@ part of 'sale_bloc.dart';
 
 sealed class SaleEvent {}
 
-class GenerateReceiptEvent extends SaleEvent {}
+class SetupEvent extends SaleEvent {}
 
 class GetProductListEvent extends SaleEvent {
   final String filterValue;
