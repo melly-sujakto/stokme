@@ -1,4 +1,4 @@
-import 'package:feature_transaction/domain/usecase/sale_usecase.dart';
+import 'package:feature_transaction/domain/usecase/transaction_usecase.dart';
 import 'package:feature_transaction/presentation/blocs/print_bloc/print_bloc.dart';
 import 'package:feature_transaction/presentation/journey/sale/bloc/sale_bloc.dart';
 import 'package:firebase_library/firebase_library.dart';
@@ -20,15 +20,15 @@ abstract class Injector {
     _configureUsecase();
   }
 
-  @Dependencies.dependsOn(SaleBloc, [SaleUsecase])
+  @Dependencies.dependsOn(SaleBloc, [TransactionUsecase])
   @Register.factory(SaleBloc)
   @Register.factory(PrintBloc)
   void _configureBloc();
 
   @Dependencies.dependsOn(
-    SaleUsecase,
+    TransactionUsecase,
     [FirebaseLibrary, SharedPreferencesWrapper],
   )
-  @Register.factory(SaleUsecase)
+  @Register.factory(TransactionUsecase)
   void _configureUsecase();
 }

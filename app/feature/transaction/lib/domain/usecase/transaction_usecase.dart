@@ -8,11 +8,11 @@ import 'package:firebase_library/firebase_library.dart';
 import 'package:module_common/common/constant/generic_constants.dart';
 import 'package:module_common/wrapper/shared_preferences_wrapper.dart';
 
-class SaleUsecase {
+class TransactionUsecase {
   final FirebaseLibrary firebaseLibrary;
   final SharedPreferencesWrapper sharedPreferencesWrapper;
 
-  SaleUsecase({
+  TransactionUsecase({
     required this.firebaseLibrary,
     required this.sharedPreferencesWrapper,
   });

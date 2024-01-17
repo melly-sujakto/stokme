@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:data_abstraction/entity/product_entity.dart';
 import 'package:data_abstraction/entity/receipt_entity.dart';
 import 'package:data_abstraction/entity/sale_entity.dart';
-import 'package:feature_transaction/domain/usecase/sale_usecase.dart';
+import 'package:feature_transaction/domain/usecase/transaction_usecase.dart';
 import 'package:intl/intl.dart';
 import 'package:module_common/presentation/bloc/base_bloc.dart';
 import 'package:uuid/uuid.dart';
@@ -12,10 +12,10 @@ part 'sale_event.dart';
 part 'sale_state.dart';
 
 class SaleBloc extends BaseBloc<SaleEvent, SaleState> {
-  final SaleUsecase saleUsecase;
+  final TransactionUsecase transactionUsecase;
 
   SaleBloc(
-    this.saleUsecase,
+    this.transactionUsecase,
   ) : super(SaleInitial()) {
     on<GetProductListEvent>(_onGetProductListEvent);
     on<CalculatePriceProductEvent>(_onCalculatePriceProductEvent);
@@ -32,8 +32,8 @@ class SaleBloc extends BaseBloc<SaleEvent, SaleState> {
     SetupEvent event,
     Emitter<SaleState> emit,
   ) async {
-    userEmail = await saleUsecase.getUserEmail();
-    userName = await saleUsecase.getUserName();
+    userEmail = await transactionUsecase.getUserEmail();
+    userName = await transactionUsecase.getUserName();
     const uuid = Uuid();
     receipt = ReceiptEntity(
       id: uuid.v4(),
@@ -56,7 +56,7 @@ class SaleBloc extends BaseBloc<SaleEvent, SaleState> {
   ) async {
     emit(GetProductListLoading());
     try {
-      final products = await saleUsecase.getProductList(event.filterValue);
+      final products = await transactionUsecase.getProductList(event.filterValue);
       emit(GetProductListLoaded(products));
     } catch (e) {
       emit(GetProductListFailed());
@@ -109,7 +109,7 @@ class SaleBloc extends BaseBloc<SaleEvent, SaleState> {
   ) async {
     emit(SubmitLoading());
     try {
-      await saleUsecase.submitReceiptAndSales(
+      await transactionUsecase.submitReceiptAndSales(
         receiptEntity: receipt,
         saleEntityList: event.saleEntityList,
       );
