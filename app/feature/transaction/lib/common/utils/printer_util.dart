@@ -22,11 +22,23 @@ class PrinterUtil {
   Future<void> startPrint(List<LineText> lineTexts) async {
     await bluetoothPrint.connect(_devices.first);
 
-    await Future.delayed(
-      const Duration(seconds: 2),
-      () async {
-        await bluetoothPrint.printReceipt({}, lineTexts);
-      },
-    );
+    bool isConnected = false;
+    int maxCount = 0;
+
+    while (!isConnected && maxCount <= 100) {
+      isConnected = await bluetoothPrint.isConnected ?? false;
+      maxCount++;
+    }
+
+    if (isConnected) {
+      await Future.delayed(
+        const Duration(seconds: 2),
+        () async {
+          await bluetoothPrint.printReceipt({}, lineTexts);
+        },
+      );
+    } else {
+      throw Exception('[PrinterUtil.startPrint] printer cannot be connected');
+    }
   }
 }
