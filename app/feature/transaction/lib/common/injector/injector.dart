@@ -2,6 +2,7 @@ import 'package:feature_transaction/domain/usecase/transaction_usecase.dart';
 import 'package:feature_transaction/presentation/blocs/print_bloc/print_bloc.dart';
 import 'package:feature_transaction/presentation/blocs/transaction_bloc/transaction_bloc.dart';
 import 'package:feature_transaction/presentation/journey/sale/bloc/sale_bloc.dart';
+import 'package:feature_transaction/presentation/journey/stock_in/bloc/stock_in_bloc.dart';
 import 'package:firebase_library/firebase_library.dart';
 import 'package:library_injection/annotations.dart';
 import 'package:library_injection/package/kiwi.dart';
@@ -26,6 +27,8 @@ abstract class Injector {
   @Register.factory(PrintBloc)
   @Dependencies.dependsOn(TransactionBloc, [TransactionUsecase])
   @Register.factory(TransactionBloc)
+  @Dependencies.dependsOn(StockInBloc, [TransactionUsecase])
+  @Register.factory(StockInBloc)
   void _configureBloc();
 
   @Dependencies.dependsOn(

@@ -13,6 +13,7 @@ class _$Injector extends Injector {
     container.registerFactory((c) => SaleBloc(c<TransactionUsecase>()));
     container.registerFactory((c) => PrintBloc());
     container.registerFactory((c) => TransactionBloc(c<TransactionUsecase>()));
+    container.registerFactory((c) => StockInBloc(c<TransactionUsecase>()));
   }
 
   @override
