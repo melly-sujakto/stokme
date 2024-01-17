@@ -56,7 +56,8 @@ class SaleBloc extends BaseBloc<SaleEvent, SaleState> {
   ) async {
     emit(GetProductListLoading());
     try {
-      final products = await transactionUsecase.getProductList(event.filterValue);
+      final products =
+          await transactionUsecase.getProductList(event.filterValue);
       emit(GetProductListLoaded(products));
     } catch (e) {
       emit(GetProductListFailed());
