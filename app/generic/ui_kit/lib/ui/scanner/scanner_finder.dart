@@ -16,7 +16,7 @@ abstract class ScannerFinderConstants {
 
 class ScannerFinder extends StatefulWidget {
   const ScannerFinder({
-    Key? key,
+    super.key,
     required this.labelText,
     required this.onChanged,
     required this.onScan,
@@ -25,7 +25,8 @@ class ScannerFinder extends StatefulWidget {
     this.textEditController,
     this.keyboardType,
     this.holdScanner = false,
-  }) : super(key: key);
+    this.addProductAction,
+  });
 
   final String labelText;
   final void Function(String) onChanged;
@@ -34,6 +35,7 @@ class ScannerFinder extends StatefulWidget {
   final void Function(int)? onSelected;
   final TextEditingController? textEditController;
   final TextInputType? keyboardType;
+  final void Function()? addProductAction;
 
   /// Set false to inactivate scanner sistem
   final bool holdScanner;
@@ -149,6 +151,18 @@ class _ScannerFinderState extends State<ScannerFinder> {
                     onChanged: widget.onChanged,
                     margin: EdgeInsets.zero,
                     keyboardType: widget.keyboardType,
+                    suffixIcon: widget.addProductAction != null
+                        ? InkWell(
+                            onTap: widget.addProductAction,
+                            child: Icon(
+                              Icons.add_box_rounded,
+                              color: textEditController.text.isNotEmpty
+                                  ? CustomColors.secondary.c50
+                                  : CustomColors.neutral.c70,
+                              size: LayoutDimen.dimen_40.w,
+                            ),
+                          )
+                        : null,
                   ),
                   if (widget.optionList.isNotEmpty)
                     Material(
