@@ -1,6 +1,7 @@
 import 'package:data_abstraction/entity/product_entity.dart';
+import 'package:data_abstraction/entity/stock_in_entity.dart';
 import 'package:feature_transaction/presentation/blocs/transaction_bloc/transaction_bloc.dart';
-import 'package:feature_transaction/presentation/routes.dart';
+import 'package:feature_transaction/presentation/journey/stock_in/bloc/stock_in_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:module_common/presentation/bloc/base_bloc.dart';
 import 'package:ui_kit/common/constants/layout_dimen.dart';
@@ -8,6 +9,7 @@ import 'package:ui_kit/theme/colors.dart';
 import 'package:ui_kit/ui/app_bar/app_bar_with_title_only.dart';
 import 'package:ui_kit/ui/button/flat_button.dart';
 import 'package:ui_kit/ui/input_field/input_basic.dart';
+import 'package:ui_kit/ui/loading_indicator/circular_progres.dart';
 import 'package:ui_kit/ui/scanner/scanner_finder.dart';
 import 'package:ui_kit/ui/snackbar/snackbar_dialog.dart';
 import 'package:ui_kit/ui/widgets/dummy_circle_image.dart';
@@ -17,9 +19,11 @@ class StockInPage extends StatefulWidget {
   const StockInPage({
     super.key,
     required this.transactionBloc,
+    required this.stockInBloc,
   });
 
   final TransactionBloc transactionBloc;
+  final StockInBloc stockInBloc;
 
   @override
   State<StockInPage> createState() => _StockInPageState();
@@ -45,142 +49,172 @@ class _StockInPageState extends State<StockInPage> {
       appBar: const AppBarWithTitleOnly(
         appBarTitle: 'Stok Masuk',
       ),
-      body: BlocConsumer<TransactionBloc, TransactionState>(
+      body: BlocListener<StockInBloc, StockInState>(
         listener: (context, state) {
-          if (state is GetProductListLoaded) {
-            choiceProducts = state.products;
-            if (isFromOnScan && choiceProducts.length == 1) {
-              onSelectedProduct(choiceProducts.first);
-            }
+          if (state is SubmitStockLoading) {
+            showDialog(
+              context: context,
+              builder: (context) => const CircularProgress(),
+            );
+          }
+          if (state is SubmitStockError) {
+            Navigator.pop(context);
+            SnackbarDialog().show(
+              context: context,
+              message: 'Stok gagal dimasukan, silakan coba lagi',
+              type: SnackbarDialogType.failed,
+            );
+          }
+          if (state is SubmitStockSuccess) {
+            Navigator.pop(context);
+            SnackbarDialog().show(
+              context: context,
+              message: 'Stok baru berhasil disimpan',
+              type: SnackbarDialogType.success,
+            );
+            resetSelectedProduct();
           }
         },
-        builder: (context, state) {
-          return Stack(
-            children: [
-              SingleChildScrollView(
-                child: Container(
-                  height: ScreenUtil.screenHeight,
-                  padding: EdgeInsets.all(LayoutDimen.dimen_16.w),
-                  child: Column(
-                    children: [
-                      // TODO(Melly): scanner finder will be wrapped as widget
-                      // to be used on sale and stock_in
-                      ScannerFinder(
-                        labelText: 'Kode',
-                        textEditController: scannerTextEditController,
-                        holdScanner: holdScannerFlag,
-                        keyboardType: TextInputType.number,
-                        onChanged: (value) {
-                          addEventGetProducts(value);
-                          setState(() {
-                            isFromOnScan = false;
-                          });
-                        },
-                        onScan: (value) {
-                          addEventGetProducts(value);
-                          setState(() {
-                            isFromOnScan = true;
-                          });
-                        },
-                        onSelected: (index) {
-                          onSelectedProduct(choiceProducts[index]);
-                        },
-                        optionList: choiceProducts
-                            .map(
-                              (e) => Padding(
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: LayoutDimen.dimen_16.w,
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      e.code,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
-                                        fontSize: LayoutDimen.dimen_18.minSp,
-                                        fontWeight: FontWeight.w200,
+        child: BlocConsumer<TransactionBloc, TransactionState>(
+          listener: (context, state) {
+            if (state is GetProductListLoaded) {
+              choiceProducts = state.products;
+              if (isFromOnScan && choiceProducts.length == 1) {
+                onSelectedProduct(choiceProducts.first);
+              }
+            }
+          },
+          builder: (context, state) {
+            return Stack(
+              children: [
+                SingleChildScrollView(
+                  child: Container(
+                    height: ScreenUtil.screenHeight,
+                    padding: EdgeInsets.all(LayoutDimen.dimen_16.w),
+                    child: Column(
+                      children: [
+                        // TODO(Melly): scanner finder will be wrapped as widget
+                        // to be used on sale and stock_in
+                        ScannerFinder(
+                          labelText: 'Kode',
+                          textEditController: scannerTextEditController,
+                          holdScanner: holdScannerFlag,
+                          keyboardType: TextInputType.number,
+                          onChanged: (value) {
+                            addEventGetProducts(value);
+                            setState(() {
+                              isFromOnScan = false;
+                            });
+                          },
+                          onScan: (value) {
+                            addEventGetProducts(value);
+                            setState(() {
+                              isFromOnScan = true;
+                            });
+                          },
+                          onSelected: (index) {
+                            onSelectedProduct(choiceProducts[index]);
+                          },
+                          optionList: choiceProducts
+                              .map(
+                                (e) => Padding(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: LayoutDimen.dimen_16.w,
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        e.code,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                          fontSize: LayoutDimen.dimen_18.minSp,
+                                          fontWeight: FontWeight.w200,
+                                        ),
                                       ),
-                                    ),
-                                    Text(
-                                      e.name,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
-                                        fontSize: LayoutDimen.dimen_16.minSp,
-                                        fontWeight: FontWeight.w600,
+                                      Text(
+                                        e.name,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                          fontSize: LayoutDimen.dimen_16.minSp,
+                                          fontWeight: FontWeight.w600,
+                                        ),
                                       ),
-                                    ),
-                                    SizedBox(
-                                      height: LayoutDimen.dimen_8.h,
-                                    )
-                                  ],
+                                      SizedBox(
+                                        height: LayoutDimen.dimen_8.h,
+                                      )
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            )
-                            .toList(),
-                        addProductAction: () {},
-                      ),
-                      SizedBox(
-                        height: LayoutDimen.dimen_12.h,
-                      ),
-                      if (selectedProduct != null) ...[
-                        productCard(selectedProduct!),
+                              )
+                              .toList(),
+                          addProductAction: () {},
+                        ),
                         SizedBox(
                           height: LayoutDimen.dimen_12.h,
                         ),
-                        InputBasic(
-                          labelText: 'Jumlah',
-                          margin: EdgeInsets.zero,
-                          keyboardType: TextInputType.number,
-                          onChanged: (p0) {
-                            setState(() {
-                              totalProduct = p0;
-                            });
-                          },
-                        ),
-                        InputBasic(
-                          labelText: 'Harga purchase (Rp)',
-                          keyboardType: TextInputType.number,
-                          margin: EdgeInsets.zero,
-                          onChanged: (p0) {
-                            setState(() {
-                              purchasePrice = p0;
-                            });
-                          },
-                        ),
+                        if (selectedProduct != null) ...[
+                          productCard(selectedProduct!),
+                          SizedBox(
+                            height: LayoutDimen.dimen_12.h,
+                          ),
+                          InputBasic(
+                            labelText: 'Jumlah',
+                            margin: EdgeInsets.zero,
+                            keyboardType: TextInputType.number,
+                            onChanged: (p0) {
+                              setState(() {
+                                totalProduct = p0;
+                              });
+                            },
+                          ),
+                          InputBasic(
+                            labelText: 'Harga purchase (Rp)',
+                            keyboardType: TextInputType.number,
+                            margin: EdgeInsets.zero,
+                            onChanged: (p0) {
+                              setState(() {
+                                purchasePrice = p0;
+                              });
+                            },
+                          ),
+                        ],
                       ],
+                    ),
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.only(bottom: LayoutDimen.dimen_32.h),
+                  height: ScreenUtil.screenHeight,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      FlatButton(
+                        title: 'Masukan',
+                        onPressed: selectedProduct != null &&
+                                totalProduct.isNotEmpty &&
+                                purchasePrice.isNotEmpty
+                            ? () {
+                                widget.stockInBloc.add(
+                                  SubmitStockInEvent(
+                                    StockInEntity(
+                                      productEntity: selectedProduct!,
+                                      totalPcs: int.parse(totalProduct),
+                                      purchaseNet: double.parse(purchasePrice),
+                                    ),
+                                  ),
+                                );
+                              }
+                            : null,
+                      ),
                     ],
                   ),
                 ),
-              ),
-              Container(
-                padding: EdgeInsets.only(bottom: LayoutDimen.dimen_32.h),
-                height: ScreenUtil.screenHeight,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    FlatButton(
-                      title: 'Masukan',
-                      onPressed: selectedProduct != null &&
-                              totalProduct.isNotEmpty &&
-                              purchasePrice.isNotEmpty
-                          ? () {
-                              Navigator.pop(context);
-                              Navigator.pushNamed(context, Routes.stockIn);
-                              SnackbarDialog().show(
-                                context: context,
-                                message: 'Stok baru berhasil disimpan',
-                                type: SnackbarDialogType.success,
-                              );
-                            }
-                          : null,
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          );
-        },
+              ],
+            );
+          },
+        ),
       ),
     );
   }
@@ -258,14 +292,7 @@ class _StockInPageState extends State<StockInPage> {
                 ],
               ),
               InkWell(
-                onTap: () {
-                  setState(() {
-                    selectedProduct = null;
-                    purchasePrice = '';
-                    totalProduct = '';
-                    holdScannerFlag = false;
-                  });
-                },
+                onTap: resetSelectedProduct,
                 child: Icon(
                   Icons.cancel_outlined,
                   size: LayoutDimen.dimen_38.w,
@@ -277,5 +304,18 @@ class _StockInPageState extends State<StockInPage> {
         ),
       ),
     );
+  }
+
+  void resetSelectedProduct() {
+    setState(() {
+      choiceProducts.clear();
+      selectedProduct = null;
+      purchasePrice = '';
+      totalProduct = '';
+      holdScannerFlag = false;
+      isFromOnScan = false;
+      scannerTextEditController.clear();
+      FocusManager.instance.primaryFocus?.unfocus();
+    });
   }
 }
