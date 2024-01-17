@@ -21,7 +21,7 @@ class SnackbarDialog {
         padding: EdgeInsets.all(LayoutDimen.dimen_16.w),
         behavior: SnackBarBehavior.floating,
         backgroundColor: Colors.transparent,
-        duration: const Duration(seconds: 3),
+        duration: const Duration(milliseconds: 1500),
         content: Material(
           elevation: 2.0,
           borderRadius: BorderRadius.circular(LayoutDimen.dimen_30.w),
