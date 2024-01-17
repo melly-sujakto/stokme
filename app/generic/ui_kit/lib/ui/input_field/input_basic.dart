@@ -14,6 +14,7 @@ class InputBasic extends StatefulWidget {
     this.onChanged,
     this.margin,
     this.keyboardType,
+    this.suffixIcon,
   });
 
   final String labelText;
@@ -22,6 +23,7 @@ class InputBasic extends StatefulWidget {
   final bool obscureText;
   final bool useSearchIcon;
   final void Function(String)? onChanged;
+  final Widget? suffixIcon;
   final TextInputType? keyboardType;
 
   /// if [margin] is null, default value is
@@ -89,19 +91,22 @@ class _InputBasicState extends State<InputBasic> {
                   fit: BoxFit.fitWidth,
                 )
               : null,
-          suffixIcon: widget.obscureText
-              ? InkWell(
-                  onTap: () {
-                    setState(() {
-                      visibilityText = !visibilityText;
-                    });
-                  },
-                  child: Icon(
-                    visibilityText ? Icons.visibility_off : Icons.visibility,
-                    color: CustomColors.neutral.c60,
-                  ),
-                )
-              : null,
+          suffixIcon: widget.suffixIcon ??
+              (widget.obscureText
+                  ? InkWell(
+                      onTap: () {
+                        setState(() {
+                          visibilityText = !visibilityText;
+                        });
+                      },
+                      child: Icon(
+                        visibilityText
+                            ? Icons.visibility_off
+                            : Icons.visibility,
+                        color: CustomColors.neutral.c60,
+                      ),
+                    )
+                  : null),
         ),
         onChanged: widget.onChanged,
       ),
