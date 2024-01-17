@@ -1,5 +1,5 @@
 import 'package:feature_transaction/common/injector/injector.dart';
-import 'package:feature_transaction/presentation/bloc/print_bloc.dart';
+import 'package:feature_transaction/presentation/blocs/print_bloc/print_bloc.dart';
 import 'package:feature_transaction/presentation/journey/sale/bloc/sale_bloc.dart';
 import 'package:feature_transaction/presentation/journey/sale/screens/sale_input_page.dart';
 import 'package:feature_transaction/presentation/journey/sale/screens/sale_result_page.dart';

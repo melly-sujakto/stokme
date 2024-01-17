@@ -1,5 +1,5 @@
 import 'package:feature_transaction/domain/usecase/sale_usecase.dart';
-import 'package:feature_transaction/presentation/bloc/print_bloc.dart';
+import 'package:feature_transaction/presentation/blocs/print_bloc/print_bloc.dart';
 import 'package:feature_transaction/presentation/journey/sale/bloc/sale_bloc.dart';
 import 'package:firebase_library/firebase_library.dart';
 import 'package:library_injection/annotations.dart';
