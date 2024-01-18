@@ -4,6 +4,7 @@ import 'package:feature_transaction/presentation/blocs/transaction_bloc/transact
 import 'package:feature_transaction/presentation/journey/stock_in/bloc/stock_in_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:module_common/presentation/bloc/base_bloc.dart';
+import 'package:module_common/presentation/widgets/product_detail_widget.dart';
 import 'package:ui_kit/common/constants/layout_dimen.dart';
 import 'package:ui_kit/theme/colors.dart';
 import 'package:ui_kit/ui/app_bar/app_bar_with_title_only.dart';
@@ -149,7 +150,19 @@ class _StockInPageState extends State<StockInPage> {
                                 ),
                               )
                               .toList(),
-                          addProductAction: () {},
+                          addProductAction: () {
+                            ProductDetail().showBottomSheet(
+                              context,
+                              // TODO(melly): handle initial product
+                              product: ProductEntity(
+                                code: scannerTextEditController.text,
+                                name: '',
+                                storeId: '',
+                              ),
+                              mainCallback: (_) {},
+                              deleteCallback: () {},
+                            );
+                          },
                         ),
                         SizedBox(
                           height: LayoutDimen.dimen_12.h,

@@ -3,7 +3,7 @@ import 'package:data_abstraction/utils/json_utils.dart';
 
 class ProductModel extends ProductEntity {
   ProductModel({
-    required super.id,
+    super.id,
     required super.code,
     required super.name,
     super.saleNet,
@@ -15,7 +15,7 @@ class ProductModel extends ProductEntity {
       id: json['id'],
       code: json['code'],
       name: json['name'],
-      saleNet: JsonUtils.validateIntOrDouble( json['sale_net']),
+      saleNet: JsonUtils.validateIntOrDouble(json['sale_net']),
       storeId: json['store_id'],
     );
   }

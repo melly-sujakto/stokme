@@ -91,7 +91,7 @@ class TransactionUsecase {
     );
 
     await _increaseStock(
-      productId: stockIn.productEntity.id,
+      productId: stockIn.productEntity.id!,
       totalPcs: stockIn.totalPcs,
     );
   }

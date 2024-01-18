@@ -36,7 +36,7 @@ class ProductUsecase {
   Future<void> updateProduct(ProductEntity productEntity) async {
     await firebaseLibrary.updateDocument(
       collectionName: collectionName,
-      id: productEntity.id,
+      id: productEntity.id!,
       document: ProductModel.fromEntity(productEntity).toFirestoreJson(),
     );
   }
