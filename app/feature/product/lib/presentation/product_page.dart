@@ -1,10 +1,10 @@
 import 'package:data_abstraction/entity/product_entity.dart';
 import 'package:feature_product/presentation/bloc/product_bloc.dart';
 import 'package:feature_product/presentation/product_constants.dart';
-import 'package:feature_product/presentation/widgets/product_detail_content.dart';
 import 'package:flutter/material.dart';
 import 'package:module_common/i18n/i18n_extension.dart';
 import 'package:module_common/presentation/bloc/base_bloc.dart';
+import 'package:module_common/presentation/widgets/product_detail_widget.dart';
 import 'package:ui_kit/common/constants/layout_dimen.dart';
 import 'package:ui_kit/extensions/string_extension.dart';
 import 'package:ui_kit/theme/colors.dart';
@@ -180,22 +180,14 @@ class _ProductPageState extends State<ProductPage> {
             LayoutDimen.dimen_10.w,
           ),
           onTap: () {
-            showModalBottomSheet(
-              context: context,
-              isScrollControlled: true,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(
-                    LayoutDimen.dimen_30.w,
-                  ),
-                  topRight: Radius.circular(
-                    LayoutDimen.dimen_30.w,
-                  ),
-                ),
-              ),
-              builder: (context) => ProductDetailContent(
-                product: product,
-                bloc: widget.bloc,
+            ProductDetail().showBottomSheet(
+              context,
+              product: product,
+              mainCallback: (product) {
+                widget.bloc.add(UpdateProductEvent(product));
+              },
+              deleteCallback: () => widget.bloc.add(
+                DeleteProductEvent(product),
               ),
             );
           },

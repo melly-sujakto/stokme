@@ -1,7 +1,6 @@
 import 'package:data_abstraction/entity/product_entity.dart';
-import 'package:feature_product/presentation/bloc/product_bloc.dart';
-import 'package:feature_product/presentation/product_constants.dart';
 import 'package:flutter/material.dart';
+import 'package:module_common/common/constant/translation_constants.dart';
 import 'package:module_common/i18n/i18n_extension.dart';
 import 'package:ui_kit/common/constants/layout_dimen.dart';
 import 'package:ui_kit/theme/colors.dart';
@@ -10,14 +9,45 @@ import 'package:ui_kit/ui/dialog/confirmation_dialog.dart';
 import 'package:ui_kit/ui/input_field/input_basic.dart';
 import 'package:ui_kit/utils/screen_utils.dart';
 
+class ProductDetail {
+  void showBottomSheet(
+    BuildContext context, {
+    required ProductEntity product,
+    required void Function(ProductEntity product) mainCallback,
+    required void Function() deleteCallback,
+  }) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(
+            LayoutDimen.dimen_30.w,
+          ),
+          topRight: Radius.circular(
+            LayoutDimen.dimen_30.w,
+          ),
+        ),
+      ),
+      builder: (context) => ProductDetailContent(
+        product: product,
+        deleteCallback: deleteCallback,
+        mainCallback: mainCallback,
+      ),
+    );
+  }
+}
+
 class ProductDetailContent extends StatelessWidget {
   const ProductDetailContent({
     super.key,
     required this.product,
-    required this.bloc,
+    required this.mainCallback,
+    required this.deleteCallback,
   });
   final ProductEntity product;
-  final ProductBloc bloc;
+  final void Function(ProductEntity product) mainCallback;
+  final void Function() deleteCallback;
 
   @override
   Widget build(BuildContext context) {
@@ -72,14 +102,15 @@ class ProductDetailContent extends StatelessWidget {
                       ),
                       InkWell(
                         onTap: () {
-                          // TODO(Melly): move to strings class
                           ConfirmationDialog(
-                            descriptionText: 'Hapus produk ini?',
-                            cancelText: 'No',
-                            confirmText: 'Yes',
+                            descriptionText: TranslationConstants
+                                .deleteConfirmation
+                                .i18n(context),
+                            cancelText: TranslationConstants.no.i18n(context),
+                            confirmText: TranslationConstants.yes.i18n(context),
                             onConfirmed: () {
                               Navigator.pop(context);
-                              bloc.add(DeleteProductEvent(product));
+                              deleteCallback();
                             },
                           ).show(context);
                         },
@@ -96,7 +127,7 @@ class ProductDetailContent extends StatelessWidget {
                   ),
                   InputBasic(
                     controller: nameTextEditController,
-                    labelText: ProductStrings.nameLabelText.i18n(context),
+                    labelText: TranslationConstants.nameLabelText.i18n(context),
                     margin: EdgeInsets.zero,
                     onChanged: (value) {
                       name = value;
@@ -108,7 +139,8 @@ class ProductDetailContent extends StatelessWidget {
                   InputBasic(
                     controller: priceTextEditController,
                     keyboardType: TextInputType.number,
-                    labelText: ProductStrings.priceLabelText.i18n(context),
+                    labelText:
+                        TranslationConstants.priceLabelText.i18n(context),
                     margin: EdgeInsets.zero,
                     onChanged: (value) {
                       price = value;
@@ -118,25 +150,23 @@ class ProductDetailContent extends StatelessWidget {
                     height: LayoutDimen.dimen_18.h,
                   ),
                   FlatButton(
-                    title: ProductStrings.editButtonTitle.i18n(context),
+                    title: TranslationConstants.editText.i18n(context),
                     onPressed: () {
-                      // TODO(Melly): move to strings class
                       ConfirmationDialog(
-                        descriptionText: 'Ubah produk ini?',
-                        cancelText: 'No',
-                        confirmText: 'Yes',
+                        descriptionText:
+                            TranslationConstants.editConfirmation.i18n(context),
+                        cancelText: TranslationConstants.no.i18n(context),
+                        confirmText: TranslationConstants.yes.i18n(context),
                         onConfirmed: () {
                           Navigator.pop(context);
-                          bloc.add(
-                            UpdateProductEvent(
-                              ProductEntity(
-                                id: product.id,
-                                code: product.code,
-                                storeId: product.storeId,
-                                name: name,
-                                saleNet:
-                                    price.isEmpty ? null : double.parse(price),
-                              ),
+                          mainCallback(
+                            ProductEntity(
+                              id: product.id,
+                              code: product.code,
+                              storeId: product.storeId,
+                              name: name,
+                              saleNet:
+                                  price.isEmpty ? null : double.parse(price),
                             ),
                           );
                         },

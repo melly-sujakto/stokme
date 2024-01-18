@@ -9,6 +9,8 @@ environment:
   flutter: ">=1.17.0"
 
 dependencies:
+  data_abstraction:
+    path: ../data_abstraction
   extensions:
     path: ../../library/extensions
   flutter:
