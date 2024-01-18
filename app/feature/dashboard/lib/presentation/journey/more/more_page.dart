@@ -4,6 +4,7 @@ import 'package:feature_dashboard/presentation/dashboard_constants.dart';
 import 'package:feature_dashboard/presentation/journey/more/bloc/more_bloc.dart';
 import 'package:feature_dashboard/presentation/journey/more/more_contants.dart';
 import 'package:flutter/material.dart';
+import 'package:module_common/common/constant/translation_constants.dart';
 import 'package:module_common/common/enum/languages.dart';
 import 'package:module_common/i18n/i18n_extension.dart';
 import 'package:module_common/presentation/bloc/base_bloc.dart';
@@ -110,8 +111,8 @@ class MorePage extends StatelessWidget {
           ConfirmationDialog(
             assetPath: MoreAssets.logoutDialogIcon,
             descriptionText: MoreStrings.logoutDialogDesc.i18n(context),
-            cancelText: MoreStrings.no.i18n(context),
-            confirmText: MoreStrings.yes.i18n(context),
+            cancelText: TranslationConstants.no.i18n(context),
+            confirmText: TranslationConstants.yes.i18n(context),
             onConfirmed: () {
               Injector.resolve<MoreBloc>().add(LogoutEvent());
             },

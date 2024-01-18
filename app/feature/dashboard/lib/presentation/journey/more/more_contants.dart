@@ -1,8 +1,6 @@
 abstract class MoreStrings {
   static const logout = 'more.item.logout';
   static const logoutDialogDesc = 'more.dialog.logoutDialogDesc';
-  static const yes = 'common.title.yes';
-  static const no = 'common.title.no';
 }
 
 abstract class MoreAssets {
