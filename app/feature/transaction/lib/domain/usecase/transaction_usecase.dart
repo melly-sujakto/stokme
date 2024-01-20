@@ -132,4 +132,11 @@ class TransactionUsecase {
       );
     }
   }
+
+  Future<void> addProduct(ProductEntity productEntity) async {
+    await firebaseLibrary.createDocument(
+      collectionName: productCollectionName,
+      data: ProductModel.fromEntity(productEntity).toFirestoreJson(),
+    );
+  }
 }

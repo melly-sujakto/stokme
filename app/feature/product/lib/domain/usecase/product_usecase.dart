@@ -33,6 +33,13 @@ class ProductUsecase {
     return jsonList.map(ProductModel.fromJson).toList();
   }
 
+  Future<void> addProduct(ProductEntity productEntity) async {
+    await firebaseLibrary.createDocument(
+      collectionName: collectionName,
+      data: ProductModel.fromEntity(productEntity).toFirestoreJson(),
+    );
+  }
+
   Future<void> updateProduct(ProductEntity productEntity) async {
     await firebaseLibrary.updateDocument(
       collectionName: collectionName,

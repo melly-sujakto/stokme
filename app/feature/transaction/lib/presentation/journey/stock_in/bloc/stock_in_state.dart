@@ -9,3 +9,9 @@ class SubmitStockLoading extends StockInState {}
 class SubmitStockError extends StockInState {}
 
 class SubmitStockSuccess extends StockInState {}
+
+class AddProductLoading extends StockInState {}
+
+class AddProductSuccess extends StockInState {}
+
+class AddProductError extends StockInState {}

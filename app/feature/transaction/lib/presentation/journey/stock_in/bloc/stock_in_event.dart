@@ -7,3 +7,9 @@ class SubmitStockInEvent extends StockInEvent {
 
   SubmitStockInEvent(this.stockInEntity);
 }
+
+class AddProductEvent extends StockInEvent {
+  final ProductEntity product;
+
+  AddProductEvent(this.product);
+}
