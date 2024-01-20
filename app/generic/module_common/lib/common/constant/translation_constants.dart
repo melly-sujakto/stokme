@@ -1,6 +1,7 @@
 abstract class TranslationConstants {
   static const yes = 'common.title.yes';
   static const no = 'common.title.no';
+  static const code = 'common.title.code';
   static const editText = 'common.edit';
   static const addProductText = 'common.product.add';
   static const deleteConfirmation = 'common.product.deleteConfirmation';

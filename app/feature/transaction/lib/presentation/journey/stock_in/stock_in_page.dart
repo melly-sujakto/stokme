@@ -2,7 +2,10 @@ import 'package:data_abstraction/entity/product_entity.dart';
 import 'package:data_abstraction/entity/stock_in_entity.dart';
 import 'package:feature_transaction/presentation/blocs/transaction_bloc/transaction_bloc.dart';
 import 'package:feature_transaction/presentation/journey/stock_in/bloc/stock_in_bloc.dart';
+import 'package:feature_transaction/presentation/journey/stock_in/stock_in_constants.dart';
 import 'package:flutter/material.dart';
+import 'package:module_common/common/constant/translation_constants.dart';
+import 'package:module_common/i18n/i18n_extension.dart';
 import 'package:module_common/presentation/bloc/base_bloc.dart';
 import 'package:module_common/presentation/widgets/product_detail_widget.dart';
 import 'package:ui_kit/common/constants/layout_dimen.dart';
@@ -47,8 +50,8 @@ class _StockInPageState extends State<StockInPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: CustomColors.neutral.c95,
-      appBar: const AppBarWithTitleOnly(
-        appBarTitle: 'Stok Masuk',
+      appBar: AppBarWithTitleOnly(
+        appBarTitle: StockInConstants.appTitle.i18n(context),
       ),
       body: BlocListener<StockInBloc, StockInState>(
         listener: (context, state) {
@@ -62,7 +65,7 @@ class _StockInPageState extends State<StockInPage> {
             Navigator.pop(context);
             SnackbarDialog().show(
               context: context,
-              message: 'Stok gagal dimasukan, silakan coba lagi',
+              message: StockInConstants.failedInputStockMessage.i18n(context),
               type: SnackbarDialogType.failed,
             );
           }
@@ -70,7 +73,7 @@ class _StockInPageState extends State<StockInPage> {
             Navigator.pop(context);
             SnackbarDialog().show(
               context: context,
-              message: 'Stok baru berhasil disimpan',
+              message: StockInConstants.successInputStockMessage.i18n(context),
               type: SnackbarDialogType.success,
             );
             resetSelectedProduct();
@@ -97,7 +100,7 @@ class _StockInPageState extends State<StockInPage> {
                         // TODO(Melly): scanner finder will be wrapped as widget
                         // to be used on sale and stock_in
                         ScannerFinder(
-                          labelText: 'Kode',
+                          labelText: TranslationConstants.code.i18n(context),
                           textEditController: scannerTextEditController,
                           holdScanner: holdScannerFlag,
                           keyboardType: TextInputType.number,
@@ -150,19 +153,22 @@ class _StockInPageState extends State<StockInPage> {
                                 ),
                               )
                               .toList(),
-                          addProductAction: () {
-                            ProductDetail().showBottomSheet(
-                              context,
-                              // TODO(melly): handle initial product
-                              product: ProductEntity(
-                                code: scannerTextEditController.text,
-                                name: '',
-                                storeId: '',
-                              ),
-                              mainCallback: (_) {},
-                              deleteCallback: () {},
-                            );
-                          },
+                          addProductAction:
+                              scannerTextEditController.text.isNotEmpty
+                                  ? () {
+                                      ProductDetail().showBottomSheet(
+                                        context,
+                                        // TODO(melly): handle initial product
+                                        product: ProductEntity(
+                                          code: scannerTextEditController.text,
+                                          name: '',
+                                          storeId: '',
+                                        ),
+                                        mainCallback: (_) {},
+                                        deleteCallback: () {},
+                                      );
+                                    }
+                                  : () {},
                         ),
                         SizedBox(
                           height: LayoutDimen.dimen_12.h,
@@ -173,7 +179,7 @@ class _StockInPageState extends State<StockInPage> {
                             height: LayoutDimen.dimen_12.h,
                           ),
                           InputBasic(
-                            labelText: 'Jumlah',
+                            labelText: StockInConstants.totalPcs.i18n(context),
                             margin: EdgeInsets.zero,
                             keyboardType: TextInputType.number,
                             onChanged: (p0) {
@@ -183,7 +189,8 @@ class _StockInPageState extends State<StockInPage> {
                             },
                           ),
                           InputBasic(
-                            labelText: 'Harga purchase (Rp)',
+                            labelText:
+                                StockInConstants.purchaseNet.i18n(context),
                             keyboardType: TextInputType.number,
                             margin: EdgeInsets.zero,
                             onChanged: (p0) {
@@ -204,7 +211,7 @@ class _StockInPageState extends State<StockInPage> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       FlatButton(
-                        title: 'Masukan',
+                        title: StockInConstants.input.i18n(context),
                         onPressed: selectedProduct != null &&
                                 totalProduct.isNotEmpty &&
                                 purchasePrice.isNotEmpty

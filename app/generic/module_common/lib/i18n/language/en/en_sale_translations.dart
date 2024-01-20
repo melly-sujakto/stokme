@@ -17,4 +17,11 @@ final Map<String, String> translations = {
   'sale.review.price': 'Price',
   'sale.review.totalPcs': 'Total Pcs',
   'sale.button.input': 'Input',
+  'transaction.stockIn.title': 'Stock In',
+  'transaction.stockIn.failedInputStockMessage':
+      'Failed input product, please try again',
+  'transaction.stockIn.successInputStockMessage': 'Success input new stock',
+  'transaction.stockIn.totalPcs': 'Total Pcs',
+  'transaction.stockIn.purchaseNet': 'Purchase Net (Rp)',
+  'transaction.stockIn.input': 'Input',
 };

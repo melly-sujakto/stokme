@@ -3,6 +3,7 @@
 final Map<String, String> translations = {
   'common.title.yes': 'Ya',
   'common.title.no': 'Tidak',
+  'common.title.code': 'Kode',
   'common.edit': 'Ubah',
   'common.product.add': 'Tambah Produk',
   'common.product.deleteConfirmation': 'Hapus produk ini?',
