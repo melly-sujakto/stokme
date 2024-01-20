@@ -8,4 +8,7 @@ final Map<String, String> translations = {
   'common.product.editConfirmation': 'Edit this product?',
   'common.product.nameLabelText': 'Name',
   'common.product.priceLabelText': 'Sale net (optional)',
+  'common.product.failedAddProductMessage':
+      'Add product failed, please try again',
+  'common.product.successAddProductMessage': 'Product has been added',
 };

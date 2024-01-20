@@ -14,7 +14,7 @@ class ProductDetail {
     BuildContext context, {
     required ProductEntity product,
     required void Function(ProductEntity product) mainCallback,
-    required void Function() deleteCallback,
+    void Function()? deleteCallback,
     ProductDetailContentType type = ProductDetailContentType.add,
   }) {
     showModalBottomSheet(
@@ -47,12 +47,12 @@ class ProductDetailContent extends StatefulWidget {
     super.key,
     required this.product,
     required this.mainCallback,
-    required this.deleteCallback,
+    this.deleteCallback,
     required this.type,
   });
   final ProductEntity product;
   final void Function(ProductEntity product) mainCallback;
-  final void Function() deleteCallback;
+  final void Function()? deleteCallback;
   final ProductDetailContentType type;
 
   @override
@@ -125,27 +125,29 @@ class _ProductDetailContentState extends State<ProductDetailContent> {
                             fontWeight: FontWeight.w500,
                           ),
                         ),
-                        InkWell(
-                          onTap: () {
-                            ConfirmationDialog(
-                              descriptionText: TranslationConstants
-                                  .deleteConfirmation
-                                  .i18n(context),
-                              cancelText: TranslationConstants.no.i18n(context),
-                              confirmText:
-                                  TranslationConstants.yes.i18n(context),
-                              onConfirmed: () {
-                                Navigator.pop(context);
-                                widget.deleteCallback();
-                              },
-                            ).show(context);
-                          },
-                          child: Icon(
-                            Icons.delete,
-                            size: LayoutDimen.dimen_30.w,
-                            color: CustomColors.neutral.c30,
+                        if (widget.deleteCallback != null)
+                          InkWell(
+                            onTap: () {
+                              ConfirmationDialog(
+                                descriptionText: TranslationConstants
+                                    .deleteConfirmation
+                                    .i18n(context),
+                                cancelText:
+                                    TranslationConstants.no.i18n(context),
+                                confirmText:
+                                    TranslationConstants.yes.i18n(context),
+                                onConfirmed: () {
+                                  Navigator.pop(context);
+                                  widget.deleteCallback!();
+                                },
+                              ).show(context);
+                            },
+                            child: Icon(
+                              Icons.delete,
+                              size: LayoutDimen.dimen_30.w,
+                              color: CustomColors.neutral.c30,
+                            ),
                           ),
-                        ),
                       ],
                     )
                   else

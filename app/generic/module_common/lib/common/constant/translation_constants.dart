@@ -8,4 +8,8 @@ abstract class TranslationConstants {
   static const editConfirmation = 'common.product.editConfirmation';
   static const nameLabelText = 'common.product.nameLabelText';
   static const priceLabelText = 'common.product.priceLabelText';
+  static const failedAddProductMessage =
+      'common.product.failedAddProductMessage';
+  static const successAddProductMessage =
+      'common.product.successAddProductMessage';
 }

@@ -55,7 +55,7 @@ class _StockInPageState extends State<StockInPage> {
       ),
       body: BlocListener<StockInBloc, StockInState>(
         listener: (context, state) {
-          if (state is SubmitStockLoading) {
+          if (state is SubmitStockLoading || state is AddProductLoading) {
             showDialog(
               context: context,
               builder: (context) => const CircularProgress(),
@@ -74,6 +74,26 @@ class _StockInPageState extends State<StockInPage> {
             SnackbarDialog().show(
               context: context,
               message: StockInConstants.successInputStockMessage.i18n(context),
+              type: SnackbarDialogType.success,
+            );
+            resetSelectedProduct();
+          }
+          if (state is AddProductError) {
+            Navigator.pop(context);
+            SnackbarDialog().show(
+              context: context,
+              message:
+                  TranslationConstants.failedAddProductMessage.i18n(context),
+              type: SnackbarDialogType.failed,
+            );
+          }
+          if (state is AddProductSuccess) {
+            Navigator.pop(context);
+            Navigator.pop(context);
+            SnackbarDialog().show(
+              context: context,
+              message:
+                  TranslationConstants.successAddProductMessage.i18n(context),
               type: SnackbarDialogType.success,
             );
             resetSelectedProduct();
@@ -164,8 +184,10 @@ class _StockInPageState extends State<StockInPage> {
                                           name: '',
                                           storeId: '',
                                         ),
-                                        mainCallback: (_) {},
-                                        deleteCallback: () {},
+                                        mainCallback: (product) {
+                                          widget.stockInBloc
+                                              .add(AddProductEvent(product));
+                                        },
                                       );
                                     }
                                   : () {},
