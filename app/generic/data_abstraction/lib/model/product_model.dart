@@ -30,12 +30,12 @@ class ProductModel extends ProductEntity {
     );
   }
 
-  Map<String, dynamic> toFirestoreJson() {
+  Map<String, dynamic> toFirestoreJson(String savedStoreId) {
     return {
       'code': code,
       'name': name,
       'sale_net': saleNet,
-      'store_id': storeId,
+      'store_id': savedStoreId,
     };
   }
 }

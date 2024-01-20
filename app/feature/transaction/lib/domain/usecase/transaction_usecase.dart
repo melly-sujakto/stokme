@@ -25,10 +25,16 @@ class TransactionUsecase {
   final receiptCollectionName = 'receipt';
   final collectionName = 'sale';
 
+  Future<String> _getStoreId() async {
+    final pref = await sharedPreferencesWrapper.getPrefs();
+    return pref.getString(GenericConstants.storeId)!;
+  }
+
   // TODO(melly): move to mobile_data project to be shareable
   Future<List<ProductEntity>> getProductList(String filterValue) async {
     final collectionRef = firebaseLibrary.selfQuery(productCollectionName);
     final querySnapshot = await collectionRef
+        .where('store_id', isEqualTo: await _getStoreId())
         .where('code', isGreaterThanOrEqualTo: filterValue)
         .where('code', isLessThan: '${filterValue}z')
         .limit(5)
@@ -136,7 +142,8 @@ class TransactionUsecase {
   Future<void> addProduct(ProductEntity productEntity) async {
     await firebaseLibrary.createDocument(
       collectionName: productCollectionName,
-      data: ProductModel.fromEntity(productEntity).toFirestoreJson(),
+      data: ProductModel.fromEntity(productEntity)
+          .toFirestoreJson(await _getStoreId()),
     );
   }
 }
