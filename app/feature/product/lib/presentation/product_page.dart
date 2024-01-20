@@ -182,6 +182,7 @@ class _ProductPageState extends State<ProductPage> {
           onTap: () {
             ProductDetail().showBottomSheet(
               context,
+              type: ProductDetailContentType.edit,
               product: product,
               mainCallback: (product) {
                 widget.bloc.add(UpdateProductEvent(product));

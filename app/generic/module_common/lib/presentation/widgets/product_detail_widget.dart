@@ -15,6 +15,7 @@ class ProductDetail {
     required ProductEntity product,
     required void Function(ProductEntity product) mainCallback,
     required void Function() deleteCallback,
+    ProductDetailContentType type = ProductDetailContentType.add,
   }) {
     showModalBottomSheet(
       context: context,
@@ -33,30 +34,53 @@ class ProductDetail {
         product: product,
         deleteCallback: deleteCallback,
         mainCallback: mainCallback,
+        type: type,
       ),
     );
   }
 }
 
-class ProductDetailContent extends StatelessWidget {
+enum ProductDetailContentType { add, edit }
+
+class ProductDetailContent extends StatefulWidget {
   const ProductDetailContent({
     super.key,
     required this.product,
     required this.mainCallback,
     required this.deleteCallback,
+    required this.type,
   });
   final ProductEntity product;
   final void Function(ProductEntity product) mainCallback;
   final void Function() deleteCallback;
+  final ProductDetailContentType type;
+
+  @override
+  State<ProductDetailContent> createState() => _ProductDetailContentState();
+}
+
+class _ProductDetailContentState extends State<ProductDetailContent> {
+  late String code;
+  late String name;
+  late String purchaseNet;
+
+  late final TextEditingController codeTextEditController;
+  late final TextEditingController nameTextEditController;
+  late final TextEditingController purchaseNetTextEditController;
+  @override
+  void initState() {
+    super.initState();
+    code = widget.product.code;
+    name = widget.product.name;
+    purchaseNet = widget.product.saleNet?.toString() ?? '';
+
+    codeTextEditController = TextEditingController(text: code);
+    nameTextEditController = TextEditingController(text: name);
+    purchaseNetTextEditController = TextEditingController(text: purchaseNet);
+  }
 
   @override
   Widget build(BuildContext context) {
-    String name = product.name;
-    String price = product.saleNet?.toString() ?? '';
-
-    final nameTextEditController = TextEditingController(text: name);
-    final priceTextEditController = TextEditingController(text: price);
-
     return Padding(
       // handle visibility of text field once keyboard shown
       padding: EdgeInsets.only(
@@ -90,38 +114,52 @@ class ProductDetailContent extends StatelessWidget {
                   SizedBox(
                     height: LayoutDimen.dimen_18.h,
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        product.code,
-                        style: TextStyle(
-                          fontSize: LayoutDimen.dimen_18.minSp,
-                          fontWeight: FontWeight.w500,
+                  if (widget.type == ProductDetailContentType.edit)
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          widget.product.code,
+                          style: TextStyle(
+                            fontSize: LayoutDimen.dimen_18.minSp,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
-                      ),
-                      InkWell(
-                        onTap: () {
-                          ConfirmationDialog(
-                            descriptionText: TranslationConstants
-                                .deleteConfirmation
-                                .i18n(context),
-                            cancelText: TranslationConstants.no.i18n(context),
-                            confirmText: TranslationConstants.yes.i18n(context),
-                            onConfirmed: () {
-                              Navigator.pop(context);
-                              deleteCallback();
-                            },
-                          ).show(context);
-                        },
-                        child: Icon(
-                          Icons.delete,
-                          size: LayoutDimen.dimen_30.w,
-                          color: CustomColors.neutral.c30,
+                        InkWell(
+                          onTap: () {
+                            ConfirmationDialog(
+                              descriptionText: TranslationConstants
+                                  .deleteConfirmation
+                                  .i18n(context),
+                              cancelText: TranslationConstants.no.i18n(context),
+                              confirmText:
+                                  TranslationConstants.yes.i18n(context),
+                              onConfirmed: () {
+                                Navigator.pop(context);
+                                widget.deleteCallback();
+                              },
+                            ).show(context);
+                          },
+                          child: Icon(
+                            Icons.delete,
+                            size: LayoutDimen.dimen_30.w,
+                            color: CustomColors.neutral.c30,
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
+                      ],
+                    )
+                  else
+                    InputBasic(
+                      controller: codeTextEditController,
+                      keyboardType: TextInputType.number,
+                      labelText: TranslationConstants.code.i18n(context),
+                      margin: EdgeInsets.zero,
+                      onChanged: (value) {
+                        setState(() {
+                          code = value;
+                        });
+                      },
+                    ),
                   SizedBox(
                     height: LayoutDimen.dimen_18.h,
                   ),
@@ -130,48 +168,74 @@ class ProductDetailContent extends StatelessWidget {
                     labelText: TranslationConstants.nameLabelText.i18n(context),
                     margin: EdgeInsets.zero,
                     onChanged: (value) {
-                      name = value;
+                      setState(() {
+                        name = value;
+                      });
                     },
                   ),
                   SizedBox(
                     height: LayoutDimen.dimen_18.h,
                   ),
                   InputBasic(
-                    controller: priceTextEditController,
+                    controller: purchaseNetTextEditController,
                     keyboardType: TextInputType.number,
                     labelText:
                         TranslationConstants.priceLabelText.i18n(context),
                     margin: EdgeInsets.zero,
                     onChanged: (value) {
-                      price = value;
+                      setState(() {
+                        purchaseNet = value;
+                      });
                     },
                   ),
                   SizedBox(
                     height: LayoutDimen.dimen_18.h,
                   ),
                   FlatButton(
-                    title: TranslationConstants.editText.i18n(context),
-                    onPressed: () {
-                      ConfirmationDialog(
-                        descriptionText:
-                            TranslationConstants.editConfirmation.i18n(context),
-                        cancelText: TranslationConstants.no.i18n(context),
-                        confirmText: TranslationConstants.yes.i18n(context),
-                        onConfirmed: () {
-                          Navigator.pop(context);
-                          mainCallback(
-                            ProductEntity(
-                              id: product.id,
-                              code: product.code,
-                              storeId: product.storeId,
-                              name: name,
-                              saleNet:
-                                  price.isEmpty ? null : double.parse(price),
-                            ),
-                          );
-                        },
-                      ).show(context);
-                    },
+                    title: widget.type == ProductDetailContentType.add
+                        ? TranslationConstants.addProductText.i18n(context)
+                        : TranslationConstants.editText.i18n(context),
+                    onPressed: code.isNotEmpty &&
+                            name.isNotEmpty &&
+                            purchaseNet.isNotEmpty
+                        ? widget.type == ProductDetailContentType.add
+                            ? () => widget.mainCallback(
+                                  ProductEntity(
+                                    id: widget.product.id,
+                                    code: code,
+                                    storeId: widget.product.storeId,
+                                    name: name,
+                                    saleNet: purchaseNet.isEmpty
+                                        ? null
+                                        : double.parse(purchaseNet),
+                                  ),
+                                )
+                            : () {
+                                ConfirmationDialog(
+                                  descriptionText: TranslationConstants
+                                      .editConfirmation
+                                      .i18n(context),
+                                  cancelText:
+                                      TranslationConstants.no.i18n(context),
+                                  confirmText:
+                                      TranslationConstants.yes.i18n(context),
+                                  onConfirmed: () {
+                                    Navigator.pop(context);
+                                    widget.mainCallback(
+                                      ProductEntity(
+                                        id: widget.product.id,
+                                        code: code,
+                                        storeId: widget.product.storeId,
+                                        name: name,
+                                        saleNet: purchaseNet.isEmpty
+                                            ? null
+                                            : double.parse(purchaseNet),
+                                      ),
+                                    );
+                                  },
+                                ).show(context);
+                              }
+                        : null,
                     margin: EdgeInsets.zero,
                   ),
                   SizedBox(
