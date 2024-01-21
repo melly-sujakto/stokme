@@ -155,9 +155,9 @@ class _ScannerFinderState extends State<ScannerFinder> {
                         ? InkWell(
                             onTap: widget.addProductAction,
                             child: Icon(
-                              Icons.add_box_rounded,
+                              Icons.add,
                               color: textEditController.text.isNotEmpty
-                                  ? CustomColors.secondary.c50
+                                  ? CustomColors.black
                                   : CustomColors.neutral.c70,
                               size: LayoutDimen.dimen_40.w,
                             ),
