@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:data_abstraction/entity/product_entity.dart';
 import 'package:data_abstraction/entity/receipt_entity.dart';
 import 'package:data_abstraction/entity/sale_entity.dart';
@@ -86,6 +88,13 @@ class TransactionUsecase {
         collectionName: collectionName,
         data: data,
       );
+      unawaited(
+        _updateStock(
+          productId: saleEntity.productEntity.id!,
+          totalPcs: saleEntity.total,
+          isIncrease: false,
+        ),
+      );
     }
   }
 
@@ -96,15 +105,17 @@ class TransactionUsecase {
       data: data,
     );
 
-    await _increaseStock(
+    await _updateStock(
       productId: stockIn.productEntity.id!,
       totalPcs: stockIn.totalPcs,
+      isIncrease: true,
     );
   }
 
-  Future<void> _increaseStock({
+  Future<void> _updateStock({
     required String productId,
     required int totalPcs,
+    required bool isIncrease,
   }) async {
     final collectionRef = firebaseLibrary.selfQuery(stockCollectionName);
     final querySnapshot = await collectionRef
@@ -133,10 +144,24 @@ class TransactionUsecase {
         id: jsonList.first['id'],
         document: {
           'product_id': productId,
-          'total_pcs': jsonList.first['total_pcs'] + totalPcs,
+          'total_pcs': _affectStock(
+            currentValue: jsonList.first['total_pcs'],
+            affectedValue: totalPcs,
+            isIncrease: isIncrease,
+          ),
         },
       );
     }
+  }
+
+  int _affectStock({
+    required int currentValue,
+    required int affectedValue,
+    required bool isIncrease,
+  }) {
+    return isIncrease
+        ? currentValue + affectedValue
+        : currentValue - affectedValue;
   }
 
   Future<void> addProduct(ProductEntity productEntity) async {
