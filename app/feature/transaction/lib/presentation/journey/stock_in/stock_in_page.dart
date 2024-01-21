@@ -178,7 +178,6 @@ class _StockInPageState extends State<StockInPage> {
                                   ? () {
                                       ProductDetail().showBottomSheet(
                                         context,
-                                        // TODO(melly): handle initial product
                                         product: ProductEntity(
                                           code: scannerTextEditController.text,
                                           name: '',
