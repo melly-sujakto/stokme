@@ -16,6 +16,7 @@ class ProductBloc extends BaseBloc<ProductEvent, ProductState> {
     on<GetProductListEvent>(_onGetProductListEvent);
     on<UpdateProductEvent>(_onUpdateProductEvent);
     on<DeleteProductEvent>(_onDeleteProductEvent);
+    on<AddProductEvent>(_onAddProductEvent);
   }
 
   FutureOr<void> _onGetProductListEvent(
@@ -102,6 +103,19 @@ class ProductBloc extends BaseBloc<ProductEvent, ProductState> {
       emit(DeleteSuccess());
     } catch (e) {
       emit(DeleteFailed());
+    }
+  }
+
+  FutureOr<void> _onAddProductEvent(
+    AddProductEvent event,
+    Emitter<ProductState> emit,
+  ) async {
+    emit(AddProductLoading());
+    try {
+      await productUsecase.addProduct(event.product);
+      emit(AddProductSuccess());
+    } catch (e) {
+      emit(AddProductError());
     }
   }
 }

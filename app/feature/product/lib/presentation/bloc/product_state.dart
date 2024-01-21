@@ -25,3 +25,9 @@ final class ProductListLoaded extends ProductState {
 
   ProductListLoaded(this.productList);
 }
+
+class AddProductLoading extends ProductState {}
+
+class AddProductSuccess extends ProductState {}
+
+class AddProductError extends ProductState {}

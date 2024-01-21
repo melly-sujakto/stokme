@@ -25,3 +25,9 @@ class DeleteProductEvent extends ProductEvent {
 
   DeleteProductEvent(this.productEntity);
 }
+
+class AddProductEvent extends ProductEvent {
+  final ProductEntity product;
+
+  AddProductEvent(this.product);
+}

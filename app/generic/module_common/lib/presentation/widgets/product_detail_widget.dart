@@ -7,15 +7,17 @@ import 'package:ui_kit/theme/colors.dart';
 import 'package:ui_kit/ui/button/flat_button.dart';
 import 'package:ui_kit/ui/dialog/confirmation_dialog.dart';
 import 'package:ui_kit/ui/input_field/input_basic.dart';
+import 'package:ui_kit/ui/scanner/scanner_finder.dart';
 import 'package:ui_kit/utils/screen_utils.dart';
 
 class ProductDetail {
   void showBottomSheet(
     BuildContext context, {
-    required ProductEntity product,
     required void Function(ProductEntity product) mainCallback,
+    ProductEntity? product,
     void Function()? deleteCallback,
     ProductDetailContentType type = ProductDetailContentType.add,
+    bool useScannerForCode = false,
   }) {
     showModalBottomSheet(
       context: context,
@@ -31,10 +33,16 @@ class ProductDetail {
         ),
       ),
       builder: (context) => ProductDetailContent(
-        product: product,
+        product: product ??
+            ProductEntity(
+              code: '',
+              name: '',
+              storeId: '',
+            ),
         deleteCallback: deleteCallback,
         mainCallback: mainCallback,
         type: type,
+        useScannerForCode: useScannerForCode,
       ),
     );
   }
@@ -49,11 +57,13 @@ class ProductDetailContent extends StatefulWidget {
     required this.mainCallback,
     this.deleteCallback,
     required this.type,
+    required this.useScannerForCode,
   });
   final ProductEntity product;
   final void Function(ProductEntity product) mainCallback;
   final void Function()? deleteCallback;
   final ProductDetailContentType type;
+  final bool useScannerForCode;
 
   @override
   State<ProductDetailContent> createState() => _ProductDetailContentState();
@@ -87,7 +97,9 @@ class _ProductDetailContentState extends State<ProductDetailContent> {
         bottom: MediaQuery.of(context).viewInsets.bottom,
       ),
       child: Container(
-        height: LayoutDimen.dimen_352.h,
+        height: widget.useScannerForCode
+            ? ScreenUtil.screenHeightDp * 0.65
+            : LayoutDimen.dimen_352.h,
         width: ScreenUtil.screenWidth,
         padding: EdgeInsets.symmetric(
           horizontal: LayoutDimen.dimen_16.w,
@@ -149,6 +161,20 @@ class _ProductDetailContentState extends State<ProductDetailContent> {
                             ),
                           ),
                       ],
+                    )
+                  else if (widget.useScannerForCode)
+                    ScannerFinder(
+                      autoActiveScanner: true,
+                      onChanged: (value) {
+                        setState(() {
+                          code = value;
+                        });
+                      },
+                      onScan: (value) {
+                        setState(() {
+                          code = value;
+                        });
+                      },
                     )
                   else
                     InputBasic(

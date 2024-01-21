@@ -2,6 +2,8 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
+import 'package:module_common/common/constant/translation_constants.dart';
+import 'package:module_common/i18n/i18n_extension.dart';
 import 'package:ui_kit/common/constants/layout_dimen.dart';
 import 'package:ui_kit/theme/colors.dart';
 import 'package:ui_kit/ui/input_field/input_basic.dart';
@@ -17,7 +19,7 @@ abstract class ScannerFinderConstants {
 class ScannerFinder extends StatefulWidget {
   const ScannerFinder({
     super.key,
-    required this.labelText,
+    this.labelText,
     required this.onChanged,
     required this.onScan,
     this.optionList = const [],
@@ -26,9 +28,11 @@ class ScannerFinder extends StatefulWidget {
     this.keyboardType,
     this.holdScanner = false,
     this.addProductAction,
+    // TODO(MELLY): activate feature by more value
+    this.autoActiveScanner = false,
   });
 
-  final String labelText;
+  final String? labelText;
   final void Function(String) onChanged;
   final void Function(String) onScan;
   final List<Widget> optionList;
@@ -36,6 +40,7 @@ class ScannerFinder extends StatefulWidget {
   final TextEditingController? textEditController;
   final TextInputType? keyboardType;
   final void Function()? addProductAction;
+  final bool autoActiveScanner;
 
   /// Set false to inactivate scanner sistem
   final bool holdScanner;
@@ -46,16 +51,17 @@ class ScannerFinder extends StatefulWidget {
 
 class _ScannerFinderState extends State<ScannerFinder> {
   final cameraController = MobileScannerController(
-    facing: CameraFacing.front,
+    facing: CameraFacing.back,
     // returnImage: true,
   );
   final player = AudioPlayer();
-  bool scannerActive = false;
+  late bool scannerActive;
   late final TextEditingController textEditController;
 
   @override
   void initState() {
     textEditController = widget.textEditController ?? TextEditingController();
+    scannerActive = widget.autoActiveScanner;
     super.initState();
   }
 
@@ -147,7 +153,8 @@ class _ScannerFinderState extends State<ScannerFinder> {
                 children: [
                   InputBasic(
                     controller: textEditController,
-                    labelText: widget.labelText,
+                    labelText: widget.labelText ??
+                        TranslationConstants.code.i18n(context),
                     onChanged: widget.onChanged,
                     margin: EdgeInsets.zero,
                     keyboardType: widget.keyboardType,

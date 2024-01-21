@@ -2,6 +2,7 @@ import 'package:data_abstraction/entity/product_entity.dart';
 import 'package:feature_product/presentation/bloc/product_bloc.dart';
 import 'package:feature_product/presentation/product_constants.dart';
 import 'package:flutter/material.dart';
+import 'package:module_common/common/constant/translation_constants.dart';
 import 'package:module_common/i18n/i18n_extension.dart';
 import 'package:module_common/presentation/bloc/base_bloc.dart';
 import 'package:module_common/presentation/widgets/product_detail_widget.dart';
@@ -48,6 +49,26 @@ class _ProductPageState extends State<ProductPage> {
             fontWeight: FontWeight.bold,
           ),
         ),
+        actions: [
+          Padding(
+            padding: EdgeInsets.only(right: LayoutDimen.dimen_16.w),
+            child: InkWell(
+              onTap: () {
+                ProductDetail().showBottomSheet(
+                  context,
+                  mainCallback: (product) {
+                    widget.bloc.add(AddProductEvent(product));
+                  },
+                  useScannerForCode: true,
+                );
+              },
+              child: Icon(
+                Icons.add,
+                size: LayoutDimen.dimen_40.w,
+              ),
+            ),
+          )
+        ],
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -107,7 +128,9 @@ class _ProductPageState extends State<ProductPage> {
               ),
               BlocConsumer<ProductBloc, ProductState>(
                 listenWhen: (previous, current) {
-                  if (previous is UpdateLoading || previous is DeleteLoading) {
+                  if (previous is UpdateLoading ||
+                      previous is DeleteLoading ||
+                      previous is AddProductLoading) {
                     Navigator.pop(context);
                   }
                   return true;
@@ -138,11 +161,37 @@ class _ProductPageState extends State<ProductPage> {
                       type: SnackbarDialogType.failed,
                     );
                   }
-                  if (state is UpdateLoading || state is DeleteLoading) {
+                  if (state is UpdateLoading ||
+                      state is DeleteLoading ||
+                      state is AddProductLoading) {
                     Navigator.pop(context);
                     showDialog(
                       context: context,
                       builder: (context) => const CircularProgress.fullPage(),
+                    );
+                  }
+
+                  if (state is AddProductError) {
+                    SnackbarDialog().show(
+                      context: context,
+                      message: TranslationConstants.failedAddProductMessage
+                          .i18n(context),
+                      type: SnackbarDialogType.failed,
+                    );
+                  }
+                  if (state is AddProductSuccess) {
+                    SnackbarDialog().show(
+                      context: context,
+                      message: TranslationConstants.successAddProductMessage
+                          .i18n(context),
+                      type: SnackbarDialogType.success,
+                    );
+                    widget.bloc.add(
+                      GetProductListEvent(
+                        filterByUnsetPrice: activeIndex == 1,
+                        filterValue: filterValue,
+                        forceRemote: true,
+                      ),
                     );
                   }
                 },
