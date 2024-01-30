@@ -31,26 +31,29 @@ class _TransactionListPageState extends State<TransactionListPage> {
           ),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            buttonController(),
-            dateController(),
-            showSales
-                ? percentIndicator([
-                    'Rp.247.650.000',
-                    '1100 pcs',
-                    '297 penjualan',
-                  ])
-                : percentIndicator([
-                    'Rp.197.650.000',
-                    '1411 pcs',
-                    '155 stok masuk',
-                  ]),
-            thSales(),
-          ],
-        ),
+      // body: SingleChildScrollView(
+      //   child: Column(
+      //     crossAxisAlignment: CrossAxisAlignment.center,
+      //     children: [
+      //       buttonController(),
+      //       dateController(),
+      //       showSales
+      //           ? percentIndicator([
+      //               'Rp.247.650.000',
+      //               '1100 pcs',
+      //               '297 penjualan',
+      //             ])
+      //           : percentIndicator([
+      //               'Rp.197.650.000',
+      //               '1411 pcs',
+      //               '155 stok masuk',
+      //             ]),
+      //       thSales(),
+      //     ],
+      //   ),
+      // ),
+      body: const Center(
+        child: Text('Sedang dalam pengerjaan, fitur ini akan segera ada.'),
       ),
     );
   }
