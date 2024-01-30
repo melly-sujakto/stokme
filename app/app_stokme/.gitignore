@@ -36,7 +36,7 @@ ios/Flutter/Flutter.podspec
 .flutter-plugins-dependencies
 
 # Android related
-**/android/**/google-services.json
+**/android/**/*.json
 **/android/**/gradle-wrapper.jar
 **/android/.gradle
 **/android/captures/
@@ -46,7 +46,7 @@ ios/Flutter/Flutter.podspec
 **/android/**/GeneratedPluginRegistrant.java
 
 # iOS/XCode related
-**/ios/firebase_app_id_file.json
+**/ios/*.json
 **/ios/Runner/GoogleService-Info.plist
 **/ios/build/
 **/ios/**/*.mode1v3
