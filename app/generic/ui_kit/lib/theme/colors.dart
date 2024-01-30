@@ -46,19 +46,37 @@ class CustomColors {
     c100: Color(0xFFFFFFFF),
   );
 
+  // yellow jago
+  // static const secondary = AppColorPalette(
+  //   c0: Color(0xFF000000),
+  //   c10: Color(0xFF322307),
+  //   c20: Color(0xFF65460f),
+  //   c30: Color(0xFF976917),
+  //   c40: Color(0xFFca8c1f),
+  //   c50: Color(0xFFfdaf27),
+  //   c60: Color(0xFFfdbf52),
+  //   c70: Color(0xFFfdcf7d),
+  //   c80: Color(0xFFfedfa8),
+  //   c90: Color(0xFFfeefd3),
+  //   c95: Color(0xFFfef7e9),
+  //   c98: Color(0xFFfefbf6),
+  //   c100: Color(0xFFFFFFFF),
+  // );
+
+  // experimenting colors
   static const secondary = AppColorPalette(
     c0: Color(0xFF000000),
-    c10: Color(0xFF322307),
-    c20: Color(0xFF65460f),
-    c30: Color(0xFF976917),
-    c40: Color(0xFFca8c1f),
-    c50: Color(0xFFfdaf27),
-    c60: Color(0xFFfdbf52),
-    c70: Color(0xFFfdcf7d),
-    c80: Color(0xFFfedfa8),
-    c90: Color(0xFFfeefd3),
-    c95: Color(0xFFfef7e9),
-    c98: Color(0xFFfefbf6),
+    c10: Color(0xFF242b21),
+    c20: Color(0xFF485643),
+    c30: Color(0xFF6d8164),
+    c40: Color(0xFF91ac86),
+    c50: Color(0xFFb6d7a8),
+    c60: Color(0xFFc4dfb9),
+    c70: Color(0xFFd3e7ca),
+    c80: Color(0xFFe1efdc),
+    c90: Color(0xFFf0f7ed),
+    c95: Color(0xFFf7fbf6),
+    c98: Color(0xFFfbfdfb),
     c100: Color(0xFFFFFFFF),
   );
 
