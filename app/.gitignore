@@ -129,3 +129,4 @@ externalStoragePath/**/*
 
 # Generated SSL pinned certificates in the default folder
 tools/cert_pinning/scripts/output/*.json
+firebase_options_prod.dart
