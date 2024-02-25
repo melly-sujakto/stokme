@@ -50,19 +50,19 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyBBx-h_T-eQEzhKYcDIhTjM4QHDc6VS-9Y',
-    appId: '1:462867260532:android:7ab4d4bc7bbbd39a661d21',
-    messagingSenderId: '462867260532',
-    projectId: 'stokme-ea31a',
-    storageBucket: 'stokme-ea31a.appspot.com',
+    apiKey: 'AIzaSyAnmCvJ5gtgh7GIGZhNqFJQFCCcWjhrbpY',
+    appId: '1:1012718207235:android:dfbf703d426c3ac284e936',
+    messagingSenderId: '1012718207235',
+    projectId: 'stokme-dev',
+    storageBucket: 'stokme-dev.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyA0tFuiy_NaPkF0ItUUoY9neqkyhrJPE4c',
-    appId: '1:462867260532:ios:0a5a72c2cb745f30661d21',
-    messagingSenderId: '462867260532',
-    projectId: 'stokme-ea31a',
-    storageBucket: 'stokme-ea31a.appspot.com',
+    apiKey: 'AIzaSyARrlothbdaxesOARVC08xAdXBrJFB8eik',
+    appId: '1:1012718207235:ios:b8de880c0edbb73884e936',
+    messagingSenderId: '1012718207235',
+    projectId: 'stokme-dev',
+    storageBucket: 'stokme-dev.appspot.com',
     iosBundleId: 'com.example.stokme',
   );
 }
