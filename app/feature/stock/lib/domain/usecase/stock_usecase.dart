@@ -1,6 +1,7 @@
 import 'package:data_abstraction/entity/stock_entity.dart';
 import 'package:data_abstraction/model/stock_model.dart';
 import 'package:firebase_library/firebase_library.dart';
+import 'package:module_common/common/constant/generic_constants.dart';
 import 'package:module_common/wrapper/shared_preferences_wrapper.dart';
 
 enum StockFilterType {
@@ -24,8 +25,11 @@ class StockUsecase {
     required StockFilterType stockFilterType,
     required String filterNameOrCodeValue,
   }) async {
+    final storeId = (await sharedPreferencesWrapper.getPrefs())
+        .getString(GenericConstants.storeId);
     final collectionRef = firebaseLibrary.selfQuery(collectionName);
     final querySnapshot = await collectionRef
+        .where('store_id', isEqualTo: storeId)
         .orderBy(
           'total_pcs',
           descending: stockFilterType == StockFilterType.mostStock,
