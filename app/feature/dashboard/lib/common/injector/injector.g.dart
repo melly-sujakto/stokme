@@ -12,7 +12,7 @@ class _$Injector extends Injector {
     final KiwiContainer container = KiwiContainer();
     container
       ..registerFactory((c) => ProfileBloc(c<DashboardUsecase>()))
-      ..registerSingleton((c) => MoreBloc(c<FirebaseLibrary>()))
+      ..registerSingleton((c) => MoreBloc(c<DashboardUsecase>()))
       ..registerSingleton((c) => HomeBloc(c<DashboardUsecase>()));
   }
 

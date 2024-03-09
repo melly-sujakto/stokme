@@ -21,7 +21,7 @@ abstract class Injector {
     _configureUsecase();
   }
 
-  @Dependencies.dependsOn(MoreBloc, [FirebaseLibrary])
+  @Dependencies.dependsOn(MoreBloc, [DashboardUsecase])
   @Dependencies.dependsOn(HomeBloc, [DashboardUsecase])
   @Dependencies.dependsOn(ProfileBloc, [DashboardUsecase])
   @Register.factory(ProfileBloc)

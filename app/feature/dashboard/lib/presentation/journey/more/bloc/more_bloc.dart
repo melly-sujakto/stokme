@@ -1,16 +1,16 @@
 import 'dart:async';
 
-import 'package:firebase_library/firebase_library.dart';
+import 'package:feature_dashboard/domain/navigation/usecase/dashboard_usecase.dart';
 import 'package:module_common/presentation/bloc/base_bloc.dart';
 
 part 'more_event.dart';
 part 'more_state.dart';
 
 class MoreBloc extends BaseBloc<MoreEvent, MoreState> {
-  final FirebaseLibrary firebaseLibrary;
+  final DashboardUsecase dashboardUsecase;
 
   MoreBloc(
-    this.firebaseLibrary,
+    this.dashboardUsecase,
   ) : super(MoreInitial()) {
     on<LogoutEvent>(_onLogoutEvent);
   }
@@ -19,8 +19,7 @@ class MoreBloc extends BaseBloc<MoreEvent, MoreState> {
     emit,
   ) async {
     try {
-      // TODO(melly): use usecase and clear shared pref
-      await firebaseLibrary.auth.signOut();
+      await dashboardUsecase.logout();
       emit(LogoutSuccess());
     } catch (e) {
       emit(LogoutFailed());

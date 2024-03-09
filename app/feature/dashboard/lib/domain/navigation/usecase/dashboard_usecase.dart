@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:data_abstraction/entity/role_entity.dart';
 import 'package:data_abstraction/entity/store_entity.dart';
 import 'package:data_abstraction/entity/user_entity.dart';
@@ -73,5 +75,12 @@ class DashboardUsecase {
       default:
         return <Feature>[];
     }
+  }
+
+  Future<void> logout() async {
+    // clear shared prefs
+    unawaited(sharedPreferencesWrapper.clear());
+    // logout firebase
+    await firebaseLibrary.auth.signOut();
   }
 }
