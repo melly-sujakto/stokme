@@ -26,4 +26,12 @@ class _$Injector extends Injector {
     final KiwiContainer container = KiwiContainer();
     container.registerSingleton((c) => FirebaseLibrary());
   }
+
+  @override
+  void _configureCommon() {
+    final KiwiContainer container = KiwiContainer();
+    container
+      ..registerSingleton((c) => FirebaseRemoteConfigWrapper())
+      ..registerSingleton((c) => FeatureFlagUpdater());
+  }
 }

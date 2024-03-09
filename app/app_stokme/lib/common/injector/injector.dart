@@ -8,6 +8,8 @@ import 'package:library_injection/annotations.dart';
 import 'package:library_injection/package/kiwi.dart';
 import 'package:module_common/domain/usecase/language_usecase.dart';
 import 'package:module_common/presentation/bloc/language_bloc/language_bloc.dart';
+import 'package:stokme/common/feature_flag_updater/feature_flag_updater.dart';
+import 'package:stokme/common/feature_flag_updater/firebase_remote_config/firebase_remote_config_wrapper.dart';
 import 'package:stokme/data/navigation/interaction_navigation_impl.dart';
 
 part 'injector.g.dart';
@@ -27,6 +29,7 @@ abstract class Injector {
     _configureDependencies();
     _configureLibraries();
     _manualInjection();
+    _configureCommon();
   }
 
   void _manualInjection() {
@@ -62,4 +65,8 @@ abstract class Injector {
 
   @Register.singleton(FirebaseLibrary)
   void _configureLibraries();
+
+  @Register.singleton(FirebaseRemoteConfigWrapper)
+  @Register.singleton(FeatureFlagUpdater)
+  void _configureCommon();
 }
