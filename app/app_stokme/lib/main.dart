@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:module_common/common/injector/injector.dart'
     as module_common_injector;
 import 'package:module_common/presentation/bloc/language_bloc/language_bloc.dart';
+import 'package:stokme/common/feature_flag_updater/feature_flag_updater.dart';
 import 'package:stokme/common/injector/injector.dart' as app_injector;
 import 'package:stokme/firebase_options.dart';
 import 'package:stokme/presentation/app.dart';
@@ -26,6 +27,8 @@ void main() async {
 
   final languageBloc = app_injector.Injector.resolve<LanguageBloc>();
   final appThemeBloc = app_injector.Injector.resolve<AppThemeBloc>();
+
+  await app_injector.Injector.resolve<FeatureFlagUpdater>().setup();
 
   runApp(
     App(
