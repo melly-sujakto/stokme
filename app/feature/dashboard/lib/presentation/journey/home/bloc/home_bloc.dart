@@ -5,6 +5,7 @@ import 'package:feature_dashboard/domain/navigation/interaction_navigation.dart'
 import 'package:feature_dashboard/domain/navigation/usecase/dashboard_usecase.dart';
 import 'package:feature_dashboard/presentation/journey/home/home_constants.dart';
 import 'package:flutter/material.dart';
+import 'package:module_common/feature_flags/feature_flags.dart';
 import 'package:module_common/i18n/i18n_extension.dart';
 import 'package:module_common/presentation/bloc/base_bloc.dart';
 
@@ -103,15 +104,17 @@ class HomeBloc extends BaseBloc<HomeEvent, HomeState> {
                 },
               );
             case Feature.transaction:
-              return HomeFeature(
-                feature: feature,
-                title: HomeStrings.transactionButtonTitle.i18n(context),
-                iconPath: HomeAssets.transactionIcon,
-                action: () {
-                  Injector.resolve<DashboardInteractionNavigation>()
-                      .navigateToTransaction(context);
-                },
-              );
+              if (Features.enableTransaction.isEnabled) {
+                return HomeFeature(
+                  feature: feature,
+                  title: HomeStrings.transactionButtonTitle.i18n(context),
+                  iconPath: HomeAssets.transactionIcon,
+                  action: () {
+                    Injector.resolve<DashboardInteractionNavigation>()
+                        .navigateToTransaction(context);
+                  },
+                );
+              }
             default:
               return null;
           }
