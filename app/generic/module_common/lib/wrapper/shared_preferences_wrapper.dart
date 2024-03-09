@@ -6,4 +6,8 @@ class SharedPreferencesWrapper extends Uuid {
       SharedPreferences.getInstance();
 
   Future<SharedPreferences> getPrefs() async => _sharedPreference;
+
+  Future<void> clear() async {
+    await (await _sharedPreference).clear();
+  }
 }
