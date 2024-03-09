@@ -5,6 +5,7 @@ class StoreModel extends StoreEntity {
   StoreModel({
     required super.id,
     required super.name,
+    required super.phone,
     required super.address,
   });
 
@@ -12,6 +13,7 @@ class StoreModel extends StoreEntity {
     return StoreModel(
       id: json['id'],
       name: json['name'],
+      phone: json['phone'] ?? '',
       address: AddressModel.fromJson(json['address']),
     );
   }

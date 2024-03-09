@@ -14,4 +14,9 @@ class AddressEntity {
     required this.province,
     required this.country,
   });
+
+  @override
+  String toString() {
+    return '$street, $kelurahan, $kecamatan, $city, $province';
+  }
 }
