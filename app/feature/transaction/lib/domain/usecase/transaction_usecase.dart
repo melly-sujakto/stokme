@@ -4,10 +4,12 @@ import 'package:data_abstraction/entity/product_entity.dart';
 import 'package:data_abstraction/entity/receipt_entity.dart';
 import 'package:data_abstraction/entity/sale_entity.dart';
 import 'package:data_abstraction/entity/stock_in_entity.dart';
+import 'package:data_abstraction/entity/store_entity.dart';
 import 'package:data_abstraction/model/product_model.dart';
 import 'package:data_abstraction/model/receipt_model.dart';
 import 'package:data_abstraction/model/sale_model.dart';
 import 'package:data_abstraction/model/stock_in_model.dart';
+import 'package:data_abstraction/model/store_model.dart';
 import 'package:firebase_library/firebase_library.dart';
 import 'package:module_common/common/constant/generic_constants.dart';
 import 'package:module_common/wrapper/shared_preferences_wrapper.dart';
@@ -170,5 +172,18 @@ class TransactionUsecase {
       data: ProductModel.fromEntity(productEntity)
           .toFirestoreJson(await _getStoreId()),
     );
+  }
+
+  Future<StoreEntity> getStoreDetail() async {
+    const collectionName = 'store';
+    final prefs = await sharedPreferencesWrapper.getPrefs();
+    final storeId = prefs.getString(GenericConstants.storeId);
+
+    final json = await firebaseLibrary.getById(
+      collectionName: collectionName,
+      id: storeId!,
+    );
+
+    return StoreModel.fromJson(json!);
   }
 }

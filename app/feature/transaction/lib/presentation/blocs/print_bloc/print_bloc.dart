@@ -3,7 +3,9 @@ import 'dart:async';
 import 'package:bluetooth_print/bluetooth_print_model.dart';
 import 'package:data_abstraction/entity/receipt_entity.dart';
 import 'package:data_abstraction/entity/sale_entity.dart';
+import 'package:data_abstraction/entity/store_entity.dart';
 import 'package:feature_transaction/common/utils/printer_util.dart';
+import 'package:feature_transaction/domain/usecase/transaction_usecase.dart';
 import 'package:module_common/presentation/bloc/base_bloc.dart';
 import 'package:ui_kit/extensions/string_extension.dart';
 
@@ -11,8 +13,14 @@ part 'print_event.dart';
 part 'print_state.dart';
 
 class PrintBloc extends BaseBloc<PrintEvent, PrintState> {
-  PrintBloc() : super(PrintInitial()) {
+  final TransactionUsecase transactionUsecase;
+
+  PrintBloc(this.transactionUsecase) : super(PrintInitial()) {
     on<PrintExecuteEvent>(_onPrintExecuteEvent);
+  }
+
+  Future<StoreEntity> _getStoreDetail() async {
+    return transactionUsecase.getStoreDetail();
   }
 
   FutureOr<void> _onPrintExecuteEvent(
@@ -21,6 +29,10 @@ class PrintBloc extends BaseBloc<PrintEvent, PrintState> {
   ) async {
     emit(PrintLoading());
     try {
+      // Get store detail
+      final storeDetail = await _getStoreDetail();
+
+      // Print execution
       final printManager = PrinterUtil();
       await printManager.scan();
       await Future.delayed(
@@ -28,6 +40,7 @@ class PrintBloc extends BaseBloc<PrintEvent, PrintState> {
         () async {
           await printManager.startPrint(
             generateLineTexts(
+              storeDetail: storeDetail,
               saleEntityList: event.saleEntityList,
               receiptEntity: event.receiptEntity,
               dateText: event.dateText,
@@ -44,6 +57,7 @@ class PrintBloc extends BaseBloc<PrintEvent, PrintState> {
   }
 
   List<LineText> generateLineTexts({
+    required StoreEntity storeDetail,
     required List<SaleEntity> saleEntityList,
     required ReceiptEntity receiptEntity,
     required String dateText,
@@ -123,24 +137,22 @@ class PrintBloc extends BaseBloc<PrintEvent, PrintState> {
     });
 
     final List<LineText> list = [
-      // TODO(melly): enhance hardcoded string and get from state
       LineText(
         type: LineText.TYPE_TEXT,
-        content: 'Toko Adi Jaya Sembako',
+        content: storeDetail.name,
         weight: 1,
         align: LineText.ALIGN_CENTER,
         linefeed: 1,
       ),
       LineText(
         type: LineText.TYPE_TEXT,
-        content:
-            'Jembatan 14, RT.001/RW.005, Bojong Rawalumbu, Kec. Rawalumbu, Kota Bks, Jawa Barat',
+        content: storeDetail.address.toString(),
         align: LineText.ALIGN_CENTER,
         linefeed: 1,
       ),
       LineText(
         type: LineText.TYPE_TEXT,
-        content: '081234567890',
+        content: storeDetail.phone,
         align: LineText.ALIGN_CENTER,
         linefeed: 1,
       ),

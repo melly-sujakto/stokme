@@ -11,7 +11,7 @@ class _$Injector extends Injector {
   void _configureBloc() {
     final KiwiContainer container = KiwiContainer();
     container.registerFactory((c) => SaleBloc(c<TransactionUsecase>()));
-    container.registerFactory((c) => PrintBloc());
+    container.registerFactory((c) => PrintBloc(c<TransactionUsecase>()));
     container.registerFactory((c) => TransactionBloc(c<TransactionUsecase>()));
     container.registerFactory((c) => StockInBloc(c<TransactionUsecase>()));
   }
