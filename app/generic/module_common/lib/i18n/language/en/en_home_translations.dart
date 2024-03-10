@@ -6,6 +6,7 @@ final Map<String, String> translations = {
   'home.button.product': 'Products',
   'home.button.stock': 'Stock',
   'home.button.transaction': 'Transactions',
+  'home.button.supplier': 'Suppliers',
   'home.greeting.1': 'Good morning,',
   'home.greeting.2': 'Good afternoon,',
   'home.greeting.3': 'Good afternoon,',

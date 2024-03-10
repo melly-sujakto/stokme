@@ -7,9 +7,14 @@ abstract class Features {
     key: 'feat_enableTransaction_20240309',
     initialValue: false,
   );
+  static final enableSupplier = BoolFeatureFlag(
+    key: 'feat_enableSupplier_20240310',
+    initialValue: false,
+  );
 
   static final List<BaseFeatureFlag<dynamic>> updatableFlags = [
     Features.enableTransaction,
+    Features.enableSupplier,
   ];
 
   static void syncValue(

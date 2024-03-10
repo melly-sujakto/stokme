@@ -4,6 +4,7 @@ enum Feature {
   product('product'),
   stock('stock'),
   transaction('transaction'),
+  supplier('supplier'),
   ;
 
   const Feature(this.value);

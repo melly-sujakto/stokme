@@ -4,6 +4,7 @@ abstract class HomeStrings {
   static const productButtonTitle = 'home.button.product';
   static const stockButtonTitle = 'home.button.stock';
   static const transactionButtonTitle = 'home.button.transaction';
+  static const supplierButtonTitle = 'home.button.supplier';
   static const homeGreeting1 = 'home.greeting.1';
   static const homeGreeting2 = 'home.greeting.2';
   static const homeGreeting3 = 'home.greeting.3';
@@ -17,4 +18,5 @@ abstract class HomeAssets {
   static const productIcon = 'assets/icons/product_icon.png';
   static const stockIcon = 'assets/icons/stock_icon.png';
   static const transactionIcon = 'assets/icons/transaction_icon.png';
+  static const supplierIcon = 'assets/icons/supplier_icon.png';
 }

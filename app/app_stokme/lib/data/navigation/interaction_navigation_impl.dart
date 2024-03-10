@@ -67,4 +67,10 @@ class InteractionNavigationImpl
       (route) => false,
     );
   }
+
+  @override
+  void navigateToSupplier(BuildContext context) {
+    // TODO(melly): create modul feature supplier
+    Navigator.of(context).pushNamed(transaction_routes.Routes.transactionList);
+  }
 }

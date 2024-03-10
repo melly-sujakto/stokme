@@ -115,6 +115,18 @@ class HomeBloc extends BaseBloc<HomeEvent, HomeState> {
                   },
                 );
               }
+            case Feature.supplier:
+              if (Features.enableSupplier.isEnabled) {
+                return HomeFeature(
+                  feature: feature,
+                  title: HomeStrings.supplierButtonTitle.i18n(context),
+                  iconPath: HomeAssets.supplierIcon,
+                  action: () {
+                    Injector.resolve<DashboardInteractionNavigation>()
+                        .navigateToSupplier(context);
+                  },
+                );
+              }
             default:
               return null;
           }
