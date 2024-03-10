@@ -19,5 +19,8 @@ else
     ENV="stokme-dev"
 fi
 
+echo "⠇ Preparing env..."
+dart pub global activate flutterfire_cli > /dev/null 2>&1
+export PATH="$PATH":"$HOME/.pub-cache/bin"
 flutterfire configure --project=$ENV --platforms=android,ios -y
 exit 0
