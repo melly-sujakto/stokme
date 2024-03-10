@@ -45,11 +45,11 @@ class HomeBloc extends BaseBloc<HomeEvent, HomeState> {
   String generateGreeting() {
     final hourNow = DateTime.now().hour;
     switch (hourNow) {
-      case > 3 && < 10:
+      case >= 3 && <= 9:
         return HomeStrings.homeGreeting1;
-      case > 10 && < 15:
+      case >= 10 && <= 14:
         return HomeStrings.homeGreeting2;
-      case > 15 && < 19:
+      case >= 15 && <= 18:
         return HomeStrings.homeGreeting3;
       default:
         return HomeStrings.homeGreeting4;
