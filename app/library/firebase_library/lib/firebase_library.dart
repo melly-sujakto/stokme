@@ -38,6 +38,80 @@ class FirebaseLibrary {
     }).toList();
   }
 
+  Future<List<Map<String, dynamic>>> getListPagination({
+    Query<Map<String, dynamic>>? initialSelfQuery,
+    required String collectionName,
+    required String orderByField,
+    bool decending = false,
+    String? lastDocumentId,
+    int index = 0,
+    int pageSize = 20,
+  }) async {
+    if (index < 0) {
+      throw Exception('[$runtimeType][getListPagination] index should be '
+          'positive number');
+    }
+    if (index > 0 && lastDocumentId == null) {
+      throw Exception(
+          '[$runtimeType][getListPagination] last document should not null'
+          'when index is more than 0');
+    }
+
+    final collectionRef = FirebaseFirestore.instance.collection(collectionName);
+
+    late final QuerySnapshot<Map<String, dynamic>> indexDataSnapshot;
+    if (index == 0) {
+      indexDataSnapshot = await collectionRef
+          .orderBy(
+            orderByField,
+            descending: decending,
+          )
+          .limit(1)
+          .get();
+    } else {
+      // TODO(Melly): simplify, will be better when just call get() one time
+      final lastDocument = await collectionRef.doc(lastDocumentId).get();
+      indexDataSnapshot = await collectionRef
+          .orderBy(
+            orderByField,
+            descending: decending,
+          )
+          .limit(1)
+          .startAfterDocument(lastDocument)
+          .get();
+    }
+
+    final indexData = indexDataSnapshot.docs.last;
+
+    late final QuerySnapshot<Map<String, dynamic>> querySnapshot;
+    if (initialSelfQuery == null) {
+      querySnapshot = await collectionRef
+          .orderBy(
+            orderByField,
+            descending: decending,
+          )
+          .startAtDocument(indexData)
+          .limit(pageSize)
+          .get();
+    } else {
+      querySnapshot = await initialSelfQuery
+          .orderBy(
+            orderByField,
+            descending: decending,
+          )
+          .startAtDocument(indexData)
+          .limit(pageSize)
+          .get();
+    }
+
+    return querySnapshot.docs.map((doc) {
+      final data = doc.data();
+      final id = doc.id;
+      data['id'] = id;
+      return data;
+    }).toList();
+  }
+
   CollectionReference<Map<String, dynamic>> selfQuery(String collectionName) {
     return FirebaseFirestore.instance.collection(collectionName);
   }
