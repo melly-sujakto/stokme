@@ -3,9 +3,9 @@ import 'package:feature_stock/domain/usecase/stock_usecase.dart';
 import 'package:feature_stock/presentation/bloc/stock_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:module_common/infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:ui_kit/common/constants/layout_dimen.dart';
 import 'package:ui_kit/theme/colors.dart';
-import 'package:ui_kit/ui/loading_indicator/circular_progres.dart';
 import 'package:ui_kit/ui/scanner/scanner_finder.dart';
 import 'package:ui_kit/ui/tab_bar/app_tab_bar.dart';
 import 'package:ui_kit/ui/widgets/dummy_circle_image.dart';
@@ -24,25 +24,47 @@ class StockPage extends StatefulWidget {
 }
 
 class _StockPageState extends State<StockPage> {
-  int activeIndex = 0;
+  int activeTab = 0;
   String filterValue = '';
   StockFilterType currentFilterType = StockFilterType.lowestStock;
+
+  final pagingController = PagingController<int, StockEntity>(firstPageKey: 0);
+  final limit = 10;
+  int index = 0;
+  StockEntity? lastStock;
 
   @override
   void initState() {
     super.initState();
-    addGetStockListEvent();
+    pagingController.addPageRequestListener(
+      (pageKey) {
+        addGetStockListEvent();
+      },
+    );
+  }
+
+  @override
+  void dispose() {
+    pagingController.dispose();
+    super.dispose();
   }
 
   void addGetStockListEvent() {
     widget.bloc.add(
       GetStockListEvent(
-        pageSize: 10,
-        index: 0,
+        pageSize: limit,
+        index: index,
         filterType: currentFilterType,
         filterNameOrCodeValue: filterValue,
+        lastStock: lastStock,
       ),
     );
+  }
+
+  void resetFilter() {
+    index = 0;
+    lastStock = null;
+    pagingController.refresh();
   }
 
   @override
@@ -68,48 +90,61 @@ class _StockPageState extends State<StockPage> {
                 labelText: 'Cari nama/kode',
                 onChanged: (value) {
                   filterValue = value;
-                  addGetStockListEvent();
+                  resetFilter();
                 },
                 onScan: (value) {
                   filterValue = value;
-                  addGetStockListEvent();
+                  resetFilter();
                 },
               ),
               AppTabBar(
-                activeIndex: activeIndex,
+                activeIndex: activeTab,
                 onIndexChanged: (index) {
-                  activeIndex = index;
+                  activeTab = index;
                 },
                 items: [
                   AppTabBarItem(
                     onTap: () {
                       currentFilterType = StockFilterType.lowestStock;
-                      addGetStockListEvent();
+                      resetFilter();
                     },
                     title: 'Stok sedikit',
                   ),
                   AppTabBarItem(
                     onTap: () {
                       currentFilterType = StockFilterType.mostStock;
-                      addGetStockListEvent();
+                      resetFilter();
                     },
                     title: 'Stok terbanyak',
                   ),
                 ],
               ),
-              BlocBuilder<StockBloc, StockState>(
-                builder: (context, state) {
-                  if (state is StockLoading) {
-                    return const CircularProgress();
-                  }
+              BlocListener<StockBloc, StockState>(
+                listener: (context, state) {
                   if (state is StockLoaded) {
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: state.stockList.map(stockCard).toList(),
-                    );
+                    final isLastPage = state.stockList.length < limit;
+                    if (isLastPage) {
+                      pagingController.appendLastPage(state.stockList);
+                    } else {
+                      lastStock = state.stockList.last;
+                      index++;
+                      pagingController.appendPage(state.stockList, index);
+                    }
                   }
-                  return Container();
+                  if (state is StockFailed) {
+                    pagingController.appendLastPage([]);
+                  }
                 },
+                child: PagedListView<int, StockEntity>(
+                  pagingController: pagingController,
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  builderDelegate: PagedChildBuilderDelegate<StockEntity>(
+                    itemBuilder: (context, item, index) {
+                      return stockCard(item);
+                    },
+                  ),
+                ),
               ),
             ],
           ),
