@@ -37,7 +37,7 @@ class _StockPageState extends State<StockPage> {
   void addGetStockListEvent() {
     widget.bloc.add(
       GetStockListEvent(
-        limit: 10,
+        pageSize: 10,
         index: 0,
         filterType: currentFilterType,
         filterNameOrCodeValue: filterValue,

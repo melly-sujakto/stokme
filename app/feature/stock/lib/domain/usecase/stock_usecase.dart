@@ -20,28 +20,28 @@ class StockUsecase {
     required this.sharedPreferencesWrapper,
   });
 
-  // TODO(Melly): implement index and limit
   Future<List<StockEntity>> getStockList({
     required StockFilterType stockFilterType,
     required String filterNameOrCodeValue,
+    StockEntity? lastStock,
+    int index = 0,
+    int pageSize = 20,
   }) async {
     final storeId = (await sharedPreferencesWrapper.getPrefs())
         .getString(GenericConstants.storeId);
     final collectionRef = firebaseLibrary.selfQuery(collectionName);
-    final querySnapshot = await collectionRef
-        .where('store_id', isEqualTo: storeId)
-        .orderBy(
-          'total_pcs',
-          descending: stockFilterType == StockFilterType.mostStock,
-        )
-        .get();
+    final initialSelfQuery =
+        collectionRef.where('store_id', isEqualTo: storeId);
 
-    final jsonList = querySnapshot.docs.map((doc) {
-      final data = doc.data();
-      final id = doc.id;
-      data['id'] = id;
-      return data;
-    }).toList();
+    final jsonList = await firebaseLibrary.getListPagination(
+      initialSelfQuery: initialSelfQuery,
+      collectionName: collectionName,
+      orderByField: 'total_pcs',
+      decending: stockFilterType == StockFilterType.mostStock,
+      lastDocumentId: lastStock?.id,
+      index: index,
+      pageSize: pageSize,
+    );
 
     final result = <StockEntity>[];
     for (final json in jsonList) {
