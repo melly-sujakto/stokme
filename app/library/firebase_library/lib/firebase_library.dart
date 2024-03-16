@@ -125,7 +125,8 @@ class FirebaseLibrary {
     await collectionRef.doc(id).update(document);
   }
 
-  Future<void> createDocument({
+  /// Return Document ID
+  Future<String> createDocument({
     required String collectionName,
     required Map<String, dynamic> data,
     String? id,
@@ -138,13 +139,11 @@ class FirebaseLibrary {
       if (existingData != null) {
         throw Exception('Data does exist');
       }
-      await collectionRef.doc(id).set(data).onError(
-        (e, _) {
-          throw Exception('Error writing document: $e');
-        },
-      );
+      await collectionRef.doc(id).set(data);
+      return id;
     } else {
-      await collectionRef.add(data);
+      final docRef = await collectionRef.add(data);
+      return docRef.id;
     }
   }
 
