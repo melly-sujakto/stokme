@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:module_common/infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:ui_kit/common/constants/layout_dimen.dart';
 import 'package:ui_kit/theme/colors.dart';
+import 'package:ui_kit/ui/loading_indicator/circular_progres.dart';
 import 'package:ui_kit/ui/scanner/scanner_finder.dart';
 import 'package:ui_kit/ui/tab_bar/app_tab_bar.dart';
 import 'package:ui_kit/ui/widgets/dummy_circle_image.dart';
@@ -143,6 +144,10 @@ class _StockPageState extends State<StockPage> {
                     itemBuilder: (context, item, index) {
                       return stockCard(item);
                     },
+                    newPageProgressIndicatorBuilder: (context) =>
+                        const CircularProgress(),
+                    firstPageProgressIndicatorBuilder: (context) =>
+                        const CircularProgress(),
                   ),
                 ),
               ),
