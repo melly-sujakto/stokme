@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:data_abstraction/entity/product_entity.dart';
 import 'package:data_abstraction/model/product_model.dart';
+import 'package:data_abstraction/model/stock_model.dart';
 import 'package:firebase_library/firebase_library.dart';
 import 'package:module_common/common/constant/generic_constants.dart';
 import 'package:module_common/wrapper/shared_preferences_wrapper.dart';
@@ -9,6 +12,7 @@ class ProductUsecase {
   final SharedPreferencesWrapper sharedPreferencesWrapper;
 
   final collectionName = 'product';
+  final collectionNameStock = 'stock';
 
   ProductUsecase({
     required this.firebaseLibrary,
@@ -47,10 +51,33 @@ class ProductUsecase {
   }
 
   Future<void> addProduct(ProductEntity productEntity) async {
-    await firebaseLibrary.createDocument(
+    final productId = await firebaseLibrary.createDocument(
       collectionName: collectionName,
       data: ProductModel.fromEntity(productEntity)
           .toFirestoreJson(await _getStoreId()),
+    );
+    // affect stock
+    unawaited(
+      _initStockByProductEntity(
+        productEntity,
+        overridedProductId: productId,
+      ),
+    );
+  }
+
+  Future<void> _initStockByProductEntity(
+    ProductEntity productEntity, {
+    String? overridedProductId,
+  }) async {
+    await firebaseLibrary.createDocument(
+      collectionName: collectionNameStock,
+      data: StockModel(
+        totalPcs: 0,
+        productEntity: productEntity,
+      ).toFirestoreJson(
+        await _getStoreId(),
+        overridedProductId: overridedProductId,
+      ),
     );
   }
 
@@ -67,6 +94,23 @@ class ProductUsecase {
     await firebaseLibrary.deleteDocument(
       collectionName: collectionName,
       id: productId,
+    );
+    //affect stock
+    unawaited(_deleteStockByProductId(productId));
+  }
+
+  Future<void> _deleteStockByProductId(String productId) async {
+    final stockQSnapshot = await firebaseLibrary
+        .selfQuery(collectionNameStock)
+        .where('product_id', isEqualTo: productId)
+        .limit(1)
+        .get();
+    final stockId = stockQSnapshot.docs.last.id;
+    unawaited(
+      firebaseLibrary.deleteDocument(
+        collectionName: collectionNameStock,
+        id: stockId,
+      ),
     );
   }
 }
