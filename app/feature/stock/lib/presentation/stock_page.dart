@@ -122,11 +122,12 @@ class _StockPageState extends State<StockPage> {
               BlocListener<StockBloc, StockState>(
                 listener: (context, state) {
                   if (state is StockLoaded) {
-                    final isLastPage = state.stockList.length < limit;
-                    if (isLastPage) {
+                    if (state.isLastPage) {
                       pagingController.appendLastPage(state.stockList);
                     } else {
-                      lastStock = state.stockList.last;
+                      if (state.stockList.isNotEmpty) {
+                        lastStock = state.stockList.last;
+                      }
                       index++;
                       pagingController.appendPage(state.stockList, index);
                     }

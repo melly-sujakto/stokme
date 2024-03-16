@@ -10,6 +10,10 @@ final class StockFailed extends StockState {}
 
 final class StockLoaded extends StockState {
   final List<StockEntity> stockList;
+  final bool isLastPage;
 
-  StockLoaded(this.stockList);
+  StockLoaded({
+    required this.stockList,
+    required this.isLastPage,
+  });
 }

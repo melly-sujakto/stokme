@@ -57,16 +57,6 @@ class StockUsecase {
       }
     }
 
-    return result
-        .where(
-          (element) =>
-              element.productEntity.code
-                  .toLowerCase()
-                  .contains(filterNameOrCodeValue.toLowerCase()) ||
-              element.productEntity.name
-                  .toLowerCase()
-                  .contains(filterNameOrCodeValue.toLowerCase()),
-        )
-        .toList();
+    return result;
   }
 }

@@ -21,14 +21,32 @@ class StockBloc extends BaseBloc<StockEvent, StockState> {
   ) async {
     emit(StockLoading());
     try {
-      final stockList = await stockUsecase.getStockList(
+      final results = await stockUsecase.getStockList(
         stockFilterType: event.filterType,
         filterNameOrCodeValue: event.filterNameOrCodeValue,
         index: event.index,
         pageSize: event.pageSize,
         lastStock: event.lastStock,
       );
-      emit(StockLoaded(stockList));
+      
+      final stockList = results
+          .where(
+            (element) =>
+                element.productEntity.code
+                    .toLowerCase()
+                    .contains(event.filterNameOrCodeValue.toLowerCase()) ||
+                element.productEntity.name
+                    .toLowerCase()
+                    .contains(event.filterNameOrCodeValue.toLowerCase()),
+          )
+          .toList();
+
+      emit(
+        StockLoaded(
+          stockList: stockList,
+          isLastPage: results.length < event.pageSize,
+        ),
+      );
     } catch (e) {
       emit(StockFailed());
     }
