@@ -3,7 +3,7 @@ import 'package:data_abstraction/model/product_model.dart';
 
 class StockModel extends StockEntity {
   StockModel({
-    required super.id,
+    super.id,
     required super.totalPcs,
     required super.productEntity,
   });
@@ -14,5 +14,17 @@ class StockModel extends StockEntity {
       totalPcs: json['total_pcs'],
       productEntity: ProductModel.fromJson(json['product']),
     );
+  }
+
+  Map<String, dynamic> toFirestoreJson(
+    String savedStoreId, {
+    String? overridedProductId,
+  }) {
+    return {
+      'id': id,
+      'total_pcs': totalPcs,
+      'product_id': overridedProductId ?? productEntity.id,
+      'store_id': savedStoreId,
+    };
   }
 }
