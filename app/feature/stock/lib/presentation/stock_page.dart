@@ -3,10 +3,9 @@ import 'package:feature_stock/domain/usecase/stock_usecase.dart';
 import 'package:feature_stock/presentation/bloc/stock_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:module_common/infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:ui_kit/common/constants/layout_dimen.dart';
 import 'package:ui_kit/theme/colors.dart';
-import 'package:ui_kit/ui/loading_indicator/circular_progres.dart';
+import 'package:ui_kit/ui/infinite_pagination/infinite_paginantion_widget.dart';
 import 'package:ui_kit/ui/scanner/scanner_finder.dart';
 import 'package:ui_kit/ui/tab_bar/app_tab_bar.dart';
 import 'package:ui_kit/ui/widgets/dummy_circle_image.dart';
@@ -136,19 +135,9 @@ class _StockPageState extends State<StockPage> {
                     pagingController.appendLastPage([]);
                   }
                 },
-                child: PagedListView<int, StockEntity>(
+                child: InfinitePaginationWidget(
                   pagingController: pagingController,
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  builderDelegate: PagedChildBuilderDelegate<StockEntity>(
-                    itemBuilder: (context, item, index) {
-                      return stockCard(item);
-                    },
-                    newPageProgressIndicatorBuilder: (context) =>
-                        const CircularProgress(),
-                    firstPageProgressIndicatorBuilder: (context) =>
-                        const CircularProgress(),
-                  ),
+                  itemBuilder: (context, item, key) => stockCard(item),
                 ),
               ),
             ],
