@@ -4,13 +4,17 @@ sealed class ProductEvent {}
 
 class GetProductListEvent extends ProductEvent {
   final bool filterByUnsetPrice;
-  final bool forceRemote;
   final String filterValue;
+  final ProductEntity? lastProduct;
+  final int index;
+  final int pageSize;
 
   GetProductListEvent({
     this.filterByUnsetPrice = false,
-    this.forceRemote = false,
     this.filterValue = '',
+    this.lastProduct,
+    this.index = 0,
+    this.pageSize = 20,
   });
 }
 

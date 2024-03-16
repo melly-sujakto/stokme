@@ -15,7 +15,7 @@ class ProductModel extends ProductEntity {
       id: json['id'],
       code: json['code'],
       name: json['name'],
-      saleNet: JsonUtils.validateIntOrDouble(json['sale_net']),
+      saleNet: JsonUtils.validateIntOrDouble(json['sale_net'] ?? 0),
       storeId: json['store_id'],
     );
   }
@@ -34,7 +34,7 @@ class ProductModel extends ProductEntity {
     return {
       'code': code,
       'name': name,
-      'sale_net': saleNet,
+      'sale_net': saleNet ?? 0,
       'store_id': savedStoreId,
     };
   }

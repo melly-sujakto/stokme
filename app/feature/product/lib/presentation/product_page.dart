@@ -9,6 +9,7 @@ import 'package:module_common/presentation/widgets/product_detail_widget.dart';
 import 'package:ui_kit/common/constants/layout_dimen.dart';
 import 'package:ui_kit/extensions/string_extension.dart';
 import 'package:ui_kit/theme/colors.dart';
+import 'package:ui_kit/ui/infinite_pagination/infinite_paginantion_widget.dart';
 import 'package:ui_kit/ui/loading_indicator/circular_progres.dart';
 import 'package:ui_kit/ui/scanner/scanner_finder.dart';
 import 'package:ui_kit/ui/snackbar/snackbar_dialog.dart';
@@ -31,10 +32,38 @@ class _ProductPageState extends State<ProductPage> {
   int activeIndex = 0;
   String filterValue = '';
 
+  final pagingController =
+      PagingController<int, ProductEntity>(firstPageKey: 0);
+  final limit = 10;
+  int index = 0;
+  ProductEntity? lastProduct;
+
   @override
   void initState() {
     super.initState();
-    widget.bloc.add(GetProductListEvent());
+    pagingController.addPageRequestListener(
+      (pageKey) {
+        addGetStockListEvent();
+      },
+    );
+  }
+
+  void addGetStockListEvent() {
+    widget.bloc.add(
+      GetProductListEvent(
+        filterValue: filterValue,
+        filterByUnsetPrice: activeIndex == 1,
+        index: index,
+        pageSize: limit,
+        lastProduct: lastProduct,
+      ),
+    );
+  }
+
+  void resetFilter() {
+    index = 0;
+    lastProduct = null;
+    pagingController.refresh();
   }
 
   @override
@@ -80,21 +109,11 @@ class _ProductPageState extends State<ProductPage> {
                 labelText: ProductStrings.scannerLabelText.i18n(context),
                 onChanged: (value) {
                   filterValue = value;
-                  widget.bloc.add(
-                    GetProductListEvent(
-                      filterByUnsetPrice: activeIndex == 1,
-                      filterValue: filterValue,
-                    ),
-                  );
+                  resetFilter();
                 },
                 onScan: (value) {
                   filterValue = value;
-                  widget.bloc.add(
-                    GetProductListEvent(
-                      filterByUnsetPrice: activeIndex == 1,
-                      filterValue: filterValue,
-                    ),
-                  );
+                  resetFilter();
                 },
               ),
               AppTabBar(
@@ -105,22 +124,17 @@ class _ProductPageState extends State<ProductPage> {
                 items: [
                   AppTabBarItem(
                     onTap: () {
-                      widget.bloc.add(
-                        GetProductListEvent(
-                          filterValue: filterValue,
-                        ),
-                      );
+                      if (activeIndex == 0) {
+                        resetFilter();
+                      }
                     },
                     title: ProductStrings.tabItemAll.i18n(context),
                   ),
                   AppTabBarItem(
                     onTap: () {
-                      widget.bloc.add(
-                        GetProductListEvent(
-                          filterByUnsetPrice: true,
-                          filterValue: filterValue,
-                        ),
-                      );
+                      if (activeIndex == 1) {
+                        resetFilter();
+                      }
                     },
                     title: ProductStrings.tabItemUnsetPrice.i18n(context),
                   ),
@@ -144,13 +158,7 @@ class _ProductPageState extends State<ProductPage> {
                           : ProductStrings.deleteSuccessSnackbar.i18n(context),
                       type: SnackbarDialogType.success,
                     );
-                    widget.bloc.add(
-                      GetProductListEvent(
-                        filterByUnsetPrice: activeIndex == 1,
-                        filterValue: filterValue,
-                        forceRemote: true,
-                      ),
-                    );
+                    resetFilter();
                   }
                   if (state is UpdateFailed || state is DeleteFailed) {
                     SnackbarDialog().show(
@@ -186,26 +194,28 @@ class _ProductPageState extends State<ProductPage> {
                           .i18n(context),
                       type: SnackbarDialogType.success,
                     );
-                    widget.bloc.add(
-                      GetProductListEvent(
-                        filterByUnsetPrice: activeIndex == 1,
-                        filterValue: filterValue,
-                        forceRemote: true,
-                      ),
-                    );
+                    resetFilter();
+                  }
+                  if (state is ProductListLoaded) {
+                    if (state.isLastPage) {
+                      pagingController.appendLastPage(state.productList);
+                    } else {
+                      if (state.productList.isNotEmpty) {
+                        lastProduct = state.productList.last;
+                      }
+                      index++;
+                      pagingController.appendPage(state.productList, index);
+                    }
+                  }
+                  if (state is ProductFailed) {
+                    pagingController.appendLastPage([]);
                   }
                 },
                 builder: (context, state) {
-                  if (state is ProductLoading) {
-                    return const CircularProgress();
-                  }
-                  if (state is ProductListLoaded) {
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: state.productList.map(productCard).toList(),
-                    );
-                  }
-                  return Container();
+                  return InfinitePaginationWidget(
+                    itemBuilder: (context, item, key) => productCard(item),
+                    pagingController: pagingController,
+                  );
                 },
               ),
             ],

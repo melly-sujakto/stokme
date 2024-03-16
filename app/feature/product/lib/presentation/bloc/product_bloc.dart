@@ -10,8 +10,6 @@ part 'product_state.dart';
 class ProductBloc extends BaseBloc<ProductEvent, ProductState> {
   final ProductUsecase productUsecase;
 
-  List<ProductEntity> products = [];
-
   ProductBloc(this.productUsecase) : super(ProductInitial()) {
     on<GetProductListEvent>(_onGetProductListEvent);
     on<UpdateProductEvent>(_onUpdateProductEvent);
@@ -25,56 +23,31 @@ class ProductBloc extends BaseBloc<ProductEvent, ProductState> {
   ) async {
     emit(ProductLoading());
     try {
-      if (products.isEmpty || event.forceRemote) {
-        final productList = await productUsecase.getProductList(
-          filterByUnsetPrice: event.filterByUnsetPrice,
-        );
-        products = productList;
-      }
+      final results = await productUsecase.getProductList(
+        filterByUnsetPrice: event.filterByUnsetPrice,
+        index: event.index,
+        lastProduct: event.lastProduct,
+        pageSize: event.pageSize,
+      );
 
-      if (event.filterByUnsetPrice) {
-        late final List<ProductEntity> productList;
-        if (event.filterValue.isNotEmpty) {
-          productList = products
-              .where(
-                (element) =>
-                    element.name
-                        .toLowerCase()
-                        .contains(event.filterValue.toLowerCase()) ||
-                    element.code
-                        .toLowerCase()
-                        .contains(event.filterValue.toLowerCase()),
-              )
-              .toList();
-        } else {
-          productList = products;
-        }
+      final productList = results
+          .where(
+            (element) =>
+                element.name
+                    .toLowerCase()
+                    .contains(event.filterValue.toLowerCase()) ||
+                element.code
+                    .toLowerCase()
+                    .contains(event.filterValue.toLowerCase()),
+          )
+          .toList();
 
-        final filteredProducts = productList.where((element) {
-          return element.saleNet == null;
-        }).toList();
-
-        emit(ProductListLoaded(filteredProducts));
-        return;
-      }
-
-      if (event.filterValue.isNotEmpty) {
-        final filteredProducts = products
-            .where(
-              (element) =>
-                  element.name
-                      .toLowerCase()
-                      .contains(event.filterValue.toLowerCase()) ||
-                  element.code
-                      .toLowerCase()
-                      .contains(event.filterValue.toLowerCase()),
-            )
-            .toList();
-        emit(ProductListLoaded(filteredProducts));
-        return;
-      }
-
-      emit(ProductListLoaded(products));
+      emit(
+        ProductListLoaded(
+          productList: productList,
+          isLastPage: results.length < event.index,
+        ),
+      );
     } catch (e) {
       emit(ProductFailed());
     }

@@ -20,26 +20,28 @@ class ProductUsecase {
     return pref.getString(GenericConstants.storeId)!;
   }
 
-  // TODO(Melly): implement index and limit
   Future<List<ProductEntity>> getProductList({
     bool filterByUnsetPrice = false,
+    ProductEntity? lastProduct,
+    int index = 0,
+    int pageSize = 20,
   }) async {
     final collectionRef = firebaseLibrary.selfQuery(collectionName);
-    final querySnapshot = filterByUnsetPrice
-        ? await collectionRef
+    final initialSelfQuery = filterByUnsetPrice
+        ? collectionRef
             .where('store_id', isEqualTo: await _getStoreId())
-            .where('sale_net', isNull: true)
-            .get()
-        : await collectionRef
-            .where('store_id', isEqualTo: await _getStoreId())
-            .get();
+            .where('sale_net', isEqualTo: 0)
+        : collectionRef.where('store_id', isEqualTo: await _getStoreId());
 
-    final jsonList = querySnapshot.docs.map((doc) {
-      final data = doc.data();
-      final id = doc.id;
-      data['id'] = id;
-      return data;
-    }).toList();
+    final jsonList = await firebaseLibrary.getListPagination(
+      initialSelfQuery: initialSelfQuery,
+      collectionName: collectionName,
+      orderByField: 'name',
+      decending: false,
+      lastDocumentId: lastProduct?.id,
+      index: index,
+      pageSize: pageSize,
+    );
 
     return jsonList.map(ProductModel.fromJson).toList();
   }

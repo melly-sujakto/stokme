@@ -22,8 +22,12 @@ final class DeleteSuccess extends ProductState {}
 
 final class ProductListLoaded extends ProductState {
   final List<ProductEntity> productList;
+  final bool isLastPage;
 
-  ProductListLoaded(this.productList);
+  ProductListLoaded({
+    required this.productList,
+    required this.isLastPage,
+  });
 }
 
 class AddProductLoading extends ProductState {}
