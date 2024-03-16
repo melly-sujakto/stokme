@@ -72,7 +72,7 @@ class ProductDetailContent extends StatefulWidget {
 class _ProductDetailContentState extends State<ProductDetailContent> {
   late String code;
   late String name;
-  late String purchaseNet;
+  late String saleNet;
 
   late final TextEditingController codeTextEditController;
   late final TextEditingController nameTextEditController;
@@ -82,11 +82,11 @@ class _ProductDetailContentState extends State<ProductDetailContent> {
     super.initState();
     code = widget.product.code;
     name = widget.product.name;
-    purchaseNet = widget.product.saleNet?.toString() ?? '';
+    saleNet = widget.product.saleNet?.toString() ?? '0';
 
     codeTextEditController = TextEditingController(text: code);
     nameTextEditController = TextEditingController(text: name);
-    purchaseNetTextEditController = TextEditingController(text: purchaseNet);
+    purchaseNetTextEditController = TextEditingController(text: saleNet);
   }
 
   @override
@@ -212,7 +212,11 @@ class _ProductDetailContentState extends State<ProductDetailContent> {
                     margin: EdgeInsets.zero,
                     onChanged: (value) {
                       setState(() {
-                        purchaseNet = value;
+                        if (value.isEmpty) {
+                          saleNet = '0';
+                        } else {
+                          saleNet = value;
+                        }
                       });
                     },
                   ),
@@ -225,7 +229,7 @@ class _ProductDetailContentState extends State<ProductDetailContent> {
                         : TranslationConstants.editText.i18n(context),
                     onPressed: code.isNotEmpty &&
                             name.isNotEmpty &&
-                            purchaseNet.isNotEmpty
+                            saleNet.isNotEmpty
                         ? widget.type == ProductDetailContentType.add
                             ? () => widget.mainCallback(
                                   ProductEntity(
@@ -233,9 +237,9 @@ class _ProductDetailContentState extends State<ProductDetailContent> {
                                     code: code,
                                     storeId: widget.product.storeId,
                                     name: name,
-                                    saleNet: purchaseNet.isEmpty
-                                        ? null
-                                        : double.parse(purchaseNet),
+                                    saleNet: saleNet.isEmpty
+                                        ? 0
+                                        : double.parse(saleNet),
                                   ),
                                 )
                             : () {
@@ -255,9 +259,9 @@ class _ProductDetailContentState extends State<ProductDetailContent> {
                                         code: code,
                                         storeId: widget.product.storeId,
                                         name: name,
-                                        saleNet: purchaseNet.isEmpty
+                                        saleNet: saleNet.isEmpty
                                             ? null
-                                            : double.parse(purchaseNet),
+                                            : double.parse(saleNet),
                                       ),
                                     );
                                   },

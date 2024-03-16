@@ -160,7 +160,9 @@ class _ProductPageState extends State<ProductPage> {
                     );
                     resetFilter();
                   }
-                  if (state is UpdateFailed || state is DeleteFailed) {
+                  if (state is UpdateFailed ||
+                      state is DeleteFailed ||
+                      state is AddProductError) {
                     SnackbarDialog().show(
                       context: context,
                       message: state is UpdateSuccess
