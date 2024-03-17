@@ -91,7 +91,11 @@ class TransactionUsecase {
 
   Future<void> _submitSaleList(List<SaleEntity> saleEntityList) async {
     for (final saleEntity in saleEntityList) {
-      final data = SaleModel.fromEntity(saleEntity).toFirestoreJson();
+      final data = SaleModel.fromEntity(saleEntity).toFirestoreJson(
+        await _getStoreId(),
+        overridedCreatedAt: DateTime.now(),
+        overridedCreatedBy: await _getUserEmail(),
+      );
       await firebaseLibrary.createDocument(
         collectionName: collectionName,
         data: data,
@@ -99,7 +103,7 @@ class TransactionUsecase {
       unawaited(
         _updateStock(
           productId: saleEntity.productEntity.id!,
-          totalPcs: saleEntity.total,
+          totalPcs: saleEntity.totalPcs,
           isIncrease: false,
         ),
       );

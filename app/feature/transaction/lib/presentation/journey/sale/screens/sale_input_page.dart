@@ -210,7 +210,7 @@ class _SaleInputPageState extends State<SaleInputPage> {
           return SaleProductCard(
             product: recordedProducts[index].productEntity,
             orderNumber: orderNumber,
-            totalPcs: recordedProducts[index].total,
+            totalPcs: recordedProducts[index].totalPcs,
             onDelete: () {
               setState(() {
                 recordedProducts.removeAt(index);

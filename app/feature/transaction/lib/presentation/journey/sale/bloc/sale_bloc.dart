@@ -69,11 +69,11 @@ class SaleBloc extends BaseBloc<SaleEvent, SaleState> {
     Emitter<SaleState> emit,
   ) async {
     // TODO(Melly): move to be core class/place due to relate to price and money
-    final totalNet = event.product.saleNet * event.total;
+    final totalNet = event.product.saleNet * event.totalPcs;
     final saleEntity = SaleEntity(
       productEntity: event.product,
       receiptId: receipt.id!,
-      total: event.total,
+      totalPcs: event.totalPcs,
       totalNet: totalNet,
     );
     emit(CalculationSuccess(saleEntity));

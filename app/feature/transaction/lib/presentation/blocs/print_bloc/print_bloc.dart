@@ -121,7 +121,7 @@ class PrintBloc extends BaseBloc<PrintEvent, PrintState> {
             ),
             LineText(
               type: LineText.TYPE_TEXT,
-              content: '   ${e.total} X      '
+              content: '   ${e.totalPcs} X      '
                   '${e.productEntity.saleNet.toString().toRupiahCurrency()}',
               align: LineText.ALIGN_LEFT,
               linefeed: 1,

@@ -96,7 +96,7 @@ class _SaleReviewPageState extends State<SaleReviewPage> {
                         return SaleProductCard(
                           product: saleEntity.productEntity,
                           orderNumber: index + 1,
-                          totalPcs: saleEntity.total,
+                          totalPcs: saleEntity.totalPcs,
                           totalNet: saleEntity.totalNet,
                         );
                       },

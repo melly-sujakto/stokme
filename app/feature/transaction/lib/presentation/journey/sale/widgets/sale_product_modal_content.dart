@@ -169,7 +169,7 @@ class _SaleProductModalContentState extends State<SaleProductModalContent> {
                           name: widget.product.name,
                           saleNet: double.parse(price),
                         ),
-                        total: total ?? 1,
+                        totalPcs: total ?? 1,
                       ),
                     );
                     FocusManager.instance.primaryFocus?.unfocus();

@@ -13,11 +13,11 @@ class GetProductListEvent extends SaleEvent {
 
 class CalculatePriceProductEvent extends SaleEvent {
   final ProductEntity product;
-  final int total;
+  final int totalPcs;
 
   CalculatePriceProductEvent({
     required this.product,
-    required this.total,
+    required this.totalPcs,
   });
 }
 
