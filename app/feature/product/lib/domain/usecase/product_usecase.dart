@@ -85,6 +85,8 @@ class ProductUsecase {
       ).toFirestoreJson(
         await _getStoreId(),
         overridedProductId: overridedProductId,
+        overridedCreatedAt: DateTime.now(),
+        overridedCreatedBy: await _getUserEmail(),
       ),
     );
   }
