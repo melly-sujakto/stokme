@@ -5,21 +5,40 @@ class StockInModel extends StockInEntity {
     required super.productEntity,
     required super.totalPcs,
     required super.purchaseNet,
+    super.createdBy,
+    super.createdAt,
+    super.updatedBy,
+    super.updatedAt,
   });
 
-  Map<String, dynamic> toFirestoreJson() {
+  Map<String, dynamic> toFirestoreJson(
+    String storeId, {
+    DateTime? overridedCreatedAt,
+    String? overridedCreatedBy,
+    DateTime? overridedUpdatedAt,
+    String? overridedUpdatedBy,
+  }) {
     return {
       'product_id': productEntity.id,
       'total_pcs': totalPcs,
       'purchase_net': purchaseNet,
+      'store_id': storeId,
+      'created_at': (overridedCreatedAt ?? createdAt)?.millisecondsSinceEpoch,
+      'created_by': overridedCreatedBy ?? createdBy,
+      'updated_at': (overridedUpdatedAt ?? updatedAt)?.millisecondsSinceEpoch,
+      'updated_by': overridedUpdatedBy ?? updatedBy,
     };
   }
 
-  factory StockInModel.fromEntity(StockInEntity stockInEntity) {
+  factory StockInModel.fromEntity(StockInEntity entity) {
     return StockInModel(
-      productEntity: stockInEntity.productEntity,
-      totalPcs: stockInEntity.totalPcs,
-      purchaseNet: stockInEntity.purchaseNet,
+      productEntity: entity.productEntity,
+      totalPcs: entity.totalPcs,
+      purchaseNet: entity.purchaseNet,
+      createdAt: entity.createdAt,
+      createdBy: entity.createdBy,
+      updatedAt: entity.updatedAt,
+      updatedBy: entity.updatedBy,
     );
   }
 }
