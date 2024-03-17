@@ -9,6 +9,7 @@ import 'package:data_abstraction/model/product_model.dart';
 import 'package:data_abstraction/model/receipt_model.dart';
 import 'package:data_abstraction/model/sale_model.dart';
 import 'package:data_abstraction/model/stock_in_model.dart';
+import 'package:data_abstraction/model/stock_model.dart';
 import 'package:data_abstraction/model/store_model.dart';
 import 'package:firebase_library/firebase_library.dart';
 import 'package:module_common/common/constant/generic_constants.dart';
@@ -106,7 +107,11 @@ class TransactionUsecase {
   }
 
   Future<void> submitStockIn(StockInEntity stockIn) async {
-    final data = StockInModel.fromEntity(stockIn).toFirestoreJson();
+    final data = StockInModel.fromEntity(stockIn).toFirestoreJson(
+      await _getStoreId(),
+      overridedCreatedAt: DateTime.now(),
+      overridedCreatedBy: await _getUserEmail(),
+    );
     await firebaseLibrary.createDocument(
       collectionName: stockInCollectionName,
       data: data,
@@ -140,23 +145,32 @@ class TransactionUsecase {
     if (jsonList.isEmpty) {
       await firebaseLibrary.createDocument(
         collectionName: stockCollectionName,
-        data: {
-          'product_id': productId,
-          'total_pcs': totalPcs,
-        },
+        data: StockModel.forInitStock(
+          productId: productId,
+          totalPcs: totalPcs,
+          createdAt: DateTime.now(),
+          createdBy: await _getUserEmail(),
+        ).toFirestoreJson(await _getStoreId()),
       );
     } else {
+      final stockJson = jsonList.first;
       await firebaseLibrary.updateDocument(
         collectionName: stockCollectionName,
-        id: jsonList.first['id'],
-        document: {
-          'product_id': productId,
-          'total_pcs': _affectStock(
+        id: stockJson['id'],
+        document: StockModel.forUpdateStock(
+          productId: productId,
+          totalPcs: _affectStock(
             currentValue: jsonList.first['total_pcs'],
             affectedValue: totalPcs,
             isIncrease: isIncrease,
           ),
-        },
+          createdAt: stockJson['created_at'] != null
+              ? DateTime.fromMillisecondsSinceEpoch(stockJson['created_at'])
+              : DateTime.now(),
+          createdBy: stockJson['created_by'] ?? await _getUserEmail(),
+          updatedAt: DateTime.now(),
+          updatedBy: await _getUserEmail(),
+        ).toFirestoreJson(await _getStoreId()),
       );
     }
   }
