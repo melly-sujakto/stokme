@@ -81,7 +81,11 @@ class TransactionUsecase {
   }
 
   Future<void> _submitReceipt(ReceiptEntity receiptEntity) async {
-    final data = ReceiptModel.fromEntity(receiptEntity).toFirestoreJson();
+    final data = ReceiptModel.fromEntity(receiptEntity).toFirestoreJson(
+      await _getStoreId(),
+      overridedCreatedAt: DateTime.now(),
+      overridedCreatedBy: await _getUserEmail(),
+    );
     await firebaseLibrary.createDocument(
       collectionName: receiptCollectionName,
       data: data,

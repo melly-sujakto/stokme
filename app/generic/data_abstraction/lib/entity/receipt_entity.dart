@@ -1,4 +1,6 @@
-class ReceiptEntity {
+import 'package:data_abstraction/entity/base/base_entity.dart';
+
+class ReceiptEntity extends BaseEntity {
   final String? id;
   final double cash;
   final double change;
@@ -15,6 +17,10 @@ class ReceiptEntity {
     required this.discount,
     required this.totalNet,
     required this.userEmail,
+    super.createdBy,
+    super.createdAt,
+    super.updatedBy,
+    super.updatedAt,
   });
 
   ReceiptEntity copyWith({
@@ -25,6 +31,10 @@ class ReceiptEntity {
     double? discount,
     double? totalNet,
     String? userEmail,
+    DateTime? createdAt,
+    String? createdBy,
+    DateTime? updatedAt,
+    String? updatedBy,
   }) {
     return ReceiptEntity(
       id: id ?? this.id,
@@ -34,6 +44,10 @@ class ReceiptEntity {
       discount: discount ?? this.discount,
       totalNet: totalNet ?? this.totalNet,
       userEmail: userEmail ?? this.userEmail,
+      createdAt: createdAt ?? this.createdAt,
+      createdBy: createdBy ?? this.createdBy,
+      updatedAt: updatedAt ?? this.updatedAt,
+      updatedBy: updatedBy ?? this.updatedBy,
     );
   }
 }

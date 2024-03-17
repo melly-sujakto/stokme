@@ -10,6 +10,10 @@ class ReceiptModel extends ReceiptEntity {
     required super.discount,
     required super.totalNet,
     required super.userEmail,
+    super.createdBy,
+    super.createdAt,
+    super.updatedBy,
+    super.updatedAt,
   });
 
   factory ReceiptModel.fromJson(Map<String, dynamic> json) {
@@ -21,6 +25,14 @@ class ReceiptModel extends ReceiptEntity {
       discount: JsonUtils.validateIntOrDouble(json['discount']),
       totalNet: JsonUtils.validateIntOrDouble(json['total_net']),
       userEmail: json['user_email'],
+      createdAt: json['created_at'] != null
+          ? DateTime.fromMillisecondsSinceEpoch(json['created_at'])
+          : null,
+      createdBy: json['created_by'],
+      updatedAt: json['updated_at'] != null
+          ? DateTime.fromMillisecondsSinceEpoch(json['updated_at'])
+          : null,
+      updatedBy: json['updated_by'],
     );
   }
 
@@ -33,10 +45,20 @@ class ReceiptModel extends ReceiptEntity {
       discount: entity.discount,
       totalNet: entity.totalNet,
       userEmail: entity.userEmail,
+      createdAt: entity.createdAt,
+      createdBy: entity.createdBy,
+      updatedAt: entity.updatedAt,
+      updatedBy: entity.updatedBy,
     );
   }
 
-  Map<String, dynamic> toFirestoreJson({bool isUpdate = false}) {
+  Map<String, dynamic> toFirestoreJson(
+    String overridedStoreId, {
+    DateTime? overridedCreatedAt,
+    String? overridedCreatedBy,
+    DateTime? overridedUpdatedAt,
+    String? overridedUpdatedBy,
+  }) {
     return {
       'cash': cash,
       'change': change,
@@ -44,11 +66,11 @@ class ReceiptModel extends ReceiptEntity {
       'discount': discount,
       'total_net': totalNet,
       'user_email': userEmail,
-      // hardcoded value
-      'created_at': DateTime.now().millisecondsSinceEpoch,
-      'created_by': userEmail,
-      'updated_at': isUpdate ? DateTime.now().millisecondsSinceEpoch : null,
-      'updated_by': isUpdate ? userEmail : null,
+      'store_id': overridedStoreId,
+      'created_at': (overridedCreatedAt ?? createdAt)?.millisecondsSinceEpoch,
+      'created_by': overridedCreatedBy ?? createdBy,
+      'updated_at': (overridedUpdatedAt ?? updatedAt)?.millisecondsSinceEpoch,
+      'updated_by': overridedUpdatedBy ?? updatedBy,
     };
   }
 }
