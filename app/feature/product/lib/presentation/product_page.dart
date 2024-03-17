@@ -294,7 +294,7 @@ class _ProductPageState extends State<ProductPage> {
                   ],
                 ),
                 Text(
-                  (product.saleNet?.toString() ?? '-').toRupiahCurrency(),
+                  product.saleNet.toString().toRupiahCurrency(),
                   style: TextStyle(
                     fontSize: LayoutDimen.dimen_13.minSp,
                     fontWeight: FontWeight.w300,

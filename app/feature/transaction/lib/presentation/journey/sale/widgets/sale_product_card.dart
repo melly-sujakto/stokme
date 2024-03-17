@@ -67,7 +67,7 @@ class SaleProductCard extends StatelessWidget {
                     height: LayoutDimen.dimen_2.h,
                   ),
                   Text(
-                    (product.saleNet ?? '').toString().toRupiahCurrency(),
+                    product.saleNet.toString().toRupiahCurrency(),
                     style: TextStyle(
                       fontSize: LayoutDimen.dimen_13.minSp,
                     ),

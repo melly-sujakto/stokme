@@ -24,6 +24,11 @@ class ProductUsecase {
     return pref.getString(GenericConstants.storeId)!;
   }
 
+  Future<String> _getUserEmail() async {
+    final pref = await sharedPreferencesWrapper.getPrefs();
+    return pref.getString(GenericConstants.email)!;
+  }
+
   Future<List<ProductEntity>> getProductList({
     bool filterByUnsetPrice = false,
     ProductEntity? lastProduct,
@@ -53,8 +58,11 @@ class ProductUsecase {
   Future<void> addProduct(ProductEntity productEntity) async {
     final productId = await firebaseLibrary.createDocument(
       collectionName: collectionName,
-      data: ProductModel.fromEntity(productEntity)
-          .toFirestoreJson(await _getStoreId()),
+      data: ProductModel.fromEntity(productEntity).toFirestoreJson(
+        overridedStoreId: await _getStoreId(),
+        overridedCreatedAt: DateTime.now(),
+        overridedCreatedBy: await _getUserEmail(),
+      ),
     );
     // affect stock
     unawaited(
@@ -85,8 +93,10 @@ class ProductUsecase {
     await firebaseLibrary.updateDocument(
       collectionName: collectionName,
       id: productEntity.id!,
-      document: ProductModel.fromEntity(productEntity)
-          .toFirestoreJson(await _getStoreId()),
+      document: ProductModel.fromEntity(productEntity).toFirestoreJson(
+        overridedUpdatedAt: DateTime.now(),
+        overridedUpdatedBy: await _getUserEmail(),
+      ),
     );
   }
 

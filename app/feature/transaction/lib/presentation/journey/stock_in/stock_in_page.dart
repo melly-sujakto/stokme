@@ -181,6 +181,7 @@ class _StockInPageState extends State<StockInPage> {
                                         product: ProductEntity(
                                           code: scannerTextEditController.text,
                                           name: '',
+                                          saleNet: 0,
                                           storeId: '',
                                         ),
                                         mainCallback: (product) {

@@ -37,6 +37,7 @@ class ProductDetail {
             ProductEntity(
               code: '',
               name: '',
+              saleNet: 0,
               storeId: '',
             ),
         deleteCallback: deleteCallback,
@@ -82,7 +83,7 @@ class _ProductDetailContentState extends State<ProductDetailContent> {
     super.initState();
     code = widget.product.code;
     name = widget.product.name;
-    saleNet = widget.product.saleNet?.toString() ?? '0';
+    saleNet = widget.product.saleNet.toString();
 
     codeTextEditController = TextEditingController(text: code);
     nameTextEditController = TextEditingController(text: name);
@@ -232,15 +233,7 @@ class _ProductDetailContentState extends State<ProductDetailContent> {
                             saleNet.isNotEmpty
                         ? widget.type == ProductDetailContentType.add
                             ? () => widget.mainCallback(
-                                  ProductEntity(
-                                    id: widget.product.id,
-                                    code: code,
-                                    storeId: widget.product.storeId,
-                                    name: name,
-                                    saleNet: saleNet.isEmpty
-                                        ? 0
-                                        : double.parse(saleNet),
-                                  ),
+                                  _generateProductDetail(),
                                 )
                             : () {
                                 ConfirmationDialog(
@@ -254,15 +247,7 @@ class _ProductDetailContentState extends State<ProductDetailContent> {
                                   onConfirmed: () {
                                     Navigator.pop(context);
                                     widget.mainCallback(
-                                      ProductEntity(
-                                        id: widget.product.id,
-                                        code: code,
-                                        storeId: widget.product.storeId,
-                                        name: name,
-                                        saleNet: saleNet.isEmpty
-                                            ? null
-                                            : double.parse(saleNet),
-                                      ),
+                                      _generateProductDetail(),
                                     );
                                   },
                                 ).show(context);
@@ -279,6 +264,20 @@ class _ProductDetailContentState extends State<ProductDetailContent> {
           ],
         ),
       ),
+    );
+  }
+
+  ProductEntity _generateProductDetail() {
+    return ProductEntity(
+      id: widget.product.id,
+      code: code,
+      name: name,
+      saleNet: saleNet.isEmpty ? 0 : double.parse(saleNet),
+      storeId: widget.product.storeId,
+      createdAt: widget.product.createdAt,
+      createdBy: widget.product.createdBy,
+      updatedAt: widget.product.updatedAt,
+      updatedBy: widget.product.updatedBy,
     );
   }
 }

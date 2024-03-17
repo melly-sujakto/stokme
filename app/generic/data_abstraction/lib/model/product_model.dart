@@ -6,8 +6,12 @@ class ProductModel extends ProductEntity {
     super.id,
     required super.code,
     required super.name,
-    super.saleNet,
+    required super.saleNet,
     required super.storeId,
+    super.createdBy,
+    super.createdAt,
+    super.updatedBy,
+    super.updatedAt,
   });
 
   factory ProductModel.fromJson(Map<String, dynamic> json) {
@@ -15,8 +19,16 @@ class ProductModel extends ProductEntity {
       id: json['id'],
       code: json['code'],
       name: json['name'],
-      saleNet: JsonUtils.validateIntOrDouble(json['sale_net'] ?? 0),
+      saleNet: JsonUtils.validateIntOrDouble(json['sale_net']),
       storeId: json['store_id'],
+      createdAt: json['created_at'] != null
+          ? DateTime.fromMillisecondsSinceEpoch(json['created_at'])
+          : null,
+      createdBy: json['created_by'],
+      updatedAt: json['updated_at'] != null
+          ? DateTime.fromMillisecondsSinceEpoch(json['updated_at'])
+          : null,
+      updatedBy: json['updated_by'],
     );
   }
 
@@ -27,15 +39,29 @@ class ProductModel extends ProductEntity {
       saleNet: entity.saleNet,
       name: entity.name,
       storeId: entity.storeId,
+      createdAt: entity.createdAt,
+      createdBy: entity.createdBy,
+      updatedAt: entity.updatedAt,
+      updatedBy: entity.updatedBy,
     );
   }
 
-  Map<String, dynamic> toFirestoreJson(String savedStoreId) {
+  Map<String, dynamic> toFirestoreJson({
+    String? overridedStoreId,
+    DateTime? overridedCreatedAt,
+    String? overridedCreatedBy,
+    DateTime? overridedUpdatedAt,
+    String? overridedUpdatedBy,
+  }) {
     return {
       'code': code,
       'name': name,
-      'sale_net': saleNet ?? 0,
-      'store_id': savedStoreId,
+      'sale_net': saleNet,
+      'store_id': overridedStoreId ?? storeId,
+      'created_at': (overridedCreatedAt ?? createdAt)?.millisecondsSinceEpoch,
+      'created_by': overridedCreatedBy ?? createdBy,
+      'updated_at': (overridedUpdatedAt ?? updatedAt)?.millisecondsSinceEpoch,
+      'updated_by': overridedUpdatedBy ?? updatedBy,
     };
   }
 }

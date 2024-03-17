@@ -36,7 +36,7 @@ class _SaleProductModalContentState extends State<SaleProductModalContent> {
   @override
   void initState() {
     super.initState();
-    price = widget.product.saleNet?.toString() ?? '';
+    price = widget.product.saleNet.toString();
     priceTextEditController = TextEditingController(text: price);
     totalTextEditController = TextEditingController(
       text: total?.toString(),

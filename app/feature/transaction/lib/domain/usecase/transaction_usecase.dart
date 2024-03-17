@@ -34,6 +34,11 @@ class TransactionUsecase {
     return pref.getString(GenericConstants.storeId)!;
   }
 
+  Future<String> _getUserEmail() async {
+    final pref = await sharedPreferencesWrapper.getPrefs();
+    return pref.getString(GenericConstants.email)!;
+  }
+
   // TODO(melly): move to mobile_data project to be shareable
   Future<List<ProductEntity>> getProductList(String filterValue) async {
     final collectionRef = firebaseLibrary.selfQuery(productCollectionName);
@@ -169,8 +174,11 @@ class TransactionUsecase {
   Future<void> addProduct(ProductEntity productEntity) async {
     await firebaseLibrary.createDocument(
       collectionName: productCollectionName,
-      data: ProductModel.fromEntity(productEntity)
-          .toFirestoreJson(await _getStoreId()),
+      data: ProductModel.fromEntity(productEntity).toFirestoreJson(
+        overridedStoreId: await _getStoreId(),
+        overridedCreatedAt: DateTime.now(),
+        overridedCreatedBy: await _getUserEmail(),
+      ),
     );
   }
 

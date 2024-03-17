@@ -1,15 +1,21 @@
-class ProductEntity {
+import 'package:data_abstraction/entity/base/base_entity.dart';
+
+class ProductEntity extends BaseEntity {
   final String? id;
   final String code;
   final String name;
-  final double? saleNet;
+  final double saleNet;
   final String storeId;
 
   ProductEntity({
     this.id,
     required this.code,
     required this.name,
-    this.saleNet,
+    required this.saleNet,
     required this.storeId,
+    super.createdBy,
+    super.createdAt,
+    super.updatedBy,
+    super.updatedAt,
   });
 }
