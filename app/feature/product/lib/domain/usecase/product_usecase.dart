@@ -59,7 +59,7 @@ class ProductUsecase {
     final productId = await firebaseLibrary.createDocument(
       collectionName: collectionName,
       data: ProductModel.fromEntity(productEntity).toFirestoreJson(
-        overridedStoreId: await _getStoreId(),
+        await _getStoreId(),
         overridedCreatedAt: DateTime.now(),
         overridedCreatedBy: await _getUserEmail(),
       ),
@@ -96,6 +96,7 @@ class ProductUsecase {
       collectionName: collectionName,
       id: productEntity.id!,
       document: ProductModel.fromEntity(productEntity).toFirestoreJson(
+        await _getStoreId(),
         overridedUpdatedAt: DateTime.now(),
         overridedUpdatedBy: await _getUserEmail(),
       ),

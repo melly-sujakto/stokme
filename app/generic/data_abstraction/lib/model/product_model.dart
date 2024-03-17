@@ -7,7 +7,6 @@ class ProductModel extends ProductEntity {
     required super.code,
     required super.name,
     required super.saleNet,
-    required super.storeId,
     super.createdBy,
     super.createdAt,
     super.updatedBy,
@@ -20,7 +19,6 @@ class ProductModel extends ProductEntity {
       code: json['code'],
       name: json['name'],
       saleNet: JsonUtils.validateIntOrDouble(json['sale_net']),
-      storeId: json['store_id'],
       createdAt: json['created_at'] != null
           ? DateTime.fromMillisecondsSinceEpoch(json['created_at'])
           : null,
@@ -38,7 +36,6 @@ class ProductModel extends ProductEntity {
       code: entity.code,
       saleNet: entity.saleNet,
       name: entity.name,
-      storeId: entity.storeId,
       createdAt: entity.createdAt,
       createdBy: entity.createdBy,
       updatedAt: entity.updatedAt,
@@ -46,8 +43,8 @@ class ProductModel extends ProductEntity {
     );
   }
 
-  Map<String, dynamic> toFirestoreJson({
-    String? overridedStoreId,
+  Map<String, dynamic> toFirestoreJson(
+    String overridedStoreId, {
     DateTime? overridedCreatedAt,
     String? overridedCreatedBy,
     DateTime? overridedUpdatedAt,
@@ -57,7 +54,7 @@ class ProductModel extends ProductEntity {
       'code': code,
       'name': name,
       'sale_net': saleNet,
-      'store_id': overridedStoreId ?? storeId,
+      'store_id': overridedStoreId,
       'created_at': (overridedCreatedAt ?? createdAt)?.millisecondsSinceEpoch,
       'created_by': overridedCreatedBy ?? createdBy,
       'updated_at': (overridedUpdatedAt ?? updatedAt)?.millisecondsSinceEpoch,

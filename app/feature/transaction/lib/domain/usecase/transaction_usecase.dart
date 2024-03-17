@@ -175,7 +175,7 @@ class TransactionUsecase {
     await firebaseLibrary.createDocument(
       collectionName: productCollectionName,
       data: ProductModel.fromEntity(productEntity).toFirestoreJson(
-        overridedStoreId: await _getStoreId(),
+        await _getStoreId(),
         overridedCreatedAt: DateTime.now(),
         overridedCreatedBy: await _getUserEmail(),
       ),

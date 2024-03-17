@@ -182,7 +182,6 @@ class _StockInPageState extends State<StockInPage> {
                                           code: scannerTextEditController.text,
                                           name: '',
                                           saleNet: 0,
-                                          storeId: '',
                                         ),
                                         mainCallback: (product) {
                                           widget.stockInBloc

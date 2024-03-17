@@ -5,14 +5,12 @@ class ProductEntity extends BaseEntity {
   final String code;
   final String name;
   final double saleNet;
-  final String storeId;
 
   ProductEntity({
     this.id,
     required this.code,
     required this.name,
     required this.saleNet,
-    required this.storeId,
     super.createdBy,
     super.createdAt,
     super.updatedBy,

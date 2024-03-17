@@ -167,7 +167,6 @@ class _SaleProductModalContentState extends State<SaleProductModalContent> {
                           id: widget.product.id,
                           code: widget.product.code,
                           name: widget.product.name,
-                          storeId: widget.product.storeId,
                           saleNet: double.parse(price),
                         ),
                         total: total ?? 1,
