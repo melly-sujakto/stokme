@@ -82,7 +82,6 @@ class StockModel extends StockEntity {
     String? overridedUpdatedBy,
   }) {
     return {
-      'id': id,
       'total_pcs': totalPcs,
       'product_id': overridedProductId ?? productEntity.id,
       'store_id': savedStoreId,
