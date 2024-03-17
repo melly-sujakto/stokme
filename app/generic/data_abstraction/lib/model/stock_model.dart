@@ -1,3 +1,4 @@
+import 'package:data_abstraction/entity/product_entity.dart';
 import 'package:data_abstraction/entity/stock_entity.dart';
 import 'package:data_abstraction/model/product_model.dart';
 
@@ -25,6 +26,50 @@ class StockModel extends StockEntity {
           ? DateTime.fromMillisecondsSinceEpoch(json['updated_at'])
           : null,
       updatedBy: json['updated_by'],
+    );
+  }
+
+  factory StockModel.forInitStock({
+    required String productId,
+    required int totalPcs,
+    required DateTime createdAt,
+    required String createdBy,
+  }) {
+    return StockModel(
+      totalPcs: totalPcs,
+      createdAt: createdAt,
+      createdBy: createdBy,
+      // bypass product with empty values
+      productEntity: ProductEntity(
+        id: productId,
+        code: '',
+        name: '',
+        saleNet: 0,
+      ),
+    );
+  }
+
+  factory StockModel.forUpdateStock({
+    required String productId,
+    required int totalPcs,
+    required DateTime createdAt,
+    required String createdBy,
+    required DateTime updatedAt,
+    required String updatedBy,
+  }) {
+    return StockModel(
+      totalPcs: totalPcs,
+      createdAt: createdAt,
+      createdBy: createdBy,
+      updatedAt: updatedAt,
+      updatedBy: updatedBy,
+      // bypass product with empty values
+      productEntity: ProductEntity(
+        id: productId,
+        code: '',
+        name: '',
+        saleNet: 0,
+      ),
     );
   }
 
