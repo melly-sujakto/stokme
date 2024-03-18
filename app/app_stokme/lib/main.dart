@@ -41,11 +41,11 @@ void main() async {
 void _configureInjector() {
   // main injector needs to be first, since it clears kiwi container
   app_injector.Injector.init();
+  module_common_injector.Injector.init();
+  ui_kit_injector.Injector.init();
   dashboard_injector.Injector.init();
   login_injector.Injector.init();
   product_injector.Injector.init();
   stock_injector.Injector.init();
   transaction_injector.Injector.init();
-  module_common_injector.Injector.init();
-  ui_kit_injector.Injector.init();
 }
