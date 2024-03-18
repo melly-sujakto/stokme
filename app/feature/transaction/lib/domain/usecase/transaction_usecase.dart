@@ -11,17 +11,21 @@ import 'package:data_abstraction/model/sale_model.dart';
 import 'package:data_abstraction/model/stock_in_model.dart';
 import 'package:data_abstraction/model/stock_model.dart';
 import 'package:data_abstraction/model/store_model.dart';
+import 'package:data_abstraction/repository/printer_repository.dart';
 import 'package:firebase_library/firebase_library.dart';
 import 'package:module_common/common/constant/generic_constants.dart';
+import 'package:module_common/package/bluetooth_print.dart';
 import 'package:module_common/wrapper/shared_preferences_wrapper.dart';
 
 class TransactionUsecase {
   final FirebaseLibrary firebaseLibrary;
   final SharedPreferencesWrapper sharedPreferencesWrapper;
+  final PrinterRepository printerRepository;
 
   TransactionUsecase({
     required this.firebaseLibrary,
     required this.sharedPreferencesWrapper,
+    required this.printerRepository,
   });
 
   final stockInCollectionName = 'stock_in';
@@ -215,5 +219,16 @@ class TransactionUsecase {
     );
 
     return StoreModel.fromJson(json!);
+  }
+
+  Future<List<BluetoothDevice>> scanAvailablePrinters() {
+    return printerRepository.scan();
+  }
+
+  Future<void> startPrint({
+    required BluetoothDevice device,
+    required List<LineText> lineTexts,
+  }) {
+    return printerRepository.startPrint(device: device, lineTexts: lineTexts);
   }
 }

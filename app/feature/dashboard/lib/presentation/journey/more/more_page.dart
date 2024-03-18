@@ -12,6 +12,7 @@ import 'package:module_common/presentation/bloc/language_bloc/language_bloc.dart
 import 'package:ui_kit/common/constants/layout_dimen.dart';
 import 'package:ui_kit/theme/colors.dart';
 import 'package:ui_kit/ui/dialog/confirmation_dialog.dart';
+import 'package:ui_kit/ui/dialog/plain_dialog.dart';
 import 'package:ui_kit/ui/loading_indicator/circular_progres.dart';
 import 'package:ui_kit/utils/screen_utils.dart';
 
@@ -47,6 +48,7 @@ class MorePage extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      rowPrinters(context),
                       rowLanguage(),
                       rowLogout(context),
                     ],
@@ -173,6 +175,107 @@ class MorePage extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+
+  Widget rowPrinters(BuildContext context) {
+    final items = [
+      'Selalu Tanya',
+      'Printer A',
+      'Printer B',
+    ];
+
+    return rowItem(
+      iconPath: MoreAssets.printerIcon,
+      child: InkWell(
+        onTap: () {
+          PlainDialog(
+            height:
+                LayoutDimen.dimen_100.h + LayoutDimen.dimen_55 * items.length,
+            content: Padding(
+              padding: EdgeInsets.fromLTRB(
+                LayoutDimen.dimen_16.w,
+                LayoutDimen.dimen_16.h,
+                LayoutDimen.dimen_16.w,
+                0,
+              ),
+              child: Column(
+                children: [
+                  Flexible(
+                    flex: 2,
+                    child: Image.asset(
+                      MoreAssets.printerIcon,
+                      height: LayoutDimen.dimen_40.h,
+                      fit: BoxFit.fitHeight,
+                    ),
+                  ),
+                  Flexible(
+                    flex: 1,
+                    child: SizedBox(
+                      height: LayoutDimen.dimen_8.h,
+                    ),
+                  ),
+                  Flexible(
+                    flex: 8,
+                    child: ListView.builder(
+                      itemCount: items.length,
+                      itemBuilder: (context, index) => InkWell(
+                        onTap: () {},
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                            vertical: LayoutDimen.dimen_16.h,
+                          ),
+                          decoration: BoxDecoration(
+                            border: Border(
+                              bottom: BorderSide(
+                                width: 0.2,
+                                color: CustomColors.neutral.c60,
+                              ),
+                            ),
+                          ),
+                          child: Text(
+                            items[index],
+                            style: TextStyle(
+                              fontSize: LayoutDimen.dimen_16.minSp,
+                              fontWeight: FontWeight.w100,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ).show(context);
+        },
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Flexible(
+              child: Text(
+                'Printer',
+                style: TextStyle(
+                  fontSize: LayoutDimen.dimen_16.minSp,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+            Flexible(
+              child: Padding(
+                padding: EdgeInsets.only(right: LayoutDimen.dimen_40.w),
+                child: Text(
+                  'Printer A',
+                  style: TextStyle(
+                    fontSize: LayoutDimen.dimen_14.minSp,
+                    fontWeight: FontWeight.w100,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

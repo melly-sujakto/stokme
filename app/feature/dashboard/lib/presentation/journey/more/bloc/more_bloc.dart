@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:feature_dashboard/domain/navigation/usecase/dashboard_usecase.dart';
+import 'package:module_common/package/bluetooth_print.dart';
 import 'package:module_common/presentation/bloc/base_bloc.dart';
 
 part 'more_event.dart';
@@ -13,7 +14,17 @@ class MoreBloc extends BaseBloc<MoreEvent, MoreState> {
     this.dashboardUsecase,
   ) : super(MoreInitial()) {
     on<LogoutEvent>(_onLogoutEvent);
+    on<InitialEvent>(_onInitialEvent);
   }
+
+  FutureOr<void> _onInitialEvent(
+    InitialEvent event,
+    emit,
+  ) async {
+    final availablePrinters = await dashboardUsecase.scanAvailablePrinters();
+    emit(InitialState(availablePrinters));
+  }
+
   FutureOr<void> _onLogoutEvent(
     LogoutEvent event,
     emit,

@@ -1,11 +1,10 @@
 import 'dart:async';
 
-import 'package:bluetooth_print/bluetooth_print_model.dart';
 import 'package:data_abstraction/entity/receipt_entity.dart';
 import 'package:data_abstraction/entity/sale_entity.dart';
 import 'package:data_abstraction/entity/store_entity.dart';
-import 'package:feature_transaction/common/utils/printer_util.dart';
 import 'package:feature_transaction/domain/usecase/transaction_usecase.dart';
+import 'package:module_common/package/bluetooth_print.dart';
 import 'package:module_common/presentation/bloc/base_bloc.dart';
 import 'package:ui_kit/extensions/string_extension.dart';
 
@@ -33,13 +32,13 @@ class PrintBloc extends BaseBloc<PrintEvent, PrintState> {
       final storeDetail = await _getStoreDetail();
 
       // Print execution
-      final printManager = PrinterUtil();
-      await printManager.scan();
+      final devices = await transactionUsecase.scanAvailablePrinters();
       await Future.delayed(
         const Duration(seconds: 1),
         () async {
-          await printManager.startPrint(
-            generateLineTexts(
+          await transactionUsecase.startPrint(
+            device: devices.first,
+            lineTexts: generateLineTexts(
               storeDetail: storeDetail,
               saleEntityList: event.saleEntityList,
               receiptEntity: event.receiptEntity,
