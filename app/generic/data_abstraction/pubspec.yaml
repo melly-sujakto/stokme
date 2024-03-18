@@ -1,4 +1,5 @@
 name: data_abstraction
+publish_to: none
 description: A new Flutter module project.
 
 # The following defines the version and build number for your application.
@@ -25,6 +26,8 @@ dependencies:
   equatable: ^2.0.5
   flutter:
     sdk: flutter
+  module_common:
+    path: ../module_common
 
 dev_dependencies:
   flutter_lints: ^2.0.0
