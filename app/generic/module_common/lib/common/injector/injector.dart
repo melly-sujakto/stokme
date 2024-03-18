@@ -1,4 +1,5 @@
 import 'package:library_injection/package/kiwi.dart';
+import 'package:module_common/common/utils/printer_util.dart';
 import 'package:module_common/domain/usecase/language_usecase.dart';
 import 'package:module_common/wrapper/shared_preferences_wrapper.dart';
 
@@ -14,7 +15,7 @@ abstract class Injector {
   void _configure() {
     _configureBloc();
     _configureUseCase();
-    _configureRepository();
+    _configureUtils();
     _configureLocalDatasource();
   }
 
@@ -23,7 +24,8 @@ abstract class Injector {
   @Register.singleton(LanguageUsecase)
   void _configureUseCase();
 
-  void _configureRepository();
+  @Register.singleton(PrinterUtil)
+  void _configureUtils();
 
   @Register.singleton(SharedPreferencesWrapper)
   void _configureLocalDatasource();

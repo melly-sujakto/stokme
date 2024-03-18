@@ -10,10 +10,11 @@ class _$Injector extends Injector {
   @override
   void _configureBloc() {
     final KiwiContainer container = KiwiContainer();
-    container.registerFactory((c) => SaleBloc(c<TransactionUsecase>()));
-    container.registerFactory((c) => PrintBloc(c<TransactionUsecase>()));
-    container.registerFactory((c) => TransactionBloc(c<TransactionUsecase>()));
-    container.registerFactory((c) => StockInBloc(c<TransactionUsecase>()));
+    container
+      ..registerFactory((c) => SaleBloc(c<TransactionUsecase>()))
+      ..registerFactory((c) => PrintBloc(c<TransactionUsecase>()))
+      ..registerFactory((c) => TransactionBloc(c<TransactionUsecase>()))
+      ..registerFactory((c) => StockInBloc(c<TransactionUsecase>()));
   }
 
   @override
@@ -21,6 +22,7 @@ class _$Injector extends Injector {
     final KiwiContainer container = KiwiContainer();
     container.registerFactory((c) => TransactionUsecase(
         firebaseLibrary: c<FirebaseLibrary>(),
-        sharedPreferencesWrapper: c<SharedPreferencesWrapper>()));
+        sharedPreferencesWrapper: c<SharedPreferencesWrapper>(),
+        printerRepository: c<PrinterRepository>()));
   }
 }

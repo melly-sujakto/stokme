@@ -17,7 +17,11 @@ class _$Injector extends Injector {
   }
 
   @override
-  void _configureRepository() {}
+  void _configureUtils() {
+    final KiwiContainer container = KiwiContainer();
+    container.registerSingleton((c) => PrinterUtil());
+  }
+
   @override
   void _configureLocalDatasource() {
     final KiwiContainer container = KiwiContainer();

@@ -1,16 +1,18 @@
+import 'package:data_abstraction/repository/printer_repository.dart';
 import 'package:feature_dashboard/domain/navigation/interaction_navigation.dart';
 import 'package:feature_login/domain/navigation/interaction_navigation.dart';
 import 'package:feature_product/domain/navigation/interaction_navigation.dart';
 import 'package:feature_stock/domain/navigation/interaction_navigation.dart';
 import 'package:feature_transaction/domain/navigation/interaction_navigation.dart';
 import 'package:firebase_library/firebase_library.dart';
-import 'package:library_injection/annotations.dart';
 import 'package:library_injection/package/kiwi.dart';
+import 'package:module_common/common/utils/printer_util.dart';
 import 'package:module_common/domain/usecase/language_usecase.dart';
 import 'package:module_common/presentation/bloc/language_bloc/language_bloc.dart';
 import 'package:stokme/common/feature_flag_updater/feature_flag_updater.dart';
 import 'package:stokme/common/feature_flag_updater/firebase_remote_config/firebase_remote_config_wrapper.dart';
 import 'package:stokme/data/navigation/interaction_navigation_impl.dart';
+import 'package:stokme/data/repository/printer_repository_impl.dart';
 
 part 'injector.g.dart';
 
@@ -26,10 +28,10 @@ abstract class Injector {
   void _configure() {
     _configureBloc();
     _configureNavigation();
-    _configureDependencies();
     _configureLibraries();
     _manualInjection();
     _configureCommon();
+    _configureRepositories();
   }
 
   void _manualInjection() {
@@ -51,12 +53,6 @@ abstract class Injector {
       );
   }
 
-  @Dependencies.dependsOn(
-    LanguageBloc,
-    [LanguageUsecase],
-  )
-  void _configureDependencies();
-
   @Register.singleton(LanguageBloc)
   void _configureBloc();
 
@@ -69,4 +65,7 @@ abstract class Injector {
   @Register.singleton(FirebaseRemoteConfigWrapper)
   @Register.singleton(FeatureFlagUpdater)
   void _configureCommon();
+
+  @Register.singleton(PrinterRepository, from: PrinterRepositoryImpl)
+  void _configureRepositories();
 }

@@ -8,8 +8,6 @@ part of 'injector.dart';
 
 class _$Injector extends Injector {
   @override
-  void _configureDependencies() {}
-  @override
   void _configureBloc() {
     final KiwiContainer container = KiwiContainer();
     container.registerSingleton((c) => LanguageBloc(c<LanguageUsecase>()));
@@ -33,5 +31,12 @@ class _$Injector extends Injector {
     container
       ..registerSingleton((c) => FirebaseRemoteConfigWrapper())
       ..registerSingleton((c) => FeatureFlagUpdater());
+  }
+
+  @override
+  void _configureRepositories() {
+    final KiwiContainer container = KiwiContainer();
+    container.registerSingleton<PrinterRepository>(
+        (c) => PrinterRepositoryImpl(printerUtil: c<PrinterUtil>()));
   }
 }

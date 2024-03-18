@@ -21,6 +21,7 @@ class _$Injector extends Injector {
     final KiwiContainer container = KiwiContainer();
     container.registerSingleton((c) => DashboardUsecase(
         sharedPreferencesWrapper: c<SharedPreferencesWrapper>(),
-        firebaseLibrary: c<FirebaseLibrary>()));
+        firebaseLibrary: c<FirebaseLibrary>(),
+        printerRepository: c<PrinterRepository>()));
   }
 }
