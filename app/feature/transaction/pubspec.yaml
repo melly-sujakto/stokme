@@ -9,7 +9,6 @@ environment:
   flutter: ">=1.17.0"
 
 dependencies:
-  bluetooth_print: ^4.3.0
   data_abstraction:
     path: ../../generic/data_abstraction
   firebase_library:
