@@ -123,4 +123,14 @@ class DashboardUsecase {
     await prefs.remove(GenericConstants.printerAddress);
     await prefs.remove(GenericConstants.printerName);
   }
+
+  Future<void> setFlagScannerCamera(bool value) async {
+    final prefs = await sharedPreferencesWrapper.getPrefs();
+    await prefs.setBool(GenericConstants.alwaysUseCameraAsScanner, value);
+  }
+
+  Future<bool?> getFlagScannerCamera() async {
+    final prefs = await sharedPreferencesWrapper.getPrefs();
+    return prefs.getBool(GenericConstants.alwaysUseCameraAsScanner);
+  }
 }

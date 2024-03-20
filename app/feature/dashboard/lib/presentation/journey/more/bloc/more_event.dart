@@ -13,3 +13,9 @@ final class SetDefaultPrinter extends MoreEvent {
 
   SetDefaultPrinter(this.device);
 }
+
+final class SetAlwaysUseCameraAsScanner extends MoreEvent {
+  final bool value;
+
+  SetAlwaysUseCameraAsScanner(this.value);
+}

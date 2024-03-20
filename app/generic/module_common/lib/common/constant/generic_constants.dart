@@ -8,4 +8,5 @@ class GenericConstants {
   static const String roleId = 'role';
   static const String printerAddress = 'default_printer_address';
   static const String printerName = 'default_printer_name';
+  static const String alwaysUseCameraAsScanner = 'always_use_camera_as_scanner';
 }

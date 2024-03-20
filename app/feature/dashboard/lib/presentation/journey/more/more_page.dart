@@ -61,6 +61,7 @@ class _MorePageState extends State<MorePage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      rowCameraAsScanner(context),
                       rowPrinters(context),
                       rowLanguage(),
                       rowLogout(context),
@@ -200,15 +201,10 @@ class _MorePageState extends State<MorePage> {
             onTap: state is MoreDataLoaded
                 ? () {
                     PlainDialog(
-                      height: LayoutDimen.dimen_156.h +
-                          LayoutDimen.dimen_55 * state.devices.length,
-                      content: Padding(
-                        padding: EdgeInsets.fromLTRB(
-                          LayoutDimen.dimen_16.w,
-                          LayoutDimen.dimen_16.h,
-                          LayoutDimen.dimen_16.w,
-                          0,
-                        ),
+                      content: Container(
+                        height: LayoutDimen.dimen_156.h +
+                            LayoutDimen.dimen_55 * state.devices.length,
+                        padding: EdgeInsets.all(LayoutDimen.dimen_16.w),
                         child: Column(
                           children: [
                             Flexible(
@@ -337,6 +333,101 @@ class _MorePageState extends State<MorePage> {
             fontWeight: isDefault ? FontWeight.bold : FontWeight.w100,
           ),
         ),
+      ),
+    );
+  }
+
+  Widget rowCameraAsScanner(BuildContext context) {
+    return rowItem(
+      iconPath: MoreAssets.barcodeIcon,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Flexible(
+            child: Text(
+              MoreStrings.alwaysUseCameraAsScanner.i18n(context),
+              style: TextStyle(
+                fontSize: LayoutDimen.dimen_16.minSp,
+                fontWeight: FontWeight.w500,
+              ),
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: LayoutDimen.dimen_16.w,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                BlocBuilder<MoreBloc, MoreState>(
+                  builder: (context, state) {
+                    return Switch(
+                      value: state is MoreDataLoaded &&
+                          state.alwaysUseCameraAsScanner,
+                      trackOutlineColor:
+                          MaterialStateProperty.resolveWith<Color>(
+                              (Set<MaterialState> states) {
+                        if (states.contains(MaterialState.selected)) {
+                          return CustomColors.neutral.c50;
+                        }
+                        return CustomColors.neutral.c40;
+                      }),
+                      trackColor: MaterialStateProperty.resolveWith<Color>(
+                          (Set<MaterialState> states) {
+                        if (states.contains(MaterialState.selected)) {
+                          return CustomColors.secondary.c50;
+                        }
+                        return CustomColors.neutral.c40;
+                      }),
+                      onChanged: (value) {
+                        moreBloc.add(SetAlwaysUseCameraAsScanner(value));
+                      },
+                    );
+                  },
+                ),
+                SizedBox(width: LayoutDimen.dimen_6.w),
+                InkWell(
+                  onTap: () {
+                    PlainDialog(
+                      content: Center(
+                        child: Padding(
+                          padding: EdgeInsets.all(LayoutDimen.dimen_16.w),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Image.asset(
+                                MoreAssets.warningIcon,
+                                height: LayoutDimen.dimen_28.h,
+                                fit: BoxFit.fitHeight,
+                              ),
+                              SizedBox(width: LayoutDimen.dimen_6.w),
+                              Flexible(
+                                child: Text(
+                                  MoreStrings.useCameraHelpDescription
+                                      .i18n(context),
+                                  style: TextStyle(
+                                    fontSize: LayoutDimen.dimen_16.minSp,
+                                    fontWeight: FontWeight.w100,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ).show(context);
+                  },
+                  child: Image.asset(
+                    MoreAssets.helpIcon,
+                    height: LayoutDimen.dimen_28.h,
+                    fit: BoxFit.fitHeight,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
