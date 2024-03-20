@@ -1,6 +1,9 @@
 abstract class MoreStrings {
   static const logout = 'more.item.logout';
   static const logoutDialogDesc = 'more.dialog.logoutDialogDesc';
+  static const alwaysAsk = 'more.printer.alwaysAsk';
+  static const unknownName = 'more.printer.unknownName';
+  static const printer = 'more.item.printer';
 }
 
 abstract class MoreAssets {

@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:module_common/common/constant/translation_constants.dart';
 import 'package:module_common/common/enum/languages.dart';
 import 'package:module_common/i18n/i18n_extension.dart';
+import 'package:module_common/package/bluetooth_print.dart';
 import 'package:module_common/presentation/bloc/base_bloc.dart';
 import 'package:module_common/presentation/bloc/language_bloc/language_bloc.dart';
 import 'package:ui_kit/common/constants/layout_dimen.dart';
@@ -16,9 +17,21 @@ import 'package:ui_kit/ui/dialog/plain_dialog.dart';
 import 'package:ui_kit/ui/loading_indicator/circular_progres.dart';
 import 'package:ui_kit/utils/screen_utils.dart';
 
-// TODO(Melly): move to independent feature
-class MorePage extends StatelessWidget {
+class MorePage extends StatefulWidget {
   const MorePage({super.key});
+
+  @override
+  State<MorePage> createState() => _MorePageState();
+}
+
+class _MorePageState extends State<MorePage> {
+  late final MoreBloc moreBloc;
+
+  @override
+  void initState() {
+    moreBloc = Injector.resolve<MoreBloc>()..add(PrepareMoreDataEvent());
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -116,7 +129,7 @@ class MorePage extends StatelessWidget {
             cancelText: TranslationConstants.no.i18n(context),
             confirmText: TranslationConstants.yes.i18n(context),
             onConfirmed: () {
-              Injector.resolve<MoreBloc>().add(LogoutEvent());
+              moreBloc.add(LogoutEvent());
             },
           ).show(context);
         },
@@ -178,103 +191,151 @@ class MorePage extends StatelessWidget {
     );
   }
 
-  // TODO(Melly): handle data
   Widget rowPrinters(BuildContext context) {
-    final items = [
-      'Selalu Tanya',
-      'Printer A',
-      'Printer B',
-    ];
-
     return rowItem(
       iconPath: MoreAssets.printerIcon,
-      child: InkWell(
-        onTap: () {
-          PlainDialog(
-            height:
-                LayoutDimen.dimen_100.h + LayoutDimen.dimen_55 * items.length,
-            content: Padding(
-              padding: EdgeInsets.fromLTRB(
-                LayoutDimen.dimen_16.w,
-                LayoutDimen.dimen_16.h,
-                LayoutDimen.dimen_16.w,
-                0,
-              ),
-              child: Column(
-                children: [
-                  Flexible(
-                    flex: 2,
-                    child: Image.asset(
-                      MoreAssets.printerIcon,
-                      height: LayoutDimen.dimen_40.h,
-                      fit: BoxFit.fitHeight,
-                    ),
-                  ),
-                  Flexible(
-                    flex: 1,
-                    child: SizedBox(
-                      height: LayoutDimen.dimen_8.h,
-                    ),
-                  ),
-                  Flexible(
-                    flex: 8,
-                    child: ListView.builder(
-                      itemCount: items.length,
-                      itemBuilder: (context, index) => InkWell(
-                        onTap: () {},
-                        child: Container(
-                          padding: EdgeInsets.symmetric(
-                            vertical: LayoutDimen.dimen_16.h,
-                          ),
-                          decoration: BoxDecoration(
-                            border: Border(
-                              bottom: BorderSide(
-                                width: 0.2,
-                                color: CustomColors.neutral.c60,
+      child: BlocBuilder<MoreBloc, MoreState>(
+        builder: (context, state) {
+          return InkWell(
+            onTap: state is MoreDataLoaded
+                ? () {
+                    PlainDialog(
+                      height: LayoutDimen.dimen_156.h +
+                          LayoutDimen.dimen_55 * state.devices.length,
+                      content: Padding(
+                        padding: EdgeInsets.fromLTRB(
+                          LayoutDimen.dimen_16.w,
+                          LayoutDimen.dimen_16.h,
+                          LayoutDimen.dimen_16.w,
+                          0,
+                        ),
+                        child: Column(
+                          children: [
+                            Flexible(
+                              flex: 2,
+                              child: Image.asset(
+                                MoreAssets.printerIcon,
+                                height: LayoutDimen.dimen_40.h,
+                                fit: BoxFit.fitHeight,
                               ),
                             ),
-                          ),
-                          child: Text(
-                            items[index],
-                            style: TextStyle(
-                              fontSize: LayoutDimen.dimen_16.minSp,
-                              fontWeight: FontWeight.w100,
+                            Flexible(
+                              flex: 1,
+                              child: SizedBox(
+                                height: LayoutDimen.dimen_8.h,
+                              ),
                             ),
-                          ),
+                            Flexible(
+                              flex: 8,
+                              child: ListView(
+                                children: [
+                                  if (state.devices.length > 1)
+                                    Flexible(
+                                      child: _printerRowItem(
+                                        device: BluetoothDevice()
+                                          ..name = MoreStrings.alwaysAsk
+                                              .i18n(context),
+                                        onTap: () {
+                                          moreBloc.add(
+                                            ResetDefaultPrinter(),
+                                          );
+                                          Navigator.pop(context);
+                                        },
+                                        isDefault: state.defaultDevice == null,
+                                      ),
+                                    ),
+                                  Flexible(
+                                    child: ListView.builder(
+                                      shrinkWrap: true,
+                                      itemCount: state.devices.length,
+                                      itemBuilder: (context, index) =>
+                                          _printerRowItem(
+                                        device: state.devices[index],
+                                        onTap: () {
+                                          moreBloc.add(
+                                            SetDefaultPrinter(
+                                              state.devices[index],
+                                            ),
+                                          );
+                                          Navigator.pop(context);
+                                        },
+                                        isDefault: state.defaultDevice !=
+                                                null &&
+                                            state.defaultDevice!.address ==
+                                                state.devices[index].address,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
+                      ),
+                    ).show(context);
+                  }
+                : null,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Flexible(
+                  child: Text(
+                    MoreStrings.printer.i18n(context),
+                    style: TextStyle(
+                      fontSize: LayoutDimen.dimen_16.minSp,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+                Flexible(
+                  child: Padding(
+                    padding: EdgeInsets.only(right: LayoutDimen.dimen_40.w),
+                    child: Text(
+                      state is MoreDataLoaded &&
+                              state.defaultDevice != null &&
+                              state.defaultDevice!.name != null
+                          ? state.defaultDevice!.name!
+                          : MoreStrings.alwaysAsk.i18n(context),
+                      style: TextStyle(
+                        fontSize: LayoutDimen.dimen_14.minSp,
+                        fontWeight: FontWeight.w100,
                       ),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ).show(context);
+          );
         },
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Flexible(
-              child: Text(
-                'Printer',
-                style: TextStyle(
-                  fontSize: LayoutDimen.dimen_16.minSp,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
+      ),
+    );
+  }
+
+  Widget _printerRowItem({
+    required BluetoothDevice device,
+    Function()? onTap,
+    bool isDefault = false,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        padding: EdgeInsets.symmetric(
+          vertical: LayoutDimen.dimen_16.h,
+        ),
+        decoration: BoxDecoration(
+          border: Border(
+            bottom: BorderSide(
+              width: 0.2,
+              color: CustomColors.neutral.c60,
             ),
-            Flexible(
-              child: Padding(
-                padding: EdgeInsets.only(right: LayoutDimen.dimen_40.w),
-                child: Text(
-                  'Printer A',
-                  style: TextStyle(
-                    fontSize: LayoutDimen.dimen_14.minSp,
-                    fontWeight: FontWeight.w100,
-                  ),
-                ),
-              ),
-            ),
-          ],
+          ),
+        ),
+        child: Text(
+          device.name ?? MoreStrings.unknownName.i18n(context),
+          style: TextStyle(
+            fontSize: LayoutDimen.dimen_16.minSp,
+            fontWeight: isDefault ? FontWeight.bold : FontWeight.w100,
+          ),
         ),
       ),
     );
