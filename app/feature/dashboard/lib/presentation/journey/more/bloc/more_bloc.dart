@@ -14,15 +14,54 @@ class MoreBloc extends BaseBloc<MoreEvent, MoreState> {
     this.dashboardUsecase,
   ) : super(MoreInitial()) {
     on<LogoutEvent>(_onLogoutEvent);
-    on<InitialEvent>(_onInitialEvent);
+    on<PrepareMoreDataEvent>(_onPrepareMoreDataEvent);
+    on<ResetDefaultPrinter>(_onResetDefaultPrinter);
+    on<SetDefaultPrinter>(_onSetDefaultPrinter);
   }
 
-  FutureOr<void> _onInitialEvent(
-    InitialEvent event,
+  List<BluetoothDevice> availablePrinters = [];
+  BluetoothDevice? defaultPrinter;
+
+  FutureOr<void> _onPrepareMoreDataEvent(
+    PrepareMoreDataEvent event,
     emit,
   ) async {
-    final availablePrinters = await dashboardUsecase.scanAvailablePrinters();
-    emit(InitialState(availablePrinters));
+    availablePrinters = await dashboardUsecase.scanAvailablePrinters();
+    defaultPrinter = await dashboardUsecase.getDefaultPrinter();
+    emit(
+      MoreDataLoaded(
+        devices: availablePrinters,
+        defaultDevice: defaultPrinter,
+      ),
+    );
+  }
+
+  FutureOr<void> _onSetDefaultPrinter(
+    SetDefaultPrinter event,
+    emit,
+  ) async {
+    await dashboardUsecase.setDefaultPrinter(event.device);
+    defaultPrinter = event.device;
+    emit(
+      MoreDataLoaded(
+        devices: availablePrinters,
+        defaultDevice: defaultPrinter,
+      ),
+    );
+  }
+
+  FutureOr<void> _onResetDefaultPrinter(
+    ResetDefaultPrinter event,
+    emit,
+  ) async {
+    await dashboardUsecase.resetDefaultPrinter();
+    defaultPrinter = null;
+    emit(
+      MoreDataLoaded(
+        devices: availablePrinters,
+        defaultDevice: defaultPrinter,
+      ),
+    );
   }
 
   FutureOr<void> _onLogoutEvent(

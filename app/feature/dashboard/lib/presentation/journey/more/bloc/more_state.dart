@@ -8,8 +8,12 @@ final class LogoutSuccess extends MoreState {}
 
 final class LogoutFailed extends MoreState {}
 
-final class InitialState extends MoreState {
+final class MoreDataLoaded extends MoreState {
   final List<BluetoothDevice> devices;
+  final BluetoothDevice? defaultDevice;
 
-  InitialState(this.devices);
+  MoreDataLoaded({
+    required this.devices,
+    this.defaultDevice,
+  });
 }
