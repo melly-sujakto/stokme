@@ -362,27 +362,34 @@ class _MorePageState extends State<MorePage> {
               children: [
                 BlocBuilder<MoreBloc, MoreState>(
                   builder: (context, state) {
-                    return Switch(
-                      value: state is MoreDataLoaded &&
-                          state.alwaysUseCameraAsScanner,
-                      trackOutlineColor:
-                          MaterialStateProperty.resolveWith<Color>(
-                              (Set<MaterialState> states) {
-                        if (states.contains(MaterialState.selected)) {
-                          return CustomColors.neutral.c50;
-                        }
-                        return CustomColors.neutral.c40;
-                      }),
-                      trackColor: MaterialStateProperty.resolveWith<Color>(
-                          (Set<MaterialState> states) {
-                        if (states.contains(MaterialState.selected)) {
-                          return CustomColors.secondary.c50;
-                        }
-                        return CustomColors.neutral.c40;
-                      }),
-                      onChanged: (value) {
-                        moreBloc.add(SetAlwaysUseCameraAsScanner(value));
-                      },
+                    if (state is MoreDataLoaded) {
+                      return Switch(
+                        value: state.alwaysUseCameraAsScanner,
+                        trackOutlineColor:
+                            MaterialStateProperty.resolveWith<Color>(
+                                (Set<MaterialState> states) {
+                          if (states.contains(MaterialState.selected)) {
+                            return CustomColors.neutral.c50;
+                          }
+                          return CustomColors.neutral.c40;
+                        }),
+                        trackColor: MaterialStateProperty.resolveWith<Color>(
+                            (Set<MaterialState> states) {
+                          if (states.contains(MaterialState.selected)) {
+                            return CustomColors.secondary.c50;
+                          }
+                          return CustomColors.neutral.c40;
+                        }),
+                        onChanged: (value) {
+                          moreBloc.add(SetAlwaysUseCameraAsScanner(value));
+                        },
+                      );
+                    }
+                    return Container(
+                      margin: EdgeInsets.only(right: LayoutDimen.dimen_8.w),
+                      width: LayoutDimen.dimen_20.w,
+                      height: LayoutDimen.dimen_20.w,
+                      child: const CircularProgress(),
                     );
                   },
                 ),
