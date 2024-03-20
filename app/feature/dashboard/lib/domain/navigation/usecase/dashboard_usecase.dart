@@ -98,4 +98,29 @@ class DashboardUsecase {
   }) {
     return printerRepository.startPrint(device: device, lineTexts: lineTexts);
   }
+
+  Future<void> setDefaultPrinter(BluetoothDevice device) async {
+    final prefs = await sharedPreferencesWrapper.getPrefs();
+    await prefs.setString(GenericConstants.printerAddress, device.address!);
+    await prefs.setString(GenericConstants.printerName, device.name!);
+  }
+
+  Future<BluetoothDevice?> getDefaultPrinter() async {
+    BluetoothDevice? device;
+    final prefs = await sharedPreferencesWrapper.getPrefs();
+    final address = prefs.getString(GenericConstants.printerAddress);
+    final name = prefs.getString(GenericConstants.printerName);
+    if (address != null || name != null) {
+      device = BluetoothDevice()
+        ..name = name
+        ..address = address;
+    }
+    return device;
+  }
+
+  Future<void> resetDefaultPrinter() async {
+    final prefs = await sharedPreferencesWrapper.getPrefs();
+    await prefs.remove(GenericConstants.printerAddress);
+    await prefs.remove(GenericConstants.printerName);
+  }
 }
