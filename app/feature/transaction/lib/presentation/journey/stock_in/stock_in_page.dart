@@ -43,8 +43,15 @@ class _StockInPageState extends State<StockInPage> {
 
   String totalProduct = '';
   String purchasePrice = '';
+  bool? isAutoActiveScanner;
 
   final scannerTextEditController = TextEditingController();
+
+  @override
+  void initState() {
+    widget.stockInBloc.add(PrepareDataEvent());
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,15 +60,19 @@ class _StockInPageState extends State<StockInPage> {
       appBar: AppBarWithTitleOnly(
         appBarTitle: StockInConstants.appTitle.i18n(context),
       ),
-      body: BlocListener<StockInBloc, StockInState>(
-        listener: (context, state) {
-          if (state is SubmitStockLoading || state is AddProductLoading) {
+      body: BlocConsumer<StockInBloc, StockInState>(
+        listener: (context, stockInState) {
+          if (stockInState is StockInInitial) {
+            isAutoActiveScanner = stockInState.isAutoActiveScanner;
+          }
+          if (stockInState is SubmitStockLoading ||
+              stockInState is AddProductLoading) {
             showDialog(
               context: context,
               builder: (context) => const CircularProgress(),
             );
           }
-          if (state is SubmitStockError) {
+          if (stockInState is SubmitStockError) {
             Navigator.pop(context);
             SnackbarDialog().show(
               context: context,
@@ -69,7 +80,7 @@ class _StockInPageState extends State<StockInPage> {
               type: SnackbarDialogType.failed,
             );
           }
-          if (state is SubmitStockSuccess) {
+          if (stockInState is SubmitStockSuccess) {
             Navigator.pop(context);
             SnackbarDialog().show(
               context: context,
@@ -78,7 +89,7 @@ class _StockInPageState extends State<StockInPage> {
             );
             resetSelectedProduct();
           }
-          if (state is AddProductError) {
+          if (stockInState is AddProductError) {
             Navigator.pop(context);
             SnackbarDialog().show(
               context: context,
@@ -87,7 +98,7 @@ class _StockInPageState extends State<StockInPage> {
               type: SnackbarDialogType.failed,
             );
           }
-          if (state is AddProductSuccess) {
+          if (stockInState is AddProductSuccess) {
             Navigator.pop(context);
             Navigator.pop(context);
             SnackbarDialog().show(
@@ -99,7 +110,8 @@ class _StockInPageState extends State<StockInPage> {
             resetSelectedProduct();
           }
         },
-        child: BlocConsumer<TransactionBloc, TransactionState>(
+        builder: (context, stockInState) =>
+            BlocConsumer<TransactionBloc, TransactionState>(
           listener: (context, state) {
             if (state is GetProductListLoaded) {
               choiceProducts = state.products;
@@ -117,80 +129,84 @@ class _StockInPageState extends State<StockInPage> {
                     padding: EdgeInsets.all(LayoutDimen.dimen_16.w),
                     child: Column(
                       children: [
-                        // TODO(Melly): scanner finder will be wrapped as widget
-                        // to be used on sale and stock_in
-                        ScannerFinder(
-                          labelText: TranslationConstants.code.i18n(context),
-                          textEditController: scannerTextEditController,
-                          holdScanner: holdScannerFlag,
-                          keyboardType: TextInputType.number,
-                          onChanged: (value) {
-                            addEventGetProducts(value);
-                            setState(() {
-                              isFromOnScan = false;
-                            });
-                          },
-                          onScan: (value) {
-                            addEventGetProducts(value);
-                            setState(() {
-                              isFromOnScan = true;
-                            });
-                          },
-                          onSelected: (index) {
-                            onSelectedProduct(choiceProducts[index]);
-                          },
-                          optionList: choiceProducts
-                              .map(
-                                (e) => Padding(
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: LayoutDimen.dimen_16.w,
+                        if (isAutoActiveScanner != null)
+                          // TODO(Melly): scanner finder will be wrapped as
+                          // a widget to be used on sale and stock_in
+                          ScannerFinder(
+                            labelText: TranslationConstants.code.i18n(context),
+                            autoActiveScanner: isAutoActiveScanner!,
+                            textEditController: scannerTextEditController,
+                            holdScanner: holdScannerFlag,
+                            keyboardType: TextInputType.number,
+                            onChanged: (value) {
+                              addEventGetProducts(value);
+                              setState(() {
+                                isFromOnScan = false;
+                              });
+                            },
+                            onScan: (value) {
+                              addEventGetProducts(value);
+                              setState(() {
+                                isFromOnScan = true;
+                              });
+                            },
+                            onSelected: (index) {
+                              onSelectedProduct(choiceProducts[index]);
+                            },
+                            optionList: choiceProducts
+                                .map(
+                                  (e) => Padding(
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: LayoutDimen.dimen_16.w,
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          e.code,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                            fontSize:
+                                                LayoutDimen.dimen_18.minSp,
+                                            fontWeight: FontWeight.w200,
+                                          ),
+                                        ),
+                                        Text(
+                                          e.name,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                            fontSize:
+                                                LayoutDimen.dimen_16.minSp,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: LayoutDimen.dimen_8.h,
+                                        )
+                                      ],
+                                    ),
                                   ),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        e.code,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                          fontSize: LayoutDimen.dimen_18.minSp,
-                                          fontWeight: FontWeight.w200,
-                                        ),
+                                )
+                                .toList(),
+                            addProductAction: scannerTextEditController
+                                    .text.isNotEmpty
+                                ? () {
+                                    ProductDetail().showBottomSheet(
+                                      context,
+                                      product: ProductEntity(
+                                        code: scannerTextEditController.text,
+                                        name: '',
+                                        saleNet: 0,
                                       ),
-                                      Text(
-                                        e.name,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                          fontSize: LayoutDimen.dimen_16.minSp,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: LayoutDimen.dimen_8.h,
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              )
-                              .toList(),
-                          addProductAction:
-                              scannerTextEditController.text.isNotEmpty
-                                  ? () {
-                                      ProductDetail().showBottomSheet(
-                                        context,
-                                        product: ProductEntity(
-                                          code: scannerTextEditController.text,
-                                          name: '',
-                                          saleNet: 0,
-                                        ),
-                                        mainCallback: (product) {
-                                          widget.stockInBloc
-                                              .add(AddProductEvent(product));
-                                        },
-                                      );
-                                    }
-                                  : () {},
-                        ),
+                                      mainCallback: (product) {
+                                        widget.stockInBloc
+                                            .add(AddProductEvent(product));
+                                      },
+                                    );
+                                  }
+                                : () {},
+                          ),
                         SizedBox(
                           height: LayoutDimen.dimen_12.h,
                         ),

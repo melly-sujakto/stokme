@@ -44,6 +44,11 @@ class TransactionUsecase {
     return pref.getString(GenericConstants.email)!;
   }
 
+  Future<bool?> getFlagAlwaysUseCameraAsScanner() async {
+    final pref = await sharedPreferencesWrapper.getPrefs();
+    return pref.getBool(GenericConstants.alwaysUseCameraAsScanner);
+  }
+
   // TODO(melly): move to mobile_data project to be shareable
   Future<List<ProductEntity>> getProductList(String filterValue) async {
     final collectionRef = firebaseLibrary.selfQuery(productCollectionName);

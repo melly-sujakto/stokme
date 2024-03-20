@@ -4,6 +4,8 @@ sealed class SaleEvent {}
 
 class SetupEvent extends SaleEvent {}
 
+class PrepareDataEvent extends SaleEvent {}
+
 class GetProductListEvent extends SaleEvent {
   final String filterValue;
   GetProductListEvent({

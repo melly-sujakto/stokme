@@ -2,7 +2,11 @@ part of 'stock_in_bloc.dart';
 
 sealed class StockInState {}
 
-final class StockInInitial extends StockInState {}
+final class StockInInitial extends StockInState {
+  final bool isAutoActiveScanner;
+
+  StockInInitial({this.isAutoActiveScanner = false});
+}
 
 class SubmitStockLoading extends StockInState {}
 

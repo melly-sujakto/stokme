@@ -13,8 +13,20 @@ class StockInBloc extends BaseBloc<StockInEvent, StockInState> {
   StockInBloc(
     this.transactionUsecase,
   ) : super(StockInInitial()) {
+    on<PrepareDataEvent>(_onPrepareDataEvent);
     on<SubmitStockInEvent>(_onSubmitStockInEvent);
     on<AddProductEvent>(_onAddProductEvent);
+  }
+
+  FutureOr<void> _onPrepareDataEvent(
+    PrepareDataEvent event,
+    Emitter<StockInState> emit,
+  ) async {
+    final isAutoActiveScanner =
+        await transactionUsecase.getFlagAlwaysUseCameraAsScanner();
+    emit(
+      StockInInitial(isAutoActiveScanner: isAutoActiveScanner ?? false),
+    );
   }
 
   FutureOr<void> _onSubmitStockInEvent(

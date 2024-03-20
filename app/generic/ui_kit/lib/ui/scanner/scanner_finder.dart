@@ -28,7 +28,6 @@ class ScannerFinder extends StatefulWidget {
     this.keyboardType,
     this.holdScanner = false,
     this.addProductAction,
-    // TODO(MELLY): activate feature by more value
     this.autoActiveScanner = false,
   });
 

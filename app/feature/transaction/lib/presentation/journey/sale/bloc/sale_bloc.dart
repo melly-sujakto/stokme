@@ -17,6 +17,7 @@ class SaleBloc extends BaseBloc<SaleEvent, SaleState> {
   SaleBloc(
     this.transactionUsecase,
   ) : super(SaleInitial()) {
+    on<PrepareDataEvent>(_onPrepareDataEvent);
     on<GetProductListEvent>(_onGetProductListEvent);
     on<CalculatePriceProductEvent>(_onCalculatePriceProductEvent);
     on<CalculateTotalPriceEvent>(_onCalculateTotalPriceEvent);
@@ -27,6 +28,17 @@ class SaleBloc extends BaseBloc<SaleEvent, SaleState> {
   late ReceiptEntity receipt;
   late String userEmail;
   late String userName;
+
+  FutureOr<void> _onPrepareDataEvent(
+    PrepareDataEvent event,
+    Emitter<SaleState> emit,
+  ) async {
+    final isAutoActiveScanner =
+        await transactionUsecase.getFlagAlwaysUseCameraAsScanner();
+    emit(
+      SaleInitial(isAutoActiveScanner: isAutoActiveScanner ?? false),
+    );
+  }
 
   FutureOr<void> _onSetupEvent(
     SetupEvent event,

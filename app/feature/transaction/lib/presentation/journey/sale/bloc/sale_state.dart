@@ -2,7 +2,11 @@ part of 'sale_bloc.dart';
 
 sealed class SaleState {}
 
-final class SaleInitial extends SaleState {}
+final class SaleInitial extends SaleState {
+  final bool isAutoActiveScanner;
+
+  SaleInitial({this.isAutoActiveScanner = false});
+}
 
 final class GenerateReceiptFinished extends SaleState {}
 

@@ -33,8 +33,15 @@ class _SaleInputPageState extends State<SaleInputPage> {
   List<ProductEntity> choiceProducts = [];
   bool isFromOnScan = false;
   bool holdScannerFlag = false;
+  bool? isAutoActiveScanner;
 
   final scannerTextEditController = TextEditingController();
+
+  @override
+  void initState() {
+    widget.saleBloc.add(PrepareDataEvent());
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,6 +52,9 @@ class _SaleInputPageState extends State<SaleInputPage> {
       ),
       body: BlocConsumer<SaleBloc, SaleState>(
         listener: (context, state) {
+          if (state is SaleInitial) {
+            isAutoActiveScanner = state.isAutoActiveScanner;
+          }
           if (state is GetProductListLoaded) {
             choiceProducts = state.products;
             if (isFromOnScan && choiceProducts.length == 1) {
@@ -69,60 +79,62 @@ class _SaleInputPageState extends State<SaleInputPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    ScannerFinder(
-                      labelText: SaleStrings.code.i18n(context),
-                      textEditController: scannerTextEditController,
-                      keyboardType: TextInputType.number,
-                      holdScanner: holdScannerFlag,
-                      optionList: choiceProducts
-                          .map(
-                            (e) => Padding(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: LayoutDimen.dimen_16.w,
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    e.code,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                      fontSize: LayoutDimen.dimen_18.minSp,
-                                      fontWeight: FontWeight.w200,
+                    if (isAutoActiveScanner != null)
+                      ScannerFinder(
+                        labelText: SaleStrings.code.i18n(context),
+                        autoActiveScanner: isAutoActiveScanner!,
+                        textEditController: scannerTextEditController,
+                        keyboardType: TextInputType.number,
+                        holdScanner: holdScannerFlag,
+                        optionList: choiceProducts
+                            .map(
+                              (e) => Padding(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: LayoutDimen.dimen_16.w,
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      e.code,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                        fontSize: LayoutDimen.dimen_18.minSp,
+                                        fontWeight: FontWeight.w200,
+                                      ),
                                     ),
-                                  ),
-                                  Text(
-                                    e.name,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                      fontSize: LayoutDimen.dimen_16.minSp,
-                                      fontWeight: FontWeight.w600,
+                                    Text(
+                                      e.name,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                        fontSize: LayoutDimen.dimen_16.minSp,
+                                        fontWeight: FontWeight.w600,
+                                      ),
                                     ),
-                                  ),
-                                  SizedBox(
-                                    height: LayoutDimen.dimen_8.h,
-                                  )
-                                ],
+                                    SizedBox(
+                                      height: LayoutDimen.dimen_8.h,
+                                    )
+                                  ],
+                                ),
                               ),
-                            ),
-                          )
-                          .toList(),
-                      onSelected: (index) {
-                        onSelectedProduct(choiceProducts[index]);
-                      },
-                      onChanged: (value) {
-                        addEventGetProducts(value);
-                        setState(() {
-                          isFromOnScan = false;
-                        });
-                      },
-                      onScan: (value) {
-                        addEventGetProducts(value);
-                        setState(() {
-                          isFromOnScan = true;
-                        });
-                      },
-                    ),
+                            )
+                            .toList(),
+                        onSelected: (index) {
+                          onSelectedProduct(choiceProducts[index]);
+                        },
+                        onChanged: (value) {
+                          addEventGetProducts(value);
+                          setState(() {
+                            isFromOnScan = false;
+                          });
+                        },
+                        onScan: (value) {
+                          addEventGetProducts(value);
+                          setState(() {
+                            isFromOnScan = true;
+                          });
+                        },
+                      ),
                     SizedBox(
                       height: LayoutDimen.dimen_32.h,
                     ),

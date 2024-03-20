@@ -2,6 +2,8 @@ part of 'stock_in_bloc.dart';
 
 sealed class StockInEvent {}
 
+class PrepareDataEvent extends StockInEvent {}
+
 class SubmitStockInEvent extends StockInEvent {
   final StockInEntity stockInEntity;
 
