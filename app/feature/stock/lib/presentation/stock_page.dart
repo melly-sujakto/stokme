@@ -1,8 +1,11 @@
 import 'package:data_abstraction/entity/stock_entity.dart';
 import 'package:feature_stock/domain/usecase/stock_usecase.dart';
 import 'package:feature_stock/presentation/bloc/stock_bloc.dart';
+import 'package:feature_stock/presentation/stock_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:module_common/common/constant/translation_constants.dart';
+import 'package:module_common/i18n/i18n_extension.dart';
 import 'package:ui_kit/common/constants/layout_dimen.dart';
 import 'package:ui_kit/theme/colors.dart';
 import 'package:ui_kit/ui/infinite_pagination/infinite_paginantion_widget.dart';
@@ -73,7 +76,7 @@ class _StockPageState extends State<StockPage> {
       backgroundColor: CustomColors.neutral.c98,
       appBar: AppBar(
         title: Text(
-          'Stok Produk',
+          StockStrings.stockTitle.i18n(context),
           style: TextStyle(
             fontSize: LayoutDimen.dimen_19.minSp,
             fontWeight: FontWeight.bold,
@@ -87,7 +90,7 @@ class _StockPageState extends State<StockPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ScannerFinder(
-                labelText: 'Cari nama/kode',
+                labelText: TranslationConstants.scannerLabelText.i18n(context),
                 onChanged: (value) {
                   filterValue = value;
                   resetFilter();
@@ -108,14 +111,14 @@ class _StockPageState extends State<StockPage> {
                       currentFilterType = StockFilterType.lowestStock;
                       resetFilter();
                     },
-                    title: 'Stok sedikit',
+                    title: StockStrings.lowerStock.i18n(context),
                   ),
                   AppTabBarItem(
                     onTap: () {
                       currentFilterType = StockFilterType.mostStock;
                       resetFilter();
                     },
-                    title: 'Stok terbanyak',
+                    title: StockStrings.higherStock.i18n(context),
                   ),
                 ],
               ),
@@ -198,7 +201,8 @@ class _StockPageState extends State<StockPage> {
               ],
             ),
             Text(
-              '${stockEntity.totalPcs} pcs',
+              '${stockEntity.totalPcs} '
+              '${TranslationConstants.pcs.i18n(context)}',
               style: TextStyle(
                 fontSize: LayoutDimen.dimen_13.minSp,
                 fontWeight: FontWeight.w300,

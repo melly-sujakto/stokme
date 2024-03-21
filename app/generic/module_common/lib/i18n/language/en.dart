@@ -14,6 +14,8 @@ import 'package:module_common/i18n/language/en/en_profile_translations.dart'
     as profile;
 import 'package:module_common/i18n/language/en/en_sale_translations.dart'
     as sale;
+import 'package:module_common/i18n/language/en/en_stock_translations.dart'
+    as stock;
 
 final Map<String, String> translations = {
   ...common.translations,
@@ -24,4 +26,5 @@ final Map<String, String> translations = {
   ...product.translations,
   ...profile.translations,
   ...sale.translations,
+  ...stock.translations,
 };
