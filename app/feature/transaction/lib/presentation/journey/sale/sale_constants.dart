@@ -11,7 +11,6 @@ abstract class SaleStrings {
   static const saleReviewTitle = 'sale.title.saleReview';
   static const totalPrice = 'sale.review.totalPrice';
   static const process = 'sale.button.process';
-  static const pcs = 'sale.review.pcs';
   static const price = 'sale.review.price';
   static const totalPcs = 'sale.review.totalPcs';
   static const input = 'sale.button.input';

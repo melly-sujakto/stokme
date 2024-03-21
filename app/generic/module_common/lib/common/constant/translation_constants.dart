@@ -12,4 +12,6 @@ abstract class TranslationConstants {
       'common.product.failedAddProductMessage';
   static const successAddProductMessage =
       'common.product.successAddProductMessage';
+  static const scannerLabelText = 'common.scanner.label';
+  static const pcs = 'common.review.pcs';
 }

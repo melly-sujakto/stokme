@@ -106,7 +106,7 @@ class _ProductPageState extends State<ProductPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ScannerFinder(
-                labelText: ProductStrings.scannerLabelText.i18n(context),
+                labelText: TranslationConstants.scannerLabelText.i18n(context),
                 onChanged: (value) {
                   filterValue = value;
                   resetFilter();

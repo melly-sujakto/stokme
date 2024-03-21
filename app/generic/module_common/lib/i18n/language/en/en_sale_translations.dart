@@ -13,7 +13,6 @@ final Map<String, String> translations = {
   'sale.title.saleReview': 'Sale Review',
   'sale.review.totalPrice': 'Total',
   'sale.button.process': 'Process',
-  'sale.review.pcs': 'pcs',
   'sale.review.price': 'Price',
   'sale.review.totalPcs': 'Total Pcs',
   'sale.button.input': 'Input',

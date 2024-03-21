@@ -11,4 +11,6 @@ final Map<String, String> translations = {
   'common.product.failedAddProductMessage':
       'Gagal menambah produk, silakan coba lagi',
   'common.product.successAddProductMessage': 'Product berhasil ditambahkan',
+  'common.scanner.label': 'Cari nama/kode',
+  'common.review.pcs': 'pcs',
 };

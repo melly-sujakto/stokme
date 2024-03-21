@@ -2,7 +2,6 @@
 
 final Map<String, String> translations = {
   'product.appBar.title': 'Produk dan Harga',
-  'product.scanner.label': 'Cari nama/kode',
   'product.tabItem.all': 'Semua',
   'product.tabItem.unsetPrice': 'Belum ada harga default',
   'product.snackbar.updateSuccess': 'Produk berhasil diubah',

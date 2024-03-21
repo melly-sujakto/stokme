@@ -2,7 +2,6 @@
 
 final Map<String, String> translations = {
   'product.appBar.title': 'Products',
-  'product.scanner.label': 'Search by name/code',
   'product.tabItem.all': 'All',
   'product.tabItem.unsetPrice': 'Unsetted default price',
   'product.snackbar.updateSuccess': 'Product has been successfully updated',
