@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:data_abstraction/entity/product_entity.dart';
 import 'package:data_abstraction/model/product_model.dart';
 import 'package:data_abstraction/model/stock_model.dart';
+import 'package:data_abstraction/repository/product_repository.dart';
 import 'package:firebase_library/firebase_library.dart';
 import 'package:module_common/common/constant/generic_constants.dart';
 import 'package:module_common/wrapper/shared_preferences_wrapper.dart';
@@ -10,6 +11,7 @@ import 'package:module_common/wrapper/shared_preferences_wrapper.dart';
 class ProductUsecase {
   final FirebaseLibrary firebaseLibrary;
   final SharedPreferencesWrapper sharedPreferencesWrapper;
+  final ProductRepository productRepository;
 
   final collectionName = 'product';
   final collectionNameStock = 'stock';
@@ -17,6 +19,7 @@ class ProductUsecase {
   ProductUsecase({
     required this.firebaseLibrary,
     required this.sharedPreferencesWrapper,
+    required this.productRepository,
   });
 
   Future<String> _getStoreId() async {
@@ -34,25 +37,13 @@ class ProductUsecase {
     ProductEntity? lastProduct,
     int index = 0,
     int pageSize = 20,
-  }) async {
-    final collectionRef = firebaseLibrary.selfQuery(collectionName);
-    final initialSelfQuery = filterByUnsetPrice
-        ? collectionRef
-            .where('store_id', isEqualTo: await _getStoreId())
-            .where('sale_net', isEqualTo: 0)
-        : collectionRef.where('store_id', isEqualTo: await _getStoreId());
-
-    final jsonList = await firebaseLibrary.getListPagination(
-      initialSelfQuery: initialSelfQuery,
-      collectionName: collectionName,
-      orderByField: 'name',
-      decending: false,
-      lastDocumentId: lastProduct?.id,
+  }) {
+    return productRepository.getProductList(
+      filterByUnsetPrice: filterByUnsetPrice,
       index: index,
+      lastProduct: lastProduct,
       pageSize: pageSize,
     );
-
-    return jsonList.map(ProductModel.fromJson).toList();
   }
 
   Future<void> addProduct(ProductEntity productEntity) async {
