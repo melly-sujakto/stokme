@@ -10,7 +10,7 @@ import 'package:ui_kit/common/constants/layout_dimen.dart';
 import 'package:ui_kit/extensions/string_extension.dart';
 import 'package:ui_kit/theme/colors.dart';
 import 'package:ui_kit/ui/infinite_pagination/infinite_paginantion_widget.dart';
-import 'package:ui_kit/ui/loading_indicator/circular_progres.dart';
+import 'package:ui_kit/ui/loading_indicator/loading_circular.dart';
 import 'package:ui_kit/ui/scanner/scanner_finder.dart';
 import 'package:ui_kit/ui/snackbar/snackbar_dialog.dart';
 import 'package:ui_kit/ui/tab_bar/app_tab_bar.dart';
@@ -177,7 +177,7 @@ class _ProductPageState extends State<ProductPage> {
                     Navigator.pop(context);
                     showDialog(
                       context: context,
-                      builder: (context) => const CircularProgress.fullPage(),
+                      builder: (context) => const LoadingCircular.fullPage(),
                     );
                   }
 

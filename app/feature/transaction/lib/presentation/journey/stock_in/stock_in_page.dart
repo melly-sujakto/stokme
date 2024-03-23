@@ -13,7 +13,7 @@ import 'package:ui_kit/theme/colors.dart';
 import 'package:ui_kit/ui/app_bar/app_bar_with_title_only.dart';
 import 'package:ui_kit/ui/button/flat_button.dart';
 import 'package:ui_kit/ui/input_field/input_basic.dart';
-import 'package:ui_kit/ui/loading_indicator/circular_progres.dart';
+import 'package:ui_kit/ui/loading_indicator/loading_circular.dart';
 import 'package:ui_kit/ui/scanner/scanner_finder.dart';
 import 'package:ui_kit/ui/snackbar/snackbar_dialog.dart';
 import 'package:ui_kit/ui/widgets/dummy_circle_image.dart';
@@ -69,7 +69,7 @@ class _StockInPageState extends State<StockInPage> {
               stockInState is AddProductLoading) {
             showDialog(
               context: context,
-              builder: (context) => const CircularProgress(),
+              builder: (context) => const LoadingCircular(),
             );
           }
           if (stockInState is SubmitStockError) {

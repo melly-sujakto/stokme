@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:ui_kit/ui/loading_indicator/circular_progres.dart';
+import 'package:ui_kit/ui/loading_indicator/loading_circular.dart';
 
 export 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
@@ -29,9 +29,8 @@ class _InfinitePaginationWidgetState<PageKeyType, ItemType>
       physics: const NeverScrollableScrollPhysics(),
       builderDelegate: PagedChildBuilderDelegate<ItemType>(
         itemBuilder: widget.itemBuilder,
-        newPageProgressIndicatorBuilder: (context) => const CircularProgress(),
-        firstPageProgressIndicatorBuilder: (context) =>
-            const CircularProgress(),
+        newPageProgressIndicatorBuilder: (context) => const LoadingCircular(),
+        firstPageProgressIndicatorBuilder: (context) => const LoadingCircular(),
       ),
     );
   }

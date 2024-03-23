@@ -14,7 +14,7 @@ import 'package:ui_kit/common/constants/layout_dimen.dart';
 import 'package:ui_kit/theme/colors.dart';
 import 'package:ui_kit/ui/dialog/confirmation_dialog.dart';
 import 'package:ui_kit/ui/dialog/plain_dialog.dart';
-import 'package:ui_kit/ui/loading_indicator/circular_progres.dart';
+import 'package:ui_kit/ui/loading_indicator/loading_circular.dart';
 import 'package:ui_kit/utils/screen_utils.dart';
 
 class MorePage extends StatefulWidget {
@@ -70,7 +70,7 @@ class _MorePageState extends State<MorePage> {
                 ),
               ),
               if (languageState is LanguageLoading)
-                const CircularProgress.fullPage()
+                const LoadingCircular.fullPage()
             ],
           );
         },
@@ -389,7 +389,7 @@ class _MorePageState extends State<MorePage> {
                       margin: EdgeInsets.only(right: LayoutDimen.dimen_8.w),
                       width: LayoutDimen.dimen_20.w,
                       height: LayoutDimen.dimen_20.w,
-                      child: const CircularProgress(),
+                      child: const LoadingCircular(),
                     );
                   },
                 ),

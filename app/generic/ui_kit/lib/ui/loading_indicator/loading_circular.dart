@@ -6,11 +6,11 @@ enum CircularProgressType {
   fullPage,
 }
 
-class CircularProgress extends StatelessWidget {
+class LoadingCircular extends StatelessWidget {
   final CircularProgressType type;
-  const CircularProgress({super.key}) : type = CircularProgressType.standart;
+  const LoadingCircular({super.key}) : type = CircularProgressType.standart;
 
-  const CircularProgress.fullPage({super.key})
+  const LoadingCircular.fullPage({super.key})
       : type = CircularProgressType.fullPage;
 
   @override

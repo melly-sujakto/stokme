@@ -13,7 +13,7 @@ import 'package:ui_kit/theme/theme_data.dart';
 import 'package:ui_kit/ui/button/flat_button.dart';
 import 'package:ui_kit/ui/card/logo_image.dart';
 import 'package:ui_kit/ui/input_field/input_basic.dart';
-import 'package:ui_kit/ui/loading_indicator/circular_progres.dart';
+import 'package:ui_kit/ui/loading_indicator/loading_circular.dart';
 import 'package:ui_kit/ui/snackbar/snackbar_dialog.dart';
 import 'package:ui_kit/utils/screen_utils.dart';
 
@@ -176,7 +176,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
               ),
-              if (state is LoginLoading) const CircularProgress.fullPage(),
+              if (state is LoginLoading) const LoadingCircular.fullPage(),
             ],
           );
         },

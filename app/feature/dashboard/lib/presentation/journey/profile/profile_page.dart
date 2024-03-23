@@ -6,7 +6,7 @@ import 'package:module_common/presentation/bloc/base_bloc.dart';
 import 'package:recase/recase.dart';
 import 'package:ui_kit/common/constants/layout_dimen.dart';
 import 'package:ui_kit/theme/colors.dart';
-import 'package:ui_kit/ui/loading_indicator/circular_progres.dart';
+import 'package:ui_kit/ui/loading_indicator/loading_circular.dart';
 import 'package:ui_kit/utils/screen_utils.dart';
 
 // TODO(Melly): move to independent feature
@@ -29,7 +29,7 @@ class ProfilePage extends StatelessWidget {
       body: BlocBuilder<ProfileBloc, ProfileState>(
         builder: (context, state) {
           if (state is ProfileLoading) {
-            return const CircularProgress();
+            return const LoadingCircular();
           }
           return SingleChildScrollView(
             child: Padding(

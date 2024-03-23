@@ -6,7 +6,7 @@ import 'package:module_common/presentation/bloc/base_bloc.dart';
 import 'package:ui_kit/common/constants/layout_dimen.dart';
 import 'package:ui_kit/theme/colors.dart';
 import 'package:ui_kit/theme/theme_data.dart';
-import 'package:ui_kit/ui/loading_indicator/circular_progres.dart';
+import 'package:ui_kit/ui/loading_indicator/loading_circular.dart';
 import 'package:ui_kit/utils/screen_utils.dart';
 
 class HomePage extends StatelessWidget {
@@ -30,7 +30,7 @@ class HomePage extends StatelessWidget {
       child: BlocBuilder<HomeBloc, HomeState>(
         builder: (context, state) {
           if (state is HomeLoading) {
-            return const CircularProgress();
+            return const LoadingCircular();
           }
           return Scaffold(
             backgroundColor: Colors.transparent,

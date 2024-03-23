@@ -14,7 +14,7 @@ import 'package:ui_kit/extensions/string_extension.dart';
 import 'package:ui_kit/theme/colors.dart';
 import 'package:ui_kit/ui/app_bar/app_bar_with_title_only.dart';
 import 'package:ui_kit/ui/button/flat_button.dart';
-import 'package:ui_kit/ui/loading_indicator/circular_progres.dart';
+import 'package:ui_kit/ui/loading_indicator/loading_circular.dart';
 import 'package:ui_kit/utils/screen_utils.dart';
 
 class SaleReviewArgument {
@@ -145,7 +145,7 @@ class _SaleReviewPageState extends State<SaleReviewPage> {
                         LayoutDimen.dimen_32.h,
                       ),
                       child: state is SubmitLoading
-                          ? const CircularProgress()
+                          ? const LoadingCircular()
                           : FlatButton(
                               title: SaleStrings.process.i18n(context),
                               onPressed: () {
