@@ -1,4 +1,6 @@
 import 'package:data_abstraction/entity/sale_entity.dart';
+import 'package:data_abstraction/model/product_model.dart';
+import 'package:data_abstraction/utils/json_utils.dart';
 
 class SaleModel extends SaleEntity {
   SaleModel({
@@ -12,6 +14,24 @@ class SaleModel extends SaleEntity {
     super.updatedBy,
     super.updatedAt,
   });
+
+    factory SaleModel.fromJson(Map<String, dynamic> json) {
+    return SaleModel(
+      id: json['id'], 
+      productEntity: ProductModel.fromJson(json['product']),
+      receiptId: json['receipt_id'],
+      totalNet: JsonUtils.validateIntOrDouble(json['total_net']),
+      totalPcs: json['total_pcs'],
+      createdAt: json['created_at'] != null
+          ? DateTime.fromMillisecondsSinceEpoch(json['created_at'])
+          : null,
+      createdBy: json['created_by'],
+      updatedAt: json['updated_at'] != null
+          ? DateTime.fromMillisecondsSinceEpoch(json['updated_at'])
+          : null,
+      updatedBy: json['updated_by'],
+    );
+  }
 
   factory SaleModel.fromEntity(SaleEntity entity) {
     return SaleModel(
