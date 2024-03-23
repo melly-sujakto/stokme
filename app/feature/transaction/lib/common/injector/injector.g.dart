@@ -14,7 +14,8 @@ class _$Injector extends Injector {
       ..registerFactory((c) => SaleBloc(c<TransactionUsecase>()))
       ..registerFactory((c) => PrintBloc(c<TransactionUsecase>()))
       ..registerFactory((c) => TransactionBloc(c<TransactionUsecase>()))
-      ..registerFactory((c) => StockInBloc(c<TransactionUsecase>()));
+      ..registerFactory((c) => StockInBloc(c<TransactionUsecase>()))
+      ..registerFactory((c) => TransactionListBloc(c<TransactionUsecase>()));
   }
 
   @override

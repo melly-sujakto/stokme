@@ -1,3 +1,4 @@
+import 'package:feature_transaction/presentation/journey/transaction_list/bloc/transaction_list_bloc.dart';
 import 'package:feature_transaction/presentation/journey/transaction_list/transaction_list_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
@@ -8,7 +9,12 @@ import 'package:ui_kit/ui/widgets/dummy_circle_image.dart';
 import 'package:ui_kit/utils/screen_utils.dart';
 
 class TransactionListPage extends StatefulWidget {
-  const TransactionListPage({super.key});
+  const TransactionListPage({
+    Key? key,
+    required this.transactionListBloc,
+  }) : super(key: key);
+
+  final TransactionListBloc transactionListBloc;
 
   @override
   State<TransactionListPage> createState() => _TransactionListPageState();
@@ -17,6 +23,12 @@ class TransactionListPage extends StatefulWidget {
 class _TransactionListPageState extends State<TransactionListPage> {
   bool showSales = true;
   final circleWidth = LayoutDimen.dimen_28.w;
+
+  @override
+  void initState() {
+    widget.transactionListBloc.add(GetSaleReceipts());
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,29 +43,26 @@ class _TransactionListPageState extends State<TransactionListPage> {
           ),
         ),
       ),
-      // body: SingleChildScrollView(
-      //   child: Column(
-      //     crossAxisAlignment: CrossAxisAlignment.center,
-      //     children: [
-      //       buttonController(),
-      //       dateController(),
-      //       showSales
-      //           ? percentIndicator([
-      //               'Rp.247.650.000',
-      //               '1100 pcs',
-      //               '297 penjualan',
-      //             ])
-      //           : percentIndicator([
-      //               'Rp.197.650.000',
-      //               '1411 pcs',
-      //               '155 stok masuk',
-      //             ]),
-      //       thSales(),
-      //     ],
-      //   ),
-      // ),
-      body: const Center(
-        child: Text('Sedang dalam pengerjaan, fitur ini akan segera ada.'),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            buttonController(),
+            dateController(),
+            showSales
+                ? percentIndicator([
+                    'Rp.247.650.000',
+                    '1100 pcs',
+                    '297 penjualan',
+                  ])
+                : percentIndicator([
+                    'Rp.197.650.000',
+                    '1411 pcs',
+                    '155 stok masuk',
+                  ]),
+            thSales(),
+          ],
+        ),
       ),
     );
   }

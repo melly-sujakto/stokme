@@ -35,7 +35,7 @@ class TransactionUsecase {
   final stockCollectionName = 'stock';
   final productCollectionName = 'product';
   final receiptCollectionName = 'receipt';
-  final collectionName = 'sale';
+  final saleCollectionName = 'sale';
 
   Future<String> _getStoreId() async {
     final pref = await sharedPreferencesWrapper.getPrefs();
@@ -105,7 +105,7 @@ class TransactionUsecase {
         overridedCreatedBy: await _getUserEmail(),
       );
       await firebaseLibrary.createDocument(
-        collectionName: collectionName,
+        collectionName: saleCollectionName,
         data: data,
       );
       unawaited(
@@ -230,5 +230,27 @@ class TransactionUsecase {
     required List<LineText> lineTexts,
   }) {
     return printerRepository.startPrint(device: device, lineTexts: lineTexts);
+  }
+
+  Future<List<ReceiptEntity>> GetSaleReceipts({
+    ReceiptEntity? lastItem,
+    int index = 0,
+    int pageSize = 20,
+  }) async {
+    final collectionRef = firebaseLibrary.selfQuery(receiptCollectionName);
+    final initialSelfQuery =
+        collectionRef.where('store_id', isEqualTo: await _getStoreId());
+
+    final jsonList = await firebaseLibrary.getListPagination(
+      initialSelfQuery: initialSelfQuery,
+      collectionName: receiptCollectionName,
+      orderByField: 'created_at',
+      decending: true,
+      lastDocumentId: lastItem?.id,
+      index: index,
+      pageSize: pageSize,
+    );
+
+    return jsonList.map(ReceiptModel.fromJson).toList();
   }
 }
