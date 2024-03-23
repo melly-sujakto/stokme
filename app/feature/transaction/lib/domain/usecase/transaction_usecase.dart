@@ -232,7 +232,7 @@ class TransactionUsecase {
     return printerRepository.startPrint(device: device, lineTexts: lineTexts);
   }
 
-  Future<List<ReceiptEntity>> GetSaleReceipts({
+  Future<List<ReceiptEntity>> getSaleReceipts({
     ReceiptEntity? lastItem,
     int index = 0,
     int pageSize = 20,

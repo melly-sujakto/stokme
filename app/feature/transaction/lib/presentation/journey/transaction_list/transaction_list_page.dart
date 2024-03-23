@@ -1,10 +1,13 @@
+import 'package:data_abstraction/entity/receipt_entity.dart';
 import 'package:feature_transaction/presentation/journey/transaction_list/bloc/transaction_list_bloc.dart';
 import 'package:feature_transaction/presentation/journey/transaction_list/transaction_list_routes.dart';
 import 'package:flutter/material.dart';
+import 'package:module_common/presentation/bloc/base_bloc.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:ui_kit/common/constants/layout_dimen.dart';
+import 'package:ui_kit/extensions/string_extension.dart';
 import 'package:ui_kit/theme/colors.dart';
-import 'package:ui_kit/ui/scanner/scanner_finder.dart';
+import 'package:ui_kit/ui/loading_indicator/loading_circular.dart';
 import 'package:ui_kit/ui/widgets/dummy_circle_image.dart';
 import 'package:ui_kit/utils/screen_utils.dart';
 
@@ -44,30 +47,37 @@ class _TransactionListPageState extends State<TransactionListPage> {
         ),
       ),
       body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            buttonController(),
-            dateController(),
-            showSales
-                ? percentIndicator([
-                    'Rp.247.650.000',
-                    '1100 pcs',
-                    '297 penjualan',
-                  ])
-                : percentIndicator([
-                    'Rp.197.650.000',
-                    '1411 pcs',
-                    '155 stok masuk',
-                  ]),
-            thSales(),
-          ],
+        child: BlocBuilder<TransactionListBloc, TransactionListState>(
+          builder: (context, state) {
+            if (state is GetSaleReceiptsLoaded) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  buttonController(),
+                  dateController(),
+                  showSales
+                      ? percentIndicator([
+                          'Rp.247.650.000',
+                          '1100 pcs',
+                          '297 penjualan',
+                        ])
+                      : percentIndicator([
+                          'Rp.197.650.000',
+                          '1411 pcs',
+                          '155 stok masuk',
+                        ]),
+                  thSales(state.saleReceipts),
+                ],
+              );
+            }
+            return const LoadingCircular();
+          },
         ),
       ),
     );
   }
 
-  Widget thSales() {
+  Widget thSales(List<ReceiptEntity> receipts) {
     return Container(
       padding: EdgeInsets.symmetric(
         vertical: LayoutDimen.dimen_16.h,
@@ -75,27 +85,15 @@ class _TransactionListPageState extends State<TransactionListPage> {
       margin: EdgeInsets.only(top: LayoutDimen.dimen_35.h),
       color: CustomColors.white.withOpacity(0.5),
       child: Column(
-        children: [
-          Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: LayoutDimen.dimen_16.w,
-            ),
-            child: ScannerFinder(
-              labelText: 'Cari kasir/tanggal',
-              onChanged: (_) {},
-              onScan: (_) {},
-            ),
-          ),
-          ...List.generate(
-            5,
-            (index) => thSalesCard(),
-          ),
-        ],
+        children: List.generate(
+          receipts.length,
+          (index) => thSalesCard(receipts[index]),
+        ),
       ),
     );
   }
 
-  Widget thSalesCard() {
+  Widget thSalesCard(ReceiptEntity receiptEntity) {
     return InkWell(
       onTap: () {
         Navigator.pushNamed(
@@ -116,7 +114,7 @@ class _TransactionListPageState extends State<TransactionListPage> {
             children: [
               Row(
                 children: [
-                  const DummyCircleImage(title: 'M S'),
+                  DummyCircleImage(title: receiptEntity.userEmail),
                   Padding(
                     padding: EdgeInsets.all(
                       LayoutDimen.dimen_10.w,
@@ -126,7 +124,8 @@ class _TransactionListPageState extends State<TransactionListPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          'Melly Sujakto',
+                          // TODO(Melly): get user name from db/put user name on receipt
+                          receiptEntity.userEmail,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                             fontSize: LayoutDimen.dimen_13.minSp,
@@ -137,7 +136,7 @@ class _TransactionListPageState extends State<TransactionListPage> {
                           height: LayoutDimen.dimen_7.h,
                         ),
                         Text(
-                          '9 November 2023 • 21:22',
+                          receiptEntity.createdAt.toString(),
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                             fontSize: LayoutDimen.dimen_12.minSp,
@@ -161,7 +160,7 @@ class _TransactionListPageState extends State<TransactionListPage> {
                     ),
                   ),
                   Text(
-                    'Rp.20.000',
+                    receiptEntity.totalNet.toString().toRupiahCurrency(),
                     style: TextStyle(
                       fontSize: LayoutDimen.dimen_16.minSp,
                       fontWeight: FontWeight.bold,

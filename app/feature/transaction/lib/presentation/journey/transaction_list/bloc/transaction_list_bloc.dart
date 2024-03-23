@@ -22,7 +22,7 @@ class TransactionListBloc
   ) async {
     emit(GetSaleReceiptsLoading());
     try {
-      final saleReceipts = await transactionUsecase.GetSaleReceipts();
+      final saleReceipts = await transactionUsecase.getSaleReceipts();
       emit(GetSaleReceiptsLoaded(saleReceipts));
     } catch (e) {
       emit(GetSaleReceiptsFailed());
