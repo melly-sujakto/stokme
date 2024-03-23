@@ -1,3 +1,4 @@
+import 'package:data_abstraction/repository/product_repository.dart';
 import 'package:feature_product/domain/usecase/product_usecase.dart';
 import 'package:feature_product/presentation/bloc/product_bloc.dart';
 import 'package:firebase_library/firebase_library.dart';

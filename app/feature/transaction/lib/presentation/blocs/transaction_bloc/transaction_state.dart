@@ -8,10 +8,14 @@ final class GenerateReceiptFinished extends TransactionInitial {}
 
 final class GetProductListLoading extends TransactionInitial {}
 
-final class GetProductListFailed extends TransactionInitial {}
+final class GetProductListEnd extends TransactionInitial {}
 
 final class GetProductListLoaded extends TransactionInitial {
   final List<ProductEntity> products;
+  final bool isLastPage;
 
-  GetProductListLoaded(this.products);
+  GetProductListLoaded({
+    required this.products,
+    required this.isLastPage,
+  });
 }

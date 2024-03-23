@@ -1,4 +1,5 @@
 import 'package:data_abstraction/repository/printer_repository.dart';
+import 'package:data_abstraction/repository/product_repository.dart';
 import 'package:feature_transaction/domain/usecase/transaction_usecase.dart';
 import 'package:feature_transaction/presentation/blocs/print_bloc/print_bloc.dart';
 import 'package:feature_transaction/presentation/blocs/transaction_bloc/transaction_bloc.dart';

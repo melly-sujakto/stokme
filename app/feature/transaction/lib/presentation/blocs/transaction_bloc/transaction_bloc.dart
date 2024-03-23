@@ -20,13 +20,43 @@ class TransactionBloc extends BaseBloc<TransactionEvent, TransactionState> {
     GetProductListEvent event,
     Emitter<TransactionState> emit,
   ) async {
-    emit(GetProductListLoading());
     try {
-      final products =
-          await transactionUsecase.getProductList(event.filterValue);
-      emit(GetProductListLoaded(products));
+      int index = 0;
+      const pageSize = 10;
+      final List<ProductEntity> rawProductList = [];
+      final List<ProductEntity> finalProductList = [];
+      bool alreadyOnLastPage = false;
+
+      while (!alreadyOnLastPage) {
+        emit(GetProductListLoading());
+        final results = await transactionUsecase.getProductList(
+          index: index,
+          lastProduct: rawProductList.isNotEmpty ? rawProductList.last : null,
+          pageSize: pageSize,
+        );
+        rawProductList.addAll(results);
+
+        alreadyOnLastPage = results.length < pageSize;
+
+        finalProductList.addAll(
+          results.where(
+            (element) => element.code
+                .toLowerCase()
+                .contains(event.filterByCode.toLowerCase()),
+          ),
+        );
+
+        emit(
+          GetProductListLoaded(
+            products: finalProductList,
+            isLastPage: alreadyOnLastPage,
+          ),
+        );
+
+        index++;
+      }
     } catch (e) {
-      emit(GetProductListFailed());
+      emit(GetProductListEnd());
     }
   }
 }

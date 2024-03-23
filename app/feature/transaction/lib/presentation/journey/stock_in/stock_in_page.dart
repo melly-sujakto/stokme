@@ -283,7 +283,7 @@ class _StockInPageState extends State<StockInPage> {
       });
     } else {
       widget.transactionBloc.add(
-        GetProductListEvent(filterValue: value),
+        GetProductListEvent(filterByCode: value),
       );
     }
   }

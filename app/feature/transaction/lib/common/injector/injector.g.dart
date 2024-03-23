@@ -23,6 +23,7 @@ class _$Injector extends Injector {
     container.registerFactory((c) => TransactionUsecase(
         firebaseLibrary: c<FirebaseLibrary>(),
         sharedPreferencesWrapper: c<SharedPreferencesWrapper>(),
-        printerRepository: c<PrinterRepository>()));
+        printerRepository: c<PrinterRepository>(),
+        productRepository: c<ProductRepository>()));
   }
 }

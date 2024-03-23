@@ -18,6 +18,7 @@ class _$Injector extends Injector {
     final KiwiContainer container = KiwiContainer();
     container.registerFactory((c) => ProductUsecase(
         firebaseLibrary: c<FirebaseLibrary>(),
-        sharedPreferencesWrapper: c<SharedPreferencesWrapper>()));
+        sharedPreferencesWrapper: c<SharedPreferencesWrapper>(),
+        productRepository: c<ProductRepository>()));
   }
 }

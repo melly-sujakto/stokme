@@ -12,6 +12,7 @@ import 'package:data_abstraction/model/stock_in_model.dart';
 import 'package:data_abstraction/model/stock_model.dart';
 import 'package:data_abstraction/model/store_model.dart';
 import 'package:data_abstraction/repository/printer_repository.dart';
+import 'package:data_abstraction/repository/product_repository.dart';
 import 'package:firebase_library/firebase_library.dart';
 import 'package:module_common/common/constant/generic_constants.dart';
 import 'package:module_common/package/bluetooth_print.dart';
@@ -21,11 +22,13 @@ class TransactionUsecase {
   final FirebaseLibrary firebaseLibrary;
   final SharedPreferencesWrapper sharedPreferencesWrapper;
   final PrinterRepository printerRepository;
+  final ProductRepository productRepository;
 
   TransactionUsecase({
     required this.firebaseLibrary,
     required this.sharedPreferencesWrapper,
     required this.printerRepository,
+    required this.productRepository,
   });
 
   final stockInCollectionName = 'stock_in';
@@ -49,24 +52,16 @@ class TransactionUsecase {
     return pref.getBool(GenericConstants.alwaysUseCameraAsScanner);
   }
 
-  // TODO(melly): move to mobile_data project to be shareable
-  Future<List<ProductEntity>> getProductList(String filterValue) async {
-    final collectionRef = firebaseLibrary.selfQuery(productCollectionName);
-    final querySnapshot = await collectionRef
-        .where('store_id', isEqualTo: await _getStoreId())
-        .where('code', isGreaterThanOrEqualTo: filterValue)
-        .where('code', isLessThan: '${filterValue}z')
-        .limit(5)
-        .get();
-
-    final jsonList = querySnapshot.docs.map((doc) {
-      final data = doc.data();
-      final id = doc.id;
-      data['id'] = id;
-      return data;
-    }).toList();
-
-    return jsonList.map(ProductModel.fromJson).toList();
+  Future<List<ProductEntity>> getProductList({
+    ProductEntity? lastProduct,
+    int index = 0,
+    int pageSize = 20,
+  }) {
+    return productRepository.getProductList(
+      index: index,
+      lastProduct: lastProduct,
+      pageSize: pageSize,
+    );
   }
 
   Future<String> getUserEmail() async {

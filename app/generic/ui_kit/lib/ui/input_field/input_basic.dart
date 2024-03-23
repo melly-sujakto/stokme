@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:ui_kit/common/constants/layout_dimen.dart';
 import 'package:ui_kit/theme/colors.dart';
@@ -15,6 +17,7 @@ class InputBasic extends StatefulWidget {
     this.margin,
     this.keyboardType,
     this.suffixIcon,
+    this.onFinishChangeDuration = const Duration(milliseconds: 500),
   });
 
   final String labelText;
@@ -25,6 +28,7 @@ class InputBasic extends StatefulWidget {
   final void Function(String)? onChanged;
   final Widget? suffixIcon;
   final TextInputType? keyboardType;
+  final Duration onFinishChangeDuration;
 
   /// if [margin] is null, default value is
   /// EdgeInsets.symmetric(horizontal: LayoutDimen.dimen_16.w)
@@ -39,12 +43,38 @@ class _InputBasicState extends State<InputBasic> {
   late final FocusNode focusNode;
   late bool visibilityText;
 
+  String tempValue = '';
+
   @override
   void initState() {
     textEditingController = widget.controller ?? TextEditingController();
     focusNode = widget.focusNode ?? FocusNode();
     visibilityText = widget.obscureText;
     super.initState();
+  }
+
+  Timer? onChangeTimer;
+  String tempText = '';
+
+  @override
+  void dispose() {
+    onChangeTimer?.cancel();
+    super.dispose();
+  }
+
+  void onTextChanged(String newText) {
+    if (onChangeTimer?.isActive ?? false) {
+      onChangeTimer?.cancel();
+    }
+
+    onChangeTimer = Timer(widget.onFinishChangeDuration, () {
+      if (tempText != newText) {
+        tempText = newText;
+        if (widget.onChanged != null) {
+          widget.onChanged!(newText);
+        }
+      }
+    });
   }
 
   @override
@@ -108,7 +138,7 @@ class _InputBasicState extends State<InputBasic> {
                     )
                   : null),
         ),
-        onChanged: widget.onChanged,
+        onChanged: onTextChanged,
       ),
     );
   }

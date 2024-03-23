@@ -36,7 +36,11 @@ class _$Injector extends Injector {
   @override
   void _configureRepositories() {
     final KiwiContainer container = KiwiContainer();
-    container.registerSingleton<PrinterRepository>(
-        (c) => PrinterRepositoryImpl(printerUtil: c<PrinterUtil>()));
+    container
+      ..registerSingleton<PrinterRepository>(
+          (c) => PrinterRepositoryImpl(printerUtil: c<PrinterUtil>()))
+      ..registerSingleton<ProductRepository>((c) => ProductRepositoryImpl(
+          firebaseLibrary: c<FirebaseLibrary>(),
+          sharedPreferencesWrapper: c<SharedPreferencesWrapper>()));
   }
 }
