@@ -10,16 +10,6 @@ final class SaleInitial extends SaleState {
 
 final class GenerateReceiptFinished extends SaleState {}
 
-final class GetProductListLoading extends SaleState {}
-
-final class GetProductListFailed extends SaleState {}
-
-final class GetProductListLoaded extends SaleState {
-  final List<ProductEntity> products;
-
-  GetProductListLoaded(this.products);
-}
-
 final class CalculationSuccess extends SaleState {
   final SaleEntity saleEntity;
 

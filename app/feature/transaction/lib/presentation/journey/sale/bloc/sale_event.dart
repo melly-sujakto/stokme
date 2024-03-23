@@ -6,13 +6,6 @@ class SetupEvent extends SaleEvent {}
 
 class PrepareDataEvent extends SaleEvent {}
 
-class GetProductListEvent extends SaleEvent {
-  final String filterValue;
-  GetProductListEvent({
-    required this.filterValue,
-  });
-}
-
 class CalculatePriceProductEvent extends SaleEvent {
   final ProductEntity product;
   final int totalPcs;

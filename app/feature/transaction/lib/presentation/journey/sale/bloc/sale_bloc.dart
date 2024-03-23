@@ -18,7 +18,6 @@ class SaleBloc extends BaseBloc<SaleEvent, SaleState> {
     this.transactionUsecase,
   ) : super(SaleInitial()) {
     on<PrepareDataEvent>(_onPrepareDataEvent);
-    on<GetProductListEvent>(_onGetProductListEvent);
     on<CalculatePriceProductEvent>(_onCalculatePriceProductEvent);
     on<CalculateTotalPriceEvent>(_onCalculateTotalPriceEvent);
     on<SetupEvent>(_onSetupEvent);
@@ -61,19 +60,6 @@ class SaleBloc extends BaseBloc<SaleEvent, SaleState> {
   }
 
   // TODO(melly): regenerate receipt id and update all sale.receipt_id
-
-  FutureOr<void> _onGetProductListEvent(
-    GetProductListEvent event,
-    Emitter<SaleState> emit,
-  ) async {
-    emit(GetProductListLoading());
-    try {
-      final products = await transactionUsecase.getProductList();
-      emit(GetProductListLoaded(products));
-    } catch (e) {
-      emit(GetProductListFailed());
-    }
-  }
 
   FutureOr<void> _onCalculatePriceProductEvent(
     CalculatePriceProductEvent event,

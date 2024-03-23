@@ -1,5 +1,6 @@
 import 'package:feature_transaction/common/injector/injector.dart';
 import 'package:feature_transaction/presentation/blocs/print_bloc/print_bloc.dart';
+import 'package:feature_transaction/presentation/blocs/transaction_bloc/transaction_bloc.dart';
 import 'package:feature_transaction/presentation/journey/sale/bloc/sale_bloc.dart';
 import 'package:feature_transaction/presentation/journey/sale/screens/sale_input_page.dart';
 import 'package:feature_transaction/presentation/journey/sale/screens/sale_result_page.dart';
@@ -15,10 +16,19 @@ abstract class SaleRoutes {
   static final Map<String, WidgetBuilder> all = {
     salesInput: (ctx) {
       final saleBloc = Injector.resolve<SaleBloc>();
-      return BlocProvider(
-        create: (context) => saleBloc..add(SetupEvent()),
+      final transactionBloc = Injector.resolve<TransactionBloc>();
+      return MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => transactionBloc,
+          ),
+          BlocProvider(
+            create: (context) => saleBloc..add(SetupEvent()),
+          ),
+        ],
         child: SaleInputPage(
           saleBloc: saleBloc,
+          transactionBloc: transactionBloc,
         ),
       );
     },

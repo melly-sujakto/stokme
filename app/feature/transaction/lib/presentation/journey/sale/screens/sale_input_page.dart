@@ -1,5 +1,6 @@
 import 'package:data_abstraction/entity/product_entity.dart';
 import 'package:data_abstraction/entity/sale_entity.dart';
+import 'package:feature_transaction/presentation/blocs/transaction_bloc/transaction_bloc.dart';
 import 'package:feature_transaction/presentation/journey/sale/bloc/sale_bloc.dart';
 import 'package:feature_transaction/presentation/journey/sale/sale_constants.dart';
 import 'package:feature_transaction/presentation/journey/sale/sale_routes.dart';
@@ -20,9 +21,11 @@ class SaleInputPage extends StatefulWidget {
   const SaleInputPage({
     Key? key,
     required this.saleBloc,
+    required this.transactionBloc,
   }) : super(key: key);
 
   final SaleBloc saleBloc;
+  final TransactionBloc transactionBloc;
 
   @override
   State<SaleInputPage> createState() => _SaleInputPageState();
@@ -55,12 +58,7 @@ class _SaleInputPageState extends State<SaleInputPage> {
           if (state is SaleInitial) {
             isAutoActiveScanner = state.isAutoActiveScanner;
           }
-          if (state is GetProductListLoaded) {
-            choiceProducts = state.products;
-            if (isFromOnScan && choiceProducts.length == 1) {
-              onSelectedProduct(choiceProducts.first);
-            }
-          }
+
           if (state is CalculationSuccess) {
             choiceProducts = [];
             scannerTextEditController.clear();
@@ -70,102 +68,118 @@ class _SaleInputPageState extends State<SaleInputPage> {
             recordedProducts.add(state.saleEntity);
           }
         },
-        builder: (context, state) => Stack(
-          children: [
-            SingleChildScrollView(
-              child: Container(
-                height: ScreenUtil.screenHeight,
-                padding: EdgeInsets.all(LayoutDimen.dimen_16.w),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    if (isAutoActiveScanner != null)
-                      ScannerFinder(
-                        labelText: SaleStrings.code.i18n(context),
-                        autoActiveScanner: isAutoActiveScanner!,
-                        textEditController: scannerTextEditController,
-                        keyboardType: TextInputType.number,
-                        holdScanner: holdScannerFlag,
-                        optionList: choiceProducts
-                            .map(
-                              (e) => Padding(
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: LayoutDimen.dimen_16.w,
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      e.code,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
-                                        fontSize: LayoutDimen.dimen_18.minSp,
-                                        fontWeight: FontWeight.w200,
-                                      ),
+        builder: (context, state) =>
+            BlocConsumer<TransactionBloc, TransactionState>(
+          listener: (context, transactionState) {
+            if (transactionState is GetProductListLoaded) {
+              choiceProducts = transactionState.products;
+              if (isFromOnScan && choiceProducts.length == 1) {
+                onSelectedProduct(choiceProducts.first);
+              }
+            }
+          },
+          builder: (context, transactionState) {
+            return Stack(
+              children: [
+                SingleChildScrollView(
+                  child: Container(
+                    height: ScreenUtil.screenHeight,
+                    padding: EdgeInsets.all(LayoutDimen.dimen_16.w),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        if (isAutoActiveScanner != null)
+                          ScannerFinder(
+                            labelText: SaleStrings.code.i18n(context),
+                            autoActiveScanner: isAutoActiveScanner!,
+                            textEditController: scannerTextEditController,
+                            keyboardType: TextInputType.number,
+                            holdScanner: holdScannerFlag,
+                            optionList: choiceProducts
+                                .map(
+                                  (e) => Padding(
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: LayoutDimen.dimen_16.w,
                                     ),
-                                    Text(
-                                      e.name,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
-                                        fontSize: LayoutDimen.dimen_16.minSp,
-                                        fontWeight: FontWeight.w600,
-                                      ),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          e.code,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                            fontSize:
+                                                LayoutDimen.dimen_18.minSp,
+                                            fontWeight: FontWeight.w200,
+                                          ),
+                                        ),
+                                        Text(
+                                          e.name,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                            fontSize:
+                                                LayoutDimen.dimen_16.minSp,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: LayoutDimen.dimen_8.h,
+                                        )
+                                      ],
                                     ),
-                                    SizedBox(
-                                      height: LayoutDimen.dimen_8.h,
-                                    )
-                                  ],
-                                ),
-                              ),
-                            )
-                            .toList(),
-                        onSelected: (index) {
-                          onSelectedProduct(choiceProducts[index]);
-                        },
-                        onChanged: (value) {
-                          addEventGetProducts(value);
-                          setState(() {
-                            isFromOnScan = false;
-                          });
-                        },
-                        onScan: (value) {
-                          addEventGetProducts(value);
-                          setState(() {
-                            isFromOnScan = true;
-                          });
+                                  ),
+                                )
+                                .toList(),
+                            onSelected: (index) {
+                              onSelectedProduct(choiceProducts[index]);
+                            },
+                            onChanged: (value) {
+                              addEventGetProducts(value);
+                              setState(() {
+                                isFromOnScan = false;
+                              });
+                            },
+                            onScan: (value) {
+                              addEventGetProducts(value);
+                              setState(() {
+                                isFromOnScan = true;
+                              });
+                            },
+                          ),
+                        SizedBox(
+                          height: LayoutDimen.dimen_32.h,
+                        ),
+                        Expanded(child: productListCard()),
+                      ],
+                    ),
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.only(bottom: LayoutDimen.dimen_32.h),
+                  height: ScreenUtil.screenHeight,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      FlatButton(
+                        title: SaleStrings.continueBtnTitle.i18n(context),
+                        onPressed: () {
+                          Navigator.pushNamed(
+                            context,
+                            SaleRoutes.salesReview,
+                            arguments: SaleReviewArgument(
+                              saleEntityList: recordedProducts,
+                              saleBloc: widget.saleBloc,
+                            ),
+                          );
                         },
                       ),
-                    SizedBox(
-                      height: LayoutDimen.dimen_32.h,
-                    ),
-                    Expanded(child: productListCard()),
-                  ],
-                ),
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.only(bottom: LayoutDimen.dimen_32.h),
-              height: ScreenUtil.screenHeight,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  FlatButton(
-                    title: SaleStrings.continueBtnTitle.i18n(context),
-                    onPressed: () {
-                      Navigator.pushNamed(
-                        context,
-                        SaleRoutes.salesReview,
-                        arguments: SaleReviewArgument(
-                          saleEntityList: recordedProducts,
-                          saleBloc: widget.saleBloc,
-                        ),
-                      );
-                    },
+                    ],
                   ),
-                ],
-              ),
-            ),
-          ],
+                ),
+              ],
+            );
+          },
         ),
       ),
     );
@@ -205,8 +219,8 @@ class _SaleInputPageState extends State<SaleInputPage> {
         choiceProducts = [];
       });
     } else {
-      widget.saleBloc.add(
-        GetProductListEvent(filterValue: value),
+      widget.transactionBloc.add(
+        GetProductListEvent(filterByCode: value),
       );
     }
   }
