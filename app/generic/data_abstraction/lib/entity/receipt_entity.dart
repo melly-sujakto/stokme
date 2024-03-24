@@ -7,7 +7,9 @@ class ReceiptEntity extends BaseEntity {
   final double totalGross;
   final double discount;
   final double totalNet;
+  final int totalPcs;
   final String userEmail;
+  final String userName;
 
   ReceiptEntity({
     this.id,
@@ -16,7 +18,9 @@ class ReceiptEntity extends BaseEntity {
     required this.totalGross,
     required this.discount,
     required this.totalNet,
+    required this.totalPcs,
     required this.userEmail,
+    required this.userName,
     super.createdBy,
     super.createdAt,
     super.updatedBy,
@@ -30,7 +34,9 @@ class ReceiptEntity extends BaseEntity {
     double? totalGross,
     double? discount,
     double? totalNet,
+    int? totalPcs,
     String? userEmail,
+    String? userName,
     DateTime? createdAt,
     String? createdBy,
     DateTime? updatedAt,
@@ -43,7 +49,9 @@ class ReceiptEntity extends BaseEntity {
       totalGross: totalGross ?? this.totalGross,
       discount: discount ?? this.discount,
       totalNet: totalNet ?? this.totalNet,
+      totalPcs: totalPcs ?? this.totalPcs,
       userEmail: userEmail ?? this.userEmail,
+      userName: userName ?? this.userName,
       createdAt: createdAt ?? this.createdAt,
       createdBy: createdBy ?? this.createdBy,
       updatedAt: updatedAt ?? this.updatedAt,

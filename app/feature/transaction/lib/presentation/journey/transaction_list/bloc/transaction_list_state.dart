@@ -10,6 +10,7 @@ final class GetSaleReceiptsFailed extends TransactionListState {}
 
 final class GetSaleReceiptsLoaded extends TransactionListState {
   final List<ReceiptEntity> saleReceipts;
+  final bool isLastPage;
 
-  GetSaleReceiptsLoaded(this.saleReceipts);
+  GetSaleReceiptsLoaded({required this.saleReceipts, required this.isLastPage});
 }

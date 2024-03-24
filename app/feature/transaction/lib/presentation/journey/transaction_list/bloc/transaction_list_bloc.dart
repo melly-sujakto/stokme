@@ -20,10 +20,35 @@ class TransactionListBloc
     GetSaleReceipts event,
     Emitter<TransactionListState> emit,
   ) async {
-    emit(GetSaleReceiptsLoading());
     try {
-      final saleReceipts = await transactionUsecase.getSaleReceipts();
-      emit(GetSaleReceiptsLoaded(saleReceipts));
+      int index = 0;
+      const pageSize = 1;
+      final List<ReceiptEntity> rawList = [];
+      final List<ReceiptEntity> finalList = [];
+      bool alreadyOnLastPage = false;
+
+      while (!alreadyOnLastPage) {
+        emit(GetSaleReceiptsLoading());
+        final results = await transactionUsecase.getSaleReceipts(
+          index: index,
+          lastItem: rawList.isNotEmpty ? rawList.last : null,
+          pageSize: pageSize,
+        );
+        rawList.addAll(results);
+
+        alreadyOnLastPage = results.length < pageSize;
+
+        finalList.addAll(results);
+
+        emit(
+          GetSaleReceiptsLoaded(
+            saleReceipts: finalList,
+            isLastPage: alreadyOnLastPage,
+          ),
+        );
+
+        index++;
+      }
     } catch (e) {
       emit(GetSaleReceiptsFailed());
     }

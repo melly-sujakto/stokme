@@ -53,7 +53,9 @@ class SaleBloc extends BaseBloc<SaleEvent, SaleState> {
       totalGross: 0.0,
       discount: 0.0,
       totalNet: 0.0,
+      totalPcs: 0,
       userEmail: userEmail,
+      userName: userName,
     );
 
     emit(GenerateReceiptFinished());
@@ -101,6 +103,9 @@ class SaleBloc extends BaseBloc<SaleEvent, SaleState> {
     );
   }
 
+  int _calculateTotalPcs(List<SaleEntity> saleEntityList) =>
+      saleEntityList.map((sale) => sale.totalPcs).reduce((a, b) => a + b);
+
   FutureOr<void> _onSubmitReceiptAndSalesEvent(
     SubmitReceiptAndSalesEvent event,
     Emitter<SaleState> emit,
@@ -108,7 +113,9 @@ class SaleBloc extends BaseBloc<SaleEvent, SaleState> {
     emit(SubmitLoading());
     try {
       await transactionUsecase.submitReceiptAndSales(
-        receiptEntity: receipt,
+        receiptEntity: receipt.copyWith(
+          totalPcs: _calculateTotalPcs(event.saleEntityList),
+        ),
         saleEntityList: event.saleEntityList,
       );
       // TODO(melly): move to an utils
