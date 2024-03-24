@@ -22,7 +22,7 @@ class TransactionListBloc
   ) async {
     try {
       int index = 0;
-      const pageSize = 1;
+      const pageSize = 20;
       final List<ReceiptEntity> rawList = [];
       final List<ReceiptEntity> finalList = [];
       bool alreadyOnLastPage = false;
