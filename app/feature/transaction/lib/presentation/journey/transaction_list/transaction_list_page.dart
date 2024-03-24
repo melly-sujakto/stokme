@@ -1,7 +1,10 @@
 import 'package:data_abstraction/entity/receipt_entity.dart';
 import 'package:feature_transaction/presentation/journey/transaction_list/bloc/transaction_list_bloc.dart';
+import 'package:feature_transaction/presentation/journey/transaction_list/transaction_list_constants.dart';
 import 'package:feature_transaction/presentation/journey/transaction_list/transaction_list_routes.dart';
 import 'package:flutter/material.dart';
+import 'package:module_common/common/constant/translation_constants.dart';
+import 'package:module_common/i18n/i18n_extension.dart';
 import 'package:module_common/presentation/bloc/base_bloc.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:ui_kit/common/constants/layout_dimen.dart';
@@ -39,7 +42,7 @@ class _TransactionListPageState extends State<TransactionListPage> {
       backgroundColor: CustomColors.neutral.c98,
       appBar: AppBar(
         title: Text(
-          'Transaksi',
+          TransactionListStrings.transactionTitle.i18n(context),
           style: TextStyle(
             fontSize: LayoutDimen.dimen_19.minSp,
             fontWeight: FontWeight.bold,
@@ -50,6 +53,14 @@ class _TransactionListPageState extends State<TransactionListPage> {
         child: BlocBuilder<TransactionListBloc, TransactionListState>(
           builder: (context, state) {
             if (state is GetSaleReceiptsLoaded) {
+              final totalAllPcs = state.saleReceipts
+                  .map((e) => e.totalPcs)
+                  .reduce((a, b) => a + b);
+              final totalAllNet = state.saleReceipts
+                  .map((e) => e.totalNet)
+                  .reduce((a, b) => a + b);
+              final receiptsCount = state.saleReceipts.length;
+
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -57,9 +68,11 @@ class _TransactionListPageState extends State<TransactionListPage> {
                   dateController(),
                   showSales
                       ? percentIndicator([
-                          'Rp.247.650.000',
-                          '1100 pcs',
-                          '297 penjualan',
+                          totalAllNet.toString().toRupiahCurrency(),
+                          // ignore: lines_longer_than_80_chars
+                          '$totalAllPcs ${TranslationConstants.pcs.i18n(context)}',
+                          // ignore: lines_longer_than_80_chars
+                          '$receiptsCount ${TransactionListStrings.sales.i18n(context)}',
                         ])
                       : percentIndicator([
                           'Rp.197.650.000',
@@ -114,7 +127,7 @@ class _TransactionListPageState extends State<TransactionListPage> {
             children: [
               Row(
                 children: [
-                  DummyCircleImage(title: receiptEntity.userEmail),
+                  DummyCircleImage(title: receiptEntity.userName),
                   Padding(
                     padding: EdgeInsets.all(
                       LayoutDimen.dimen_10.w,
@@ -124,8 +137,7 @@ class _TransactionListPageState extends State<TransactionListPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          // TODO(Melly): get user name from db/put user name on receipt
-                          receiptEntity.userEmail,
+                          receiptEntity.userName,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                             fontSize: LayoutDimen.dimen_13.minSp,
@@ -153,7 +165,7 @@ class _TransactionListPageState extends State<TransactionListPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Total',
+                    TransactionListStrings.total.i18n(context),
                     style: TextStyle(
                       fontSize: LayoutDimen.dimen_12.minSp,
                       fontWeight: FontWeight.w200,
@@ -288,7 +300,7 @@ class _TransactionListPageState extends State<TransactionListPage> {
                 ),
                 child: Center(
                   child: Text(
-                    'Penjualan',
+                    TransactionListStrings.salesTitle.i18n(context),
                     style: TextStyle(
                       fontSize: LayoutDimen.dimen_16.minSp,
                       fontWeight: FontWeight.w600,
@@ -317,7 +329,7 @@ class _TransactionListPageState extends State<TransactionListPage> {
                 ),
                 child: Center(
                   child: Text(
-                    'Stok Masuk',
+                    TransactionListStrings.stockInTitle.i18n(context),
                     style: TextStyle(
                       fontSize: LayoutDimen.dimen_16.minSp,
                       fontWeight: FontWeight.w600,

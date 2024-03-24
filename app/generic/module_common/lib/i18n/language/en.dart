@@ -12,10 +12,10 @@ import 'package:module_common/i18n/language/en/en_product_translations.dart'
     as product;
 import 'package:module_common/i18n/language/en/en_profile_translations.dart'
     as profile;
-import 'package:module_common/i18n/language/en/en_sale_translations.dart'
-    as sale;
 import 'package:module_common/i18n/language/en/en_stock_translations.dart'
     as stock;
+import 'package:module_common/i18n/language/en/en_transaction_translations.dart'
+    as sale;
 
 final Map<String, String> translations = {
   ...common.translations,

@@ -23,4 +23,9 @@ final Map<String, String> translations = {
   'transaction.stockIn.totalPcs': 'Jumlah',
   'transaction.stockIn.purchaseNet': 'Harga purchase (Rp)',
   'transaction.stockIn.input': 'Masukan',
+  'transaction.list.title': 'Transaksi',
+  'transaction.list.sales': 'penjualan',
+  'transaction.list.salesTitle': 'Penjualan',
+  'transaction.list.stockInTitle': 'Stok Masuk',
+  'transaction.list.total': 'Total',
 };
