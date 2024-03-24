@@ -4,7 +4,7 @@ import 'package:feature_transaction/presentation/journey/sale/sale_constants.dar
 import 'package:flutter/material.dart';
 import 'package:module_common/i18n/i18n_extension.dart';
 import 'package:ui_kit/common/constants/layout_dimen.dart';
-import 'package:ui_kit/extensions/string_extension.dart';
+import 'package:ui_kit/extensions/number_extension.dart';
 import 'package:ui_kit/theme/colors.dart';
 import 'package:ui_kit/ui/button/flat_button.dart';
 import 'package:ui_kit/ui/input_field/input_basic.dart';
@@ -114,7 +114,7 @@ class _SaleProductModalContentState extends State<SaleProductModalContent> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Text(
-                        price.toRupiahCurrency(),
+                        double.parse(price).toRupiahCurrency(),
                         style: TextStyle(
                           fontSize: LayoutDimen.dimen_20.minSp,
                           fontWeight: FontWeight.w900,

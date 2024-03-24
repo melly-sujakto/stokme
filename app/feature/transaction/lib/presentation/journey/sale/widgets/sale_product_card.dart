@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:module_common/common/constant/translation_constants.dart';
 import 'package:module_common/i18n/i18n_extension.dart';
 import 'package:ui_kit/common/constants/layout_dimen.dart';
-import 'package:ui_kit/extensions/string_extension.dart';
+import 'package:ui_kit/extensions/number_extension.dart';
 import 'package:ui_kit/theme/colors.dart';
 import 'package:ui_kit/utils/screen_utils.dart';
 
@@ -67,7 +67,7 @@ class SaleProductCard extends StatelessWidget {
                     height: LayoutDimen.dimen_2.h,
                   ),
                   Text(
-                    product.saleNet.toString().toRupiahCurrency(),
+                    product.saleNet.toRupiahCurrency(),
                     style: TextStyle(
                       fontSize: LayoutDimen.dimen_13.minSp,
                     ),
@@ -77,7 +77,7 @@ class SaleProductCard extends StatelessWidget {
                   ),
                   if (totalNet != null)
                     Text(
-                      totalNet.toString().toRupiahCurrency(),
+                      totalNet!.toRupiahCurrency(),
                       style: TextStyle(
                         fontSize: LayoutDimen.dimen_16.minSp,
                         fontWeight: FontWeight.bold,

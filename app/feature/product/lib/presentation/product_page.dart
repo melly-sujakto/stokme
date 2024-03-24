@@ -7,7 +7,7 @@ import 'package:module_common/i18n/i18n_extension.dart';
 import 'package:module_common/presentation/bloc/base_bloc.dart';
 import 'package:module_common/presentation/widgets/product_detail_widget.dart';
 import 'package:ui_kit/common/constants/layout_dimen.dart';
-import 'package:ui_kit/extensions/string_extension.dart';
+import 'package:ui_kit/extensions/number_extension.dart';
 import 'package:ui_kit/theme/colors.dart';
 import 'package:ui_kit/ui/infinite_pagination/infinite_paginantion_widget.dart';
 import 'package:ui_kit/ui/loading_indicator/loading_circular.dart';
@@ -291,7 +291,7 @@ class _ProductPageState extends State<ProductPage> {
                   ],
                 ),
                 Text(
-                  product.saleNet.toString().toRupiahCurrency(),
+                  product.saleNet.toRupiahCurrency(),
                   style: TextStyle(
                     fontSize: LayoutDimen.dimen_13.minSp,
                     fontWeight: FontWeight.w300,

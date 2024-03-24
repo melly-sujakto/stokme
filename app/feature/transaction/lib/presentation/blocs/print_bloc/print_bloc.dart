@@ -6,7 +6,7 @@ import 'package:data_abstraction/entity/store_entity.dart';
 import 'package:feature_transaction/domain/usecase/transaction_usecase.dart';
 import 'package:module_common/package/bluetooth_print.dart';
 import 'package:module_common/presentation/bloc/base_bloc.dart';
-import 'package:ui_kit/extensions/string_extension.dart';
+import 'package:ui_kit/extensions/number_extension.dart';
 
 part 'print_event.dart';
 part 'print_state.dart';
@@ -113,7 +113,7 @@ class PrintBloc extends BaseBloc<PrintEvent, PrintState> {
               type: LineText.TYPE_TEXT,
               content: generateAlignBetween(
                 '${e.productEntity.name}|'
-                '${e.totalNet.toString().toRupiahCurrency()}',
+                '${e.totalNet.toRupiahCurrency()}',
               ),
               align: LineText.ALIGN_CENTER,
               linefeed: 1,
@@ -121,7 +121,7 @@ class PrintBloc extends BaseBloc<PrintEvent, PrintState> {
             LineText(
               type: LineText.TYPE_TEXT,
               content: '   ${e.totalPcs} X      '
-                  '${e.productEntity.saleNet.toString().toRupiahCurrency()}',
+                  '${e.productEntity.saleNet.toRupiahCurrency()}',
               align: LineText.ALIGN_LEFT,
               linefeed: 1,
             ),
@@ -161,7 +161,7 @@ class PrintBloc extends BaseBloc<PrintEvent, PrintState> {
       LineText(
         type: LineText.TYPE_TEXT,
         content: generateAlignBetween(
-          'Total|${receiptEntity.totalNet.toString().toRupiahCurrency()}',
+          'Total|${receiptEntity.totalNet.toRupiahCurrency()}',
         ),
         align: LineText.ALIGN_CENTER,
         linefeed: 1,
@@ -170,7 +170,7 @@ class PrintBloc extends BaseBloc<PrintEvent, PrintState> {
       LineText(
         type: LineText.TYPE_TEXT,
         content: generateAlignBetween(
-          'Bayar|${receiptEntity.cash.toString().toRupiahCurrency()}',
+          'Bayar|${receiptEntity.cash.toRupiahCurrency()}',
         ),
         align: LineText.ALIGN_CENTER,
         linefeed: 1,
@@ -178,7 +178,7 @@ class PrintBloc extends BaseBloc<PrintEvent, PrintState> {
       LineText(
         type: LineText.TYPE_TEXT,
         content: generateAlignBetween(
-          'Kembali|${receiptEntity.change.toString().toRupiahCurrency()}',
+          'Kembali|${receiptEntity.change.toRupiahCurrency()}',
         ),
         align: LineText.ALIGN_CENTER,
         linefeed: 1,

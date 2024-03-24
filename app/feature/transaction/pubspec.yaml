@@ -5,7 +5,7 @@ version: 0.0.1
 homepage:
 
 environment:
-  sdk: '>=3.0.6 <4.0.0'
+  sdk: ">=3.0.6 <4.0.0"
   flutter: ">=1.17.0"
 
 dependencies:
@@ -15,7 +15,6 @@ dependencies:
     path: ../../library/firebase_library
   flutter:
     sdk: flutter
-  intl: ^0.18.0
   library_injection:
     path: ../../library/injection
   module_common:

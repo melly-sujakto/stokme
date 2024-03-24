@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:module_common/i18n/i18n_extension.dart';
 import 'package:module_common/presentation/bloc/base_bloc.dart';
 import 'package:ui_kit/common/constants/layout_dimen.dart';
-import 'package:ui_kit/extensions/string_extension.dart';
+import 'package:ui_kit/extensions/number_extension.dart';
 import 'package:ui_kit/theme/colors.dart';
 import 'package:ui_kit/ui/app_bar/app_bar_with_title_only.dart';
 import 'package:ui_kit/ui/button/flat_button.dart';
@@ -125,9 +125,7 @@ class _SaleReviewPageState extends State<SaleReviewPage> {
                             ),
                           ),
                           Text(
-                            total != null
-                                ? total.toString().toRupiahCurrency()
-                                : '',
+                            total != null ? total!.toRupiahCurrency() : '',
                             style: TextStyle(
                               fontSize: LayoutDimen.dimen_24.minSp,
                               fontWeight: FontWeight.bold,

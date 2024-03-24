@@ -4,7 +4,7 @@ import 'package:data_abstraction/entity/product_entity.dart';
 import 'package:data_abstraction/entity/receipt_entity.dart';
 import 'package:data_abstraction/entity/sale_entity.dart';
 import 'package:feature_transaction/domain/usecase/transaction_usecase.dart';
-import 'package:intl/intl.dart';
+import 'package:module_common/package/intl.dart';
 import 'package:module_common/presentation/bloc/base_bloc.dart';
 import 'package:uuid/uuid.dart';
 
