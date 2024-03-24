@@ -5,6 +5,7 @@ import 'package:feature_transaction/presentation/journey/transaction_list/transa
 import 'package:flutter/material.dart';
 import 'package:module_common/common/constant/translation_constants.dart';
 import 'package:module_common/i18n/i18n_extension.dart';
+import 'package:module_common/package/intl.dart';
 import 'package:module_common/presentation/bloc/base_bloc.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:ui_kit/common/constants/layout_dimen.dart';
@@ -29,10 +30,20 @@ class TransactionListPage extends StatefulWidget {
 class _TransactionListPageState extends State<TransactionListPage> {
   bool showSales = true;
   final circleWidth = LayoutDimen.dimen_28.w;
+  DateTime filterDateTime = DateTime.now();
 
   @override
   void initState() {
-    widget.transactionListBloc.add(GetSaleReceipts());
+    widget.transactionListBloc.add(
+      GetSaleReceipts(
+        dateTimeRange: DateTimeRange(
+          start: filterDateTime.subtract(
+            Duration(days: filterDateTime.day),
+          ),
+          end: filterDateTime,
+        ),
+      ),
+    );
     super.initState();
   }
 
@@ -231,14 +242,15 @@ class _TransactionListPageState extends State<TransactionListPage> {
                 child: Column(
                   children: [
                     Text(
-                      'November',
+                      // TODO(melly): move to a extension
+                      DateFormat.MMMM('id').format(filterDateTime),
                       style: TextStyle(
                         fontSize: LayoutDimen.dimen_18.minSp,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     Text(
-                      '2023',
+                      filterDateTime.year.toString(),
                       style: TextStyle(
                         fontSize: LayoutDimen.dimen_14.minSp,
                         fontWeight: FontWeight.w600,

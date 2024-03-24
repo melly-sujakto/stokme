@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:data_abstraction/entity/receipt_entity.dart';
 import 'package:feature_transaction/domain/usecase/transaction_usecase.dart';
+import 'package:flutter/material.dart';
 import 'package:module_common/presentation/bloc/base_bloc.dart';
 
 part 'transaction_list_event.dart';
@@ -33,6 +34,7 @@ class TransactionListBloc
           index: index,
           lastItem: rawList.isNotEmpty ? rawList.last : null,
           pageSize: pageSize,
+          dateTimeRange: event.dateTimeRange,
         );
         rawList.addAll(results);
 

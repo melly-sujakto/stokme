@@ -14,6 +14,7 @@ import 'package:data_abstraction/model/store_model.dart';
 import 'package:data_abstraction/repository/printer_repository.dart';
 import 'package:data_abstraction/repository/product_repository.dart';
 import 'package:firebase_library/firebase_library.dart';
+import 'package:flutter/material.dart';
 import 'package:module_common/common/constant/generic_constants.dart';
 import 'package:module_common/package/bluetooth_print.dart';
 import 'package:module_common/wrapper/shared_preferences_wrapper.dart';
@@ -236,10 +237,19 @@ class TransactionUsecase {
     ReceiptEntity? lastItem,
     int index = 0,
     int pageSize = 20,
+    required DateTimeRange dateTimeRange,
   }) async {
     final collectionRef = firebaseLibrary.selfQuery(receiptCollectionName);
-    final initialSelfQuery =
-        collectionRef.where('store_id', isEqualTo: await _getStoreId());
+    final initialSelfQuery = collectionRef
+        .where('store_id', isEqualTo: await _getStoreId())
+        .where(
+          'created_at',
+          isGreaterThanOrEqualTo: dateTimeRange.start.millisecondsSinceEpoch,
+        )
+        .where(
+          'created_at',
+          isLessThanOrEqualTo: dateTimeRange.end.millisecondsSinceEpoch,
+        );
 
     final jsonList = await firebaseLibrary.getListPagination(
       initialSelfQuery: initialSelfQuery,
