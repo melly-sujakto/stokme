@@ -9,3 +9,11 @@ class GetSaleReceipts extends TransactionListEvent {
     required this.dateTimeRange,
   });
 }
+
+class GetStockInList extends TransactionListEvent {
+  final DateTimeRange dateTimeRange;
+
+  GetStockInList({
+    required this.dateTimeRange,
+  });
+}

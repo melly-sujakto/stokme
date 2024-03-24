@@ -14,3 +14,14 @@ final class GetSaleReceiptsLoaded extends TransactionListState {
 
   GetSaleReceiptsLoaded({required this.saleReceipts, required this.isLastPage});
 }
+
+final class GetStockInListLoading extends TransactionListState {}
+
+final class GetStockInListFailed extends TransactionListState {}
+
+final class GetStockInListLoaded extends TransactionListState {
+  final List<StockInEntity> stockInList;
+  final bool isLastPage;
+
+  GetStockInListLoaded({required this.stockInList, required this.isLastPage});
+}

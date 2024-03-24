@@ -1,7 +1,10 @@
 import 'package:data_abstraction/entity/stock_in_entity.dart';
+import 'package:data_abstraction/model/product_model.dart';
+import 'package:data_abstraction/utils/json_utils.dart';
 
 class StockInModel extends StockInEntity {
   StockInModel({
+    super.id,
     required super.productEntity,
     required super.totalPcs,
     required super.purchaseNet,
@@ -10,6 +13,23 @@ class StockInModel extends StockInEntity {
     super.updatedBy,
     super.updatedAt,
   });
+
+  factory StockInModel.fromJson(Map<String, dynamic> json) {
+    return StockInModel(
+      id: json['id'],
+      productEntity: ProductModel.fromJson(json['product']),
+      totalPcs: json['total_pcs'],
+      purchaseNet: JsonUtils.validateIntOrDouble(json['purchase_net']),
+      createdAt: json['created_at'] != null
+          ? DateTime.fromMillisecondsSinceEpoch(json['created_at'])
+          : null,
+      createdBy: json['created_by'],
+      updatedAt: json['updated_at'] != null
+          ? DateTime.fromMillisecondsSinceEpoch(json['updated_at'])
+          : null,
+      updatedBy: json['updated_by'],
+    );
+  }
 
   Map<String, dynamic> toFirestoreJson(
     String storeId, {
@@ -32,6 +52,7 @@ class StockInModel extends StockInEntity {
 
   factory StockInModel.fromEntity(StockInEntity entity) {
     return StockInModel(
+      id: entity.id,
       productEntity: entity.productEntity,
       totalPcs: entity.totalPcs,
       purchaseNet: entity.purchaseNet,

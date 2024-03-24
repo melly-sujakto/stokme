@@ -263,4 +263,49 @@ class TransactionUsecase {
 
     return jsonList.map(ReceiptModel.fromJson).toList();
   }
+
+  Future<List<StockInEntity>> getStockInList({
+    StockInEntity? lastItem,
+    int index = 0,
+    int pageSize = 20,
+    required DateTimeRange dateTimeRange,
+  }) async {
+    final collectionRef = firebaseLibrary.selfQuery(stockInCollectionName);
+    final initialSelfQuery = collectionRef
+        .where('store_id', isEqualTo: await _getStoreId())
+        .where(
+          'created_at',
+          isGreaterThanOrEqualTo: dateTimeRange.start.millisecondsSinceEpoch,
+        )
+        .where(
+          'created_at',
+          isLessThanOrEqualTo: dateTimeRange.end.millisecondsSinceEpoch,
+        );
+
+    final jsonList = await firebaseLibrary.getListPagination(
+      initialSelfQuery: initialSelfQuery,
+      collectionName: stockInCollectionName,
+      orderByField: 'created_at',
+      decending: true,
+      lastDocumentId: lastItem?.id,
+      index: index,
+      pageSize: pageSize,
+    );
+
+    final result = <StockInEntity>[];
+    for (final json in jsonList) {
+      try {
+        final product = await firebaseLibrary.getById(
+          collectionName: 'product',
+          id: json['product_id'],
+        );
+        json['product'] = product;
+        result.add(StockInModel.fromJson(json));
+      } catch (e) {
+        // just continue if there is error or product is deleted
+      }
+    }
+
+    return result;
+  }
 }

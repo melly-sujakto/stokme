@@ -1,4 +1,5 @@
 import 'package:data_abstraction/entity/receipt_entity.dart';
+import 'package:data_abstraction/entity/stock_in_entity.dart';
 import 'package:feature_transaction/presentation/journey/transaction_list/bloc/transaction_list_bloc.dart';
 import 'package:feature_transaction/presentation/journey/transaction_list/transaction_list_constants.dart';
 import 'package:feature_transaction/presentation/journey/transaction_list/transaction_list_routes.dart';
@@ -11,7 +12,6 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:ui_kit/common/constants/layout_dimen.dart';
 import 'package:ui_kit/extensions/number_extension.dart';
 import 'package:ui_kit/theme/colors.dart';
-import 'package:ui_kit/ui/loading_indicator/loading_circular.dart';
 import 'package:ui_kit/ui/widgets/dummy_circle_image.dart';
 import 'package:ui_kit/utils/screen_utils.dart';
 
@@ -31,6 +31,16 @@ class _TransactionListPageState extends State<TransactionListPage> {
   bool showSales = true;
   final circleWidth = LayoutDimen.dimen_28.w;
   DateTime filterDateTime = DateTime.now();
+
+  int receiptTotalAllPcs = 0;
+  double receiptTotalAllNet = 0;
+  int receiptsCount = 0;
+  List<ReceiptEntity> saleReceipts = [];
+
+  int stockInTotalAllPcs = 0;
+  double stockInTotalPurchaseNet = 0;
+  int stockInCount = 0;
+  List<StockInEntity> stockInList = [];
 
   @override
   void initState() {
@@ -61,40 +71,53 @@ class _TransactionListPageState extends State<TransactionListPage> {
         ),
       ),
       body: SingleChildScrollView(
-        child: BlocBuilder<TransactionListBloc, TransactionListState>(
-          builder: (context, state) {
+        child: BlocConsumer<TransactionListBloc, TransactionListState>(
+          listener: (context, state) {
             if (state is GetSaleReceiptsLoaded) {
-              final totalAllPcs = state.saleReceipts
+              receiptTotalAllPcs = state.saleReceipts
                   .map((e) => e.totalPcs)
                   .reduce((a, b) => a + b);
-              final totalAllNet = state.saleReceipts
+              receiptTotalAllNet = state.saleReceipts
                   .map((e) => e.totalNet)
                   .reduce((a, b) => a + b);
-              final receiptsCount = state.saleReceipts.length;
-
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  buttonController(),
-                  dateController(),
-                  showSales
-                      ? percentIndicator([
-                          totalAllNet.toRupiahCurrency(),
-                          // ignore: lines_longer_than_80_chars
-                          '$totalAllPcs ${TranslationConstants.pcs.i18n(context)}',
-                          // ignore: lines_longer_than_80_chars
-                          '$receiptsCount ${TransactionListStrings.sales.i18n(context)}',
-                        ])
-                      : percentIndicator([
-                          'Rp.197.650.000',
-                          '1411 pcs',
-                          '155 stok masuk',
-                        ]),
-                  thSales(state.saleReceipts),
-                ],
-              );
+              receiptsCount = state.saleReceipts.length;
+              saleReceipts = state.saleReceipts;
             }
-            return const LoadingCircular();
+            if (state is GetStockInListLoaded) {
+              stockInTotalAllPcs = state.stockInList
+                  .map((e) => e.totalPcs)
+                  .reduce((a, b) => a + b);
+              stockInTotalPurchaseNet = state.stockInList
+                  .map((e) => e.purchaseNet)
+                  .reduce((a, b) => a + b);
+              stockInCount = state.stockInList.length;
+              stockInList = state.stockInList;
+            }
+          },
+          builder: (context, state) {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                buttonController(),
+                dateController(),
+                showSales
+                    ? percentIndicator([
+                        receiptTotalAllNet.toRupiahCurrency(),
+                        // ignore: lines_longer_than_80_chars
+                        '$receiptTotalAllPcs ${TranslationConstants.pcs.i18n(context)}',
+                        // ignore: lines_longer_than_80_chars
+                        '$receiptsCount ${TransactionListStrings.sales.i18n(context)}',
+                      ])
+                    : percentIndicator([
+                        stockInTotalPurchaseNet.toRupiahCurrency(),
+                        // ignore: lines_longer_than_80_chars
+                        '$stockInTotalAllPcs ${TranslationConstants.pcs.i18n(context)}',
+                        // ignore: lines_longer_than_80_chars
+                        '$stockInCount stok masuk',
+                      ]),
+                thSales(saleReceipts),
+              ],
+            );
           },
         ),
       ),
@@ -300,6 +323,16 @@ class _TransactionListPageState extends State<TransactionListPage> {
                   setState(() {
                     showSales = true;
                   });
+                  widget.transactionListBloc.add(
+                    GetSaleReceipts(
+                      dateTimeRange: DateTimeRange(
+                        start: filterDateTime.subtract(
+                          Duration(days: filterDateTime.day),
+                        ),
+                        end: filterDateTime,
+                      ),
+                    ),
+                  );
                 }
               },
               child: Container(
@@ -329,6 +362,16 @@ class _TransactionListPageState extends State<TransactionListPage> {
                   setState(() {
                     showSales = false;
                   });
+                  widget.transactionListBloc.add(
+                    GetStockInList(
+                      dateTimeRange: DateTimeRange(
+                        start: filterDateTime.subtract(
+                          Duration(days: filterDateTime.day),
+                        ),
+                        end: filterDateTime,
+                      ),
+                    ),
+                  );
                 }
               },
               child: Container(
