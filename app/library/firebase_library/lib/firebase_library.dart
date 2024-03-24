@@ -56,60 +56,64 @@ class FirebaseLibrary {
           '[$runtimeType][getListPagination] last document should not null'
           'when index is more than 0');
     }
-
     final collectionRef = FirebaseFirestore.instance.collection(collectionName);
 
-    late final QuerySnapshot<Map<String, dynamic>> indexDataSnapshot;
-    if (index == 0) {
-      indexDataSnapshot = await collectionRef
-          .orderBy(
-            orderByField,
-            descending: decending,
-          )
-          .limit(1)
-          .get();
-    } else {
-      // TODO(Melly): simplify, will be better when just call get() one time
-      final lastDocument = await collectionRef.doc(lastDocumentId).get();
-      indexDataSnapshot = await collectionRef
-          .orderBy(
-            orderByField,
-            descending: decending,
-          )
-          .limit(1)
-          .startAfterDocument(lastDocument)
-          .get();
+    try {
+      late final QuerySnapshot<Map<String, dynamic>> indexDataSnapshot;
+      if (index == 0) {
+        indexDataSnapshot = await collectionRef
+            .orderBy(
+              orderByField,
+              descending: decending,
+            )
+            .limit(1)
+            .get();
+      } else {
+        // TODO(Melly): simplify, will be better when just call get() one time
+        final lastDocument = await collectionRef.doc(lastDocumentId).get();
+        indexDataSnapshot = await collectionRef
+            .orderBy(
+              orderByField,
+              descending: decending,
+            )
+            .limit(1)
+            .startAfterDocument(lastDocument)
+            .get();
+      }
+
+      final indexData = indexDataSnapshot.docs.last;
+
+      late final QuerySnapshot<Map<String, dynamic>> querySnapshot;
+      if (initialSelfQuery == null) {
+        querySnapshot = await collectionRef
+            .orderBy(
+              orderByField,
+              descending: decending,
+            )
+            .startAtDocument(indexData)
+            .limit(pageSize)
+            .get();
+      } else {
+        querySnapshot = await initialSelfQuery
+            .orderBy(
+              orderByField,
+              descending: decending,
+            )
+            .startAtDocument(indexData)
+            .limit(pageSize)
+            .get();
+      }
+
+      return querySnapshot.docs.map((doc) {
+        final data = doc.data();
+        final id = doc.id;
+        data['id'] = id;
+        return data;
+      }).toList();
+    } catch (e) {
+      // handle startAfterDocument method failed
+      return [];
     }
-
-    final indexData = indexDataSnapshot.docs.last;
-
-    late final QuerySnapshot<Map<String, dynamic>> querySnapshot;
-    if (initialSelfQuery == null) {
-      querySnapshot = await collectionRef
-          .orderBy(
-            orderByField,
-            descending: decending,
-          )
-          .startAtDocument(indexData)
-          .limit(pageSize)
-          .get();
-    } else {
-      querySnapshot = await initialSelfQuery
-          .orderBy(
-            orderByField,
-            descending: decending,
-          )
-          .startAtDocument(indexData)
-          .limit(pageSize)
-          .get();
-    }
-
-    return querySnapshot.docs.map((doc) {
-      final data = doc.data();
-      final id = doc.id;
-      data['id'] = id;
-      return data;
-    }).toList();
   }
 
   CollectionReference<Map<String, dynamic>> selfQuery(String collectionName) {

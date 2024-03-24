@@ -209,9 +209,6 @@ class _ProductPageState extends State<ProductPage> {
                       pagingController.appendPage(state.productList, index);
                     }
                   }
-                  if (state is ProductFailed) {
-                    pagingController.appendLastPage([]);
-                  }
                 },
                 builder: (context, state) {
                   return InfinitePaginationWidget(

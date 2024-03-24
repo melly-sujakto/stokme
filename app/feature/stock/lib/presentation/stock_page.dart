@@ -135,9 +135,6 @@ class _StockPageState extends State<StockPage> {
                       pagingController.appendPage(state.stockList, index);
                     }
                   }
-                  if (state is StockFailed) {
-                    pagingController.appendLastPage([]);
-                  }
                 },
                 child: InfinitePaginationWidget(
                   pagingController: pagingController,
