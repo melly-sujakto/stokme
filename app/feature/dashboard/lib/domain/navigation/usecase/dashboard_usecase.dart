@@ -75,7 +75,9 @@ class DashboardUsecase {
       case 2:
         return [Feature.sale];
       case 3:
-        return [Feature.stockIn];
+        return Feature.values
+            .where((f) => f != Feature.transaction && f != Feature.sale)
+            .toList();
       default:
         return <Feature>[];
     }
