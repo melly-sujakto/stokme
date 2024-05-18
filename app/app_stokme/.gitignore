@@ -105,7 +105,8 @@ org.eclipse.buildship.core.prefs
 **/report_reader/json_report.json
 **/report_reader/*.html
 lib/.env.dart
-
+lib/firebase_options.dart
+firebase.json
 
 #E2E Testing
 test_driver/screenshots
