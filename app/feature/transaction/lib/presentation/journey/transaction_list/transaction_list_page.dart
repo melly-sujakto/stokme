@@ -3,6 +3,7 @@ import 'package:data_abstraction/entity/stock_in_entity.dart';
 import 'package:feature_transaction/presentation/journey/transaction_list/bloc/transaction_list_bloc.dart';
 import 'package:feature_transaction/presentation/journey/transaction_list/transaction_list_constants.dart';
 import 'package:feature_transaction/presentation/journey/transaction_list/transaction_list_routes.dart';
+import 'package:feature_transaction/presentation/journey/transaction_list/widgets/th_stock_in_card.dart';
 import 'package:flutter/material.dart';
 import 'package:module_common/common/constant/translation_constants.dart';
 import 'package:module_common/i18n/i18n_extension.dart';
@@ -12,6 +13,7 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:ui_kit/common/constants/layout_dimen.dart';
 import 'package:ui_kit/extensions/number_extension.dart';
 import 'package:ui_kit/theme/colors.dart';
+import 'package:ui_kit/ui/scanner/scanner_finder.dart';
 import 'package:ui_kit/ui/widgets/dummy_circle_image.dart';
 import 'package:ui_kit/utils/screen_utils.dart';
 
@@ -100,26 +102,61 @@ class _TransactionListPageState extends State<TransactionListPage> {
               children: [
                 buttonController(),
                 dateController(),
-                showSales
-                    ? percentIndicator([
-                        receiptTotalAllNet.toRupiahCurrency(),
-                        // ignore: lines_longer_than_80_chars
-                        '$receiptTotalAllPcs ${TranslationConstants.pcs.i18n(context)}',
-                        // ignore: lines_longer_than_80_chars
-                        '$receiptsCount ${TransactionListStrings.sales.i18n(context)}',
-                      ])
-                    : percentIndicator([
-                        stockInTotalPurchaseNet.toRupiahCurrency(),
-                        // ignore: lines_longer_than_80_chars
-                        '$stockInTotalAllPcs ${TranslationConstants.pcs.i18n(context)}',
-                        // ignore: lines_longer_than_80_chars
-                        '$stockInCount stok masuk',
-                      ]),
-                thSales(saleReceipts),
+                ...showSales
+                    ? [
+                        percentIndicator([
+                          receiptTotalAllNet.toRupiahCurrency(),
+                          // ignore: lines_longer_than_80_chars
+                          '$receiptTotalAllPcs ${TranslationConstants.pcs.i18n(context)}',
+                          // ignore: lines_longer_than_80_chars
+                          '$receiptsCount ${TransactionListStrings.sales.i18n(context)}',
+                        ]),
+                        thSales(saleReceipts)
+                      ]
+                    : [
+                        percentIndicator([
+                          stockInTotalPurchaseNet.toRupiahCurrency(),
+                          // ignore: lines_longer_than_80_chars
+                          '$stockInTotalAllPcs ${TranslationConstants.pcs.i18n(context)}',
+                          // ignore: lines_longer_than_80_chars
+                          '$stockInCount stok masuk',
+                        ]),
+                        thStockInList(stockInList),
+                      ],
               ],
             );
           },
         ),
+      ),
+    );
+  }
+
+  Widget thStockInList(List<StockInEntity> stockInList) {
+    return Container(
+      padding: EdgeInsets.symmetric(
+        vertical: LayoutDimen.dimen_16.h,
+        horizontal: LayoutDimen.dimen_16.w,
+      ),
+      margin: EdgeInsets.only(top: LayoutDimen.dimen_35.h),
+      color: CustomColors.white,
+      child: Column(
+        children: [
+          Padding(
+            padding: EdgeInsets.only(bottom: LayoutDimen.dimen_8.h),
+            child: ScannerFinder(
+              labelText: 'Cari nama/kode',
+              onChanged: (value) {},
+              onScan: (value) {},
+            ),
+          ),
+          ...List.generate(
+            stockInList.length,
+            (index) => Padding(
+              padding: EdgeInsets.symmetric(vertical: LayoutDimen.dimen_8.h),
+              child: THStockInCard(stockInEntity: stockInList[index]),
+            ),
+          ),
+        ],
       ),
     );
   }
