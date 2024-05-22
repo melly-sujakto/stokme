@@ -76,17 +76,25 @@ class FirestoreService {
   Future<void> fillAllDocumentsWithNewFields({
     required String collectionName,
     required Map<String, dynamic> fields,
+    bool keepExistingFields = true,
   }) async {
     final documents = await getDocuments(collectionName: collectionName);
 
     for (var doc in documents) {
       final data = doc.map;
-      final newFields = fields;
+      final newFields = {...fields};
 
-      // remove existing field on newFields, so existing field should be kept
-      data.keys.map((e) => newFields.remove(e));
+      if (keepExistingFields) {
+        print('before remove: $newFields');
+        // remove existing field on newFields, so existing field should be kept
+        for (var e in data.keys) {
+          newFields.remove(e);
+          print('removed on: $e');
+        }
+        print('after remove: $newFields');
+      }
 
-      final newData = {...newFields, ...data};
+      final newData = {...data, ...newFields};
       await updateDocument(
         collectionName: collectionName,
         documentId: doc.id,

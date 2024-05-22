@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:firebase_tool/firestore/firestore_service.dart';
 
 void main(List<String> args) async {
@@ -8,5 +10,7 @@ void main(List<String> args) async {
   await service.fillAllDocumentsWithNewFields(
     collectionName: args[2],
     fields: {},
+    keepExistingFields: false,
   );
+  exit(0);
 }
