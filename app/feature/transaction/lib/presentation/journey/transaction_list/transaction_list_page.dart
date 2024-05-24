@@ -32,7 +32,6 @@ class TransactionListPage extends StatefulWidget {
 class _TransactionListPageState extends State<TransactionListPage> {
   bool showSales = true;
   final circleWidth = LayoutDimen.dimen_28.w;
-  DateTime filterDateTime = DateTime.now();
 
   int receiptTotalAllPcs = 0;
   double receiptTotalAllNet = 0;
@@ -48,12 +47,7 @@ class _TransactionListPageState extends State<TransactionListPage> {
   void initState() {
     widget.transactionListBloc.add(
       GetSaleReceipts(
-        dateTimeRange: DateTimeRange(
-          start: filterDateTime.subtract(
-            Duration(days: filterDateTime.day),
-          ),
-          end: filterDateTime,
-        ),
+        dateTimeRange: getFilterDateRange(),
       ),
     );
     super.initState();
@@ -258,6 +252,105 @@ class _TransactionListPageState extends State<TransactionListPage> {
     );
   }
 
+  int dateFilterIndex = 0;
+  // TODO(Melly): implement lang
+  Widget getDateFilterWidget() {
+    final data = [
+      Column(
+        children: [
+          Text(
+            DateFormat.MMMM('id').format(DateTime.now()),
+            style: TextStyle(
+              fontSize: LayoutDimen.dimen_18.minSp,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          Text(
+            DateTime.now().year.toString(),
+            style: TextStyle(
+              fontSize: LayoutDimen.dimen_14.minSp,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ],
+      ),
+      Text(
+        'Hari Ini',
+        style: TextStyle(
+          fontSize: LayoutDimen.dimen_18.minSp,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      Text(
+        DateTime.now().year.toString(),
+        style: TextStyle(
+          fontSize: LayoutDimen.dimen_18.minSp,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    ];
+    final color = [
+      CustomColors.errorAccent.c50.withOpacity(0.3),
+      CustomColors.secondary.c40.withOpacity(0.3),
+      CustomColors.yellowMedium.withOpacity(0.3),
+    ];
+    return Container(
+      width: LayoutDimen.dimen_115.w,
+      padding: EdgeInsets.symmetric(
+        horizontal: LayoutDimen.dimen_11.w,
+        vertical: LayoutDimen.dimen_5.h,
+      ),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(
+          LayoutDimen.dimen_10.w,
+        ),
+        color: color[dateFilterIndex],
+      ),
+      child: Center(child: data[dateFilterIndex]),
+    );
+  }
+
+  DateTimeRange getFilterDateRange() {
+    switch (dateFilterIndex) {
+      case 1:
+        // today
+        return DateTimeRange(
+          start: DateTime(
+            DateTime.now().year,
+            DateTime.now().month,
+            DateTime.now().day,
+          ),
+          end: DateTime.now(),
+        );
+      case 2:
+        // this year
+        return DateTimeRange(
+          start: DateTime(DateTime.now().year, 1, 1),
+          end: DateTime.now(),
+        );
+      default:
+        // this month
+        return DateTimeRange(
+          start: DateTime(
+            DateTime.now().year,
+            DateTime.now().month,
+            1,
+          ),
+          end: DateTime.now(),
+        );
+    }
+  }
+
+  void addEventStockInList() {
+    stockInTotalAllPcs = 0;
+    stockInTotalPurchaseNet = 0;
+    stockInCount = 0;
+    stockInList = [];
+    widget.transactionListBloc.add(
+      GetStockInList(dateTimeRange: getFilterDateRange()),
+    );
+  }
+
   Widget dateController() {
     return Container(
       padding: EdgeInsets.symmetric(
@@ -267,7 +360,16 @@ class _TransactionListPageState extends State<TransactionListPage> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           InkWell(
-            onTap: () {},
+            onTap: () {
+              setState(() {
+                if (dateFilterIndex == 0) {
+                  dateFilterIndex = 2;
+                } else {
+                  dateFilterIndex--;
+                }
+              });
+              addEventStockInList();
+            },
             borderRadius: BorderRadius.circular(50),
             child: Material(
               elevation: 1,
@@ -284,45 +386,33 @@ class _TransactionListPageState extends State<TransactionListPage> {
               horizontal: LayoutDimen.dimen_11.w,
             ),
             child: InkWell(
-              onTap: () {},
+              onTap: () {
+                setState(() {
+                  if (dateFilterIndex == 2) {
+                    dateFilterIndex = 0;
+                  } else {
+                    dateFilterIndex++;
+                  }
+                });
+                addEventStockInList();
+              },
               borderRadius: BorderRadius.circular(
                 LayoutDimen.dimen_10.w,
               ),
-              child: Container(
-                padding: EdgeInsets.symmetric(
-                  horizontal: LayoutDimen.dimen_11.w,
-                  vertical: LayoutDimen.dimen_5.h,
-                ),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(
-                    LayoutDimen.dimen_10.w,
-                  ),
-                  color: CustomColors.errorAccent.c50.withOpacity(0.3),
-                ),
-                child: Column(
-                  children: [
-                    Text(
-                      // TODO(melly): move to a extension
-                      DateFormat.MMMM('id').format(filterDateTime),
-                      style: TextStyle(
-                        fontSize: LayoutDimen.dimen_18.minSp,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Text(
-                      filterDateTime.year.toString(),
-                      style: TextStyle(
-                        fontSize: LayoutDimen.dimen_14.minSp,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              child: getDateFilterWidget(),
             ),
           ),
           InkWell(
-            onTap: () {},
+            onTap: () {
+              setState(() {
+                if (dateFilterIndex == 2) {
+                  dateFilterIndex = 0;
+                } else {
+                  dateFilterIndex++;
+                }
+              });
+              addEventStockInList();
+            },
             borderRadius: BorderRadius.circular(50),
             child: Material(
               elevation: 1,
@@ -362,12 +452,7 @@ class _TransactionListPageState extends State<TransactionListPage> {
                   });
                   widget.transactionListBloc.add(
                     GetSaleReceipts(
-                      dateTimeRange: DateTimeRange(
-                        start: filterDateTime.subtract(
-                          Duration(days: filterDateTime.day),
-                        ),
-                        end: filterDateTime,
-                      ),
+                      dateTimeRange: getFilterDateRange(),
                     ),
                   );
                 }
@@ -399,16 +484,7 @@ class _TransactionListPageState extends State<TransactionListPage> {
                   setState(() {
                     showSales = false;
                   });
-                  widget.transactionListBloc.add(
-                    GetStockInList(
-                      dateTimeRange: DateTimeRange(
-                        start: filterDateTime.subtract(
-                          Duration(days: filterDateTime.day),
-                        ),
-                        end: filterDateTime,
-                      ),
-                    ),
-                  );
+                  addEventStockInList();
                 }
               },
               child: Container(
