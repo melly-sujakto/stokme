@@ -40,73 +40,83 @@ class _THStockInCardState extends State<THStockInCard> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  Row(
-                    children: [
-                      DummyCircleImage(
-                        title: widget.stockInEntity.productEntity.name,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: LayoutDimen.dimen_10.w,
+                  Flexible(
+                    flex: 4,
+                    child: Row(
+                      children: [
+                        DummyCircleImage(
+                          title: widget.stockInEntity.productEntity.name,
                         ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              widget.stockInEntity.productEntity.name,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                fontSize: LayoutDimen.dimen_13.minSp,
-                                fontWeight: FontWeight.w600,
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: LayoutDimen.dimen_10.w,
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                widget.stockInEntity.productEntity.name,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  fontSize: LayoutDimen.dimen_13.minSp,
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
-                            ),
-                            SizedBox(
-                              height: LayoutDimen.dimen_7.h,
-                            ),
-                            Text(
-                              widget.stockInEntity.productEntity.code,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                fontSize: LayoutDimen.dimen_12.minSp,
-                                fontWeight: FontWeight.w200,
+                              SizedBox(
+                                height: LayoutDimen.dimen_7.h,
                               ),
-                            ),
-                            SizedBox(
-                              height: LayoutDimen.dimen_7.h,
-                            ),
-                            Text(
-                              widget.stockInEntity.createdAt.toString(),
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                fontSize: LayoutDimen.dimen_12.minSp,
-                                fontWeight: FontWeight.w300,
+                              Text(
+                                widget.stockInEntity.productEntity.code,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  fontSize: LayoutDimen.dimen_12.minSp,
+                                  fontWeight: FontWeight.w200,
+                                ),
                               ),
-                            ),
-                          ],
+                              SizedBox(
+                                height: LayoutDimen.dimen_7.h,
+                              ),
+                              Text(
+                                widget.stockInEntity.createdAt.toString(),
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  fontSize: LayoutDimen.dimen_12.minSp,
+                                  fontWeight: FontWeight.w300,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Text(
-                        'Harga Purchase',
-                        style: TextStyle(
-                          fontSize: LayoutDimen.dimen_12.minSp,
-                          fontWeight: FontWeight.w200,
+                  Flexible(
+                    flex: 2,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text(
+                          'Harga Purchase',
+                          style: TextStyle(
+                            fontSize: LayoutDimen.dimen_12.minSp,
+                            fontWeight: FontWeight.w200,
+                          ),
                         ),
-                      ),
-                      Text(
-                        widget.stockInEntity.purchaseNet.toRupiahCurrency(),
-                        style: TextStyle(
-                          fontSize: LayoutDimen.dimen_16.minSp,
-                          fontWeight: FontWeight.bold,
+                        Text(
+                          widget.stockInEntity.purchaseNet.toRupiahCurrency(
+                            decimalDigits: 0,
+                          ),
+                          style: TextStyle(
+                            fontSize: LayoutDimen.dimen_16.minSp,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.right,
+                          maxLines: 2,
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ],
               ),
