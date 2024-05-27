@@ -29,7 +29,7 @@ class PrintBloc extends BaseBloc<PrintEvent, PrintState> {
     emit(PrintLoading());
     try {
       // Get store detail
-      final storeDetail = await _getStoreDetail();
+      final storeDetail = event.storeEntity ?? await _getStoreDetail();
 
       // Print execution
       final devices = await transactionUsecase.scanAvailablePrinters();

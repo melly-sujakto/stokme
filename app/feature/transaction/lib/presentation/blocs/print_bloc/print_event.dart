@@ -9,6 +9,7 @@ class PrintExecuteEvent extends PrintEvent {
   final String dateText;
   final String timeText;
   final String userName;
+  final StoreEntity? storeEntity;
 
   PrintExecuteEvent({
     required this.saleEntityList,
@@ -16,5 +17,6 @@ class PrintExecuteEvent extends PrintEvent {
     required this.dateText,
     required this.timeText,
     required this.userName,
+    this.storeEntity,
   });
 }
