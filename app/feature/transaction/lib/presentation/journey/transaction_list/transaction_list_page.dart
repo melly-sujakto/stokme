@@ -175,6 +175,15 @@ class _TransactionListPageState extends State<TransactionListPage> {
   }
 
   int dateFilterIndex = 0;
+
+  Color getColorSupport() {
+    return [
+      CustomColors.errorAccent.c50.withOpacity(0.3),
+      CustomColors.secondary.c40.withOpacity(0.3),
+      CustomColors.yellowMedium.withOpacity(0.3),
+    ][dateFilterIndex];
+  }
+
   // TODO(Melly): implement lang
   Widget getDateFilterWidget() {
     final data = [
@@ -211,11 +220,7 @@ class _TransactionListPageState extends State<TransactionListPage> {
         ),
       ),
     ];
-    final color = [
-      CustomColors.errorAccent.c50.withOpacity(0.3),
-      CustomColors.secondary.c40.withOpacity(0.3),
-      CustomColors.yellowMedium.withOpacity(0.3),
-    ];
+
     return Container(
       width: LayoutDimen.dimen_115.w,
       padding: EdgeInsets.symmetric(
@@ -226,7 +231,7 @@ class _TransactionListPageState extends State<TransactionListPage> {
         borderRadius: BorderRadius.circular(
           LayoutDimen.dimen_10.w,
         ),
-        color: color[dateFilterIndex],
+        color: getColorSupport(),
       ),
       child: Center(child: data[dateFilterIndex]),
     );
@@ -491,7 +496,9 @@ class _TransactionListPageState extends State<TransactionListPage> {
             ],
           ),
         ),
-        progressColor: CustomColors.errorAccent.c70,
+        progressColor: getColorSupport(),
+        backgroundColor: getColorSupport(),
+        arcType: ArcType.FULL,
       ),
     );
   }
