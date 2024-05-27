@@ -42,3 +42,13 @@ final class SubmitSuccess extends SaleState {
 }
 
 final class SubmitFailed extends SaleState {}
+
+final class GetStoreLoading extends SaleState {}
+
+final class GetStoreLoaded extends SaleState {
+  final StoreEntity storeEntity;
+
+  GetStoreLoaded(this.storeEntity);
+}
+
+final class GetStoreFailed extends SaleState {}

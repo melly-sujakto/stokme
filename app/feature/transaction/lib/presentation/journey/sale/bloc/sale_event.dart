@@ -27,3 +27,5 @@ class SubmitReceiptAndSalesEvent extends SaleEvent {
 
   SubmitReceiptAndSalesEvent(this.saleEntityList);
 }
+
+class GetStoreDetailEvent extends SaleEvent {}

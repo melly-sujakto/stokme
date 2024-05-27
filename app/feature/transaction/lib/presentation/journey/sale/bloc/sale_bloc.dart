@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:data_abstraction/entity/product_entity.dart';
 import 'package:data_abstraction/entity/receipt_entity.dart';
 import 'package:data_abstraction/entity/sale_entity.dart';
+import 'package:data_abstraction/entity/store_entity.dart';
 import 'package:feature_transaction/domain/usecase/transaction_usecase.dart';
 import 'package:module_common/package/intl.dart';
 import 'package:module_common/presentation/bloc/base_bloc.dart';
@@ -22,6 +23,7 @@ class SaleBloc extends BaseBloc<SaleEvent, SaleState> {
     on<CalculateTotalPriceEvent>(_onCalculateTotalPriceEvent);
     on<SetupEvent>(_onSetupEvent);
     on<SubmitReceiptAndSalesEvent>(_onSubmitReceiptAndSalesEvent);
+    on<GetStoreDetailEvent>(_onGetStoreDetailEvent);
   }
 
   late ReceiptEntity receipt;
@@ -134,6 +136,18 @@ class SaleBloc extends BaseBloc<SaleEvent, SaleState> {
     } catch (e) {
       // TODO(melly): add regenerate receipt id
       emit(SubmitFailed());
+    }
+  }
+
+  FutureOr<void> _onGetStoreDetailEvent(
+    GetStoreDetailEvent event,
+    Emitter<SaleState> emit,
+  ) async {
+    emit(GetStoreFailed());
+    try {
+      emit(GetStoreLoaded(await transactionUsecase.getStoreDetail()));
+    } catch (e) {
+      emit(GetStoreFailed());
     }
   }
 }
