@@ -28,7 +28,8 @@ class _THSalesCardState extends State<THSalesCard> {
       onTap: () {
         Navigator.pushNamed(
           context,
-          TransactionListRoutes.transactionSaleDetail,
+          TransactionListRoutes.saleDetail,
+          arguments: receiptEntity,
         );
       },
       child: Material(
