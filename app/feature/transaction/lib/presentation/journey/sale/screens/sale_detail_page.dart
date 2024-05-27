@@ -8,9 +8,9 @@ import 'package:feature_transaction/presentation/journey/sale/bloc/sale_bloc.dar
 import 'package:feature_transaction/presentation/journey/sale/sale_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:module_common/i18n/i18n_extension.dart';
-import 'package:module_common/package/intl.dart';
 import 'package:module_common/presentation/bloc/base_bloc.dart';
 import 'package:ui_kit/common/constants/layout_dimen.dart';
+import 'package:ui_kit/extensions/date_time_extension.dart';
 import 'package:ui_kit/extensions/number_extension.dart';
 import 'package:ui_kit/theme/colors.dart';
 import 'package:ui_kit/ui/button/flat_button.dart';
@@ -278,28 +278,16 @@ class SaleDetailPage extends StatelessWidget {
                                                 LayoutDimen.dimen_12.minSp,
                                           ),
                                         ),
-                                        Builder(
-                                          builder: (context) {
-                                            // TODO(Melly): move to date time extension
-                                            final date =
-                                                receiptEntity.createdAt == null
-                                                    ? '-'
-                                                    : DateFormat.yMMMMEEEEd(
-                                                        'id',
-                                                      ).format(
-                                                        receiptEntity
-                                                            .createdAt!,
-                                                      );
-
-                                            return Text(
-                                              date,
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.w500,
-                                                fontSize:
-                                                    LayoutDimen.dimen_12.minSp,
-                                              ),
-                                            );
-                                          },
+                                        Text(
+                                          receiptEntity.createdAt == null
+                                              ? '-'
+                                              : receiptEntity.createdAt!
+                                                  .toYMMMMEEEEd(),
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.w500,
+                                            fontSize:
+                                                LayoutDimen.dimen_12.minSp,
+                                          ),
                                         ),
                                       ],
                                     ),
@@ -396,16 +384,22 @@ class SaleDetailPage extends StatelessWidget {
                             return FlatButton(
                               title: SaleStrings.printReceipt.i18n(context),
                               onPressed: () async {
-                                // printBloc.add(
-                                //   PrintExecuteEvent(
-                                //     saleEntityList: receiptEntity.,
-                                //     receiptEntity: saleBloc.receipt,
-                                //     dateText: state.dateText,
-                                //     timeText: state.timeText,
-                                //     userName: saleBloc.userName,
-                                //     storeEntity: storeDetail,
-                                //   ),
-                                // );
+                                printBloc.add(
+                                  PrintExecuteEvent(
+                                    saleEntityList: saleEntities,
+                                    receiptEntity: receiptEntity,
+                                    dateText: receiptEntity.createdAt == null
+                                        ? '-'
+                                        : receiptEntity.createdAt!
+                                            .toYMMMMEEEEd(),
+                                    timeText: receiptEntity.createdAt == null
+                                        ? '-'
+                                        : receiptEntity.createdAt!
+                                            .toTimeWithColon(),
+                                    userName: receiptEntity.userName,
+                                    storeEntity: storeDetail,
+                                  ),
+                                );
                               },
                               margin: EdgeInsets.zero,
                             );

@@ -5,7 +5,6 @@ import 'package:data_abstraction/entity/receipt_entity.dart';
 import 'package:data_abstraction/entity/sale_entity.dart';
 import 'package:data_abstraction/entity/store_entity.dart';
 import 'package:feature_transaction/domain/usecase/transaction_usecase.dart';
-import 'package:module_common/package/intl.dart';
 import 'package:module_common/presentation/bloc/base_bloc.dart';
 import 'package:uuid/uuid.dart';
 
@@ -121,18 +120,8 @@ class SaleBloc extends BaseBloc<SaleEvent, SaleState> {
         ),
         saleEntityList: event.saleEntityList,
       );
-      // TODO(melly): move to an utils
-      final dateTimeNow = DateTime.now();
-      final dateFormat = DateFormat('EEEE, dd MMMM yyyy');
-      final timeFormat = DateFormat('HH:mm');
-      final date = dateFormat.format(dateTimeNow);
-      final time = timeFormat.format(dateTimeNow);
       emit(
-        SubmitSuccess(
-          saleEntityList: event.saleEntityList,
-          dateText: date,
-          timeText: time,
-        ),
+        SubmitSuccess(saleEntityList: event.saleEntityList),
       );
     } catch (e) {
       // TODO(melly): add regenerate receipt id

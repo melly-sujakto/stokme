@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:module_common/i18n/i18n_extension.dart';
 import 'package:module_common/presentation/bloc/base_bloc.dart';
 import 'package:ui_kit/common/constants/layout_dimen.dart';
+import 'package:ui_kit/extensions/date_time_extension.dart';
 import 'package:ui_kit/extensions/number_extension.dart';
 import 'package:ui_kit/theme/colors.dart';
 import 'package:ui_kit/ui/button/flat_button.dart';
@@ -166,7 +167,9 @@ class _SaleResultPageState extends State<SaleResultPage> {
                                                 SaleStrings.transactionDate
                                                     .i18n(context),
                                               ),
-                                              Text(state.dateText),
+                                              Text(
+                                                DateTime.now().toYMMMMEEEEd(),
+                                              ),
                                             ],
                                           ),
                                           Column(
@@ -177,7 +180,10 @@ class _SaleResultPageState extends State<SaleResultPage> {
                                                 SaleStrings.transactionTime
                                                     .i18n(context),
                                               ),
-                                              Text(state.timeText),
+                                              Text(
+                                                DateTime.now()
+                                                    .toTimeWithColon(),
+                                              ),
                                             ],
                                           ),
                                         ],
@@ -211,8 +217,10 @@ class _SaleResultPageState extends State<SaleResultPage> {
                                                 saleEntityList:
                                                     state.saleEntityList,
                                                 receiptEntity: saleBloc.receipt,
-                                                dateText: state.dateText,
-                                                timeText: state.timeText,
+                                                dateText: DateTime.now()
+                                                    .toYMMMMEEEEd(),
+                                                timeText: DateTime.now()
+                                                    .toTimeWithColon(),
                                                 userName: saleBloc.userName,
                                               ),
                                             );

@@ -31,14 +31,8 @@ final class SubmitLoading extends SaleState {}
 final class SubmitSuccess extends SaleState {
   // TODO(melly): wrap to be one entity
   final List<SaleEntity> saleEntityList;
-  final String dateText;
-  final String timeText;
 
-  SubmitSuccess({
-    required this.saleEntityList,
-    required this.dateText,
-    required this.timeText,
-  });
+  SubmitSuccess({required this.saleEntityList});
 }
 
 final class SubmitFailed extends SaleState {}
