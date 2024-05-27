@@ -29,3 +29,9 @@ class SubmitReceiptAndSalesEvent extends SaleEvent {
 }
 
 class GetStoreDetailEvent extends SaleEvent {}
+
+class GetSalesByReceiptIdEvent extends SaleEvent {
+  final String receiptId;
+
+  GetSalesByReceiptIdEvent(this.receiptId);
+}

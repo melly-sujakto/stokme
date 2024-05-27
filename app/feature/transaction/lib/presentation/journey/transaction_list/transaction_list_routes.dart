@@ -26,7 +26,13 @@ abstract class TransactionListRoutes {
       return MultiBlocProvider(
         providers: [
           BlocProvider(
-            create: (context) => Injector.resolve<SaleBloc>(),
+            create: (context) => Injector.resolve<SaleBloc>()
+              ..add(GetStoreDetailEvent())
+              ..add(
+                GetSalesByReceiptIdEvent(
+                  argument.id!,
+                ),
+              ),
           ),
           BlocProvider(
             create: (context) => Injector.resolve<PrintBloc>(),

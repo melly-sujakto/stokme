@@ -222,6 +222,38 @@ class TransactionUsecase {
     return StoreModel.fromJson(json!);
   }
 
+  Future<List<SaleEntity>> getSalesByReceiptId(String receiptId) async {
+    final collectionRef = firebaseLibrary.selfQuery(saleCollectionName);
+    final querySnapshot = await collectionRef
+        .where(
+          'receipt_id',
+          isEqualTo: receiptId,
+        )
+        .get();
+
+    final jsonList = querySnapshot.docs.map((doc) {
+      final data = doc.data();
+      final id = doc.id;
+      data['id'] = id;
+      return data;
+    }).toList();
+
+    final result = <SaleEntity>[];
+    for (final json in jsonList) {
+      try {
+        final product = await firebaseLibrary.getById(
+          collectionName: productCollectionName,
+          id: json['product_id'],
+        );
+        json['product'] = product;
+        result.add(SaleModel.fromJson(json));
+      } catch (e) {
+        // just continue if there is error or product is deleted
+      }
+    }
+    return result;
+  }
+
   Future<List<BluetoothDevice>> scanAvailablePrinters() {
     return printerRepository.scan();
   }

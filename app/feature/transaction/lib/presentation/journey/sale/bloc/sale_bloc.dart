@@ -24,6 +24,7 @@ class SaleBloc extends BaseBloc<SaleEvent, SaleState> {
     on<SetupEvent>(_onSetupEvent);
     on<SubmitReceiptAndSalesEvent>(_onSubmitReceiptAndSalesEvent);
     on<GetStoreDetailEvent>(_onGetStoreDetailEvent);
+    on<GetSalesByReceiptIdEvent>(_onGetSalesByReceiptIdEvent);
   }
 
   late ReceiptEntity receipt;
@@ -143,11 +144,22 @@ class SaleBloc extends BaseBloc<SaleEvent, SaleState> {
     GetStoreDetailEvent event,
     Emitter<SaleState> emit,
   ) async {
-    emit(GetStoreFailed());
+    emit(GetStoreLoaded(await transactionUsecase.getStoreDetail()));
+  }
+
+  FutureOr<void> _onGetSalesByReceiptIdEvent(
+    GetSalesByReceiptIdEvent event,
+    Emitter<SaleState> emit,
+  ) async {
+    emit(GetSalesByReceiptIdLoading());
     try {
-      emit(GetStoreLoaded(await transactionUsecase.getStoreDetail()));
+      emit(
+        GetSalesByReceiptIdLoaded(
+          await transactionUsecase.getSalesByReceiptId(event.receiptId),
+        ),
+      );
     } catch (e) {
-      emit(GetStoreFailed());
+      emit(GetSalesByReceiptIdError());
     }
   }
 }

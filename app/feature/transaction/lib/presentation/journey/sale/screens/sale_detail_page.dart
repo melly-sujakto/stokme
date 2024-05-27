@@ -1,6 +1,7 @@
 // ignore_for_file: lines_longer_than_80_chars
 
 import 'package:data_abstraction/entity/receipt_entity.dart';
+import 'package:data_abstraction/entity/sale_entity.dart';
 import 'package:data_abstraction/entity/store_entity.dart';
 import 'package:feature_transaction/presentation/blocs/print_bloc/print_bloc.dart';
 import 'package:feature_transaction/presentation/journey/sale/bloc/sale_bloc.dart';
@@ -27,8 +28,8 @@ class SaleDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final printBloc = context.read<PrintBloc>();
-    final saleBloc = context.read<SaleBloc>()..add(GetStoreDetailEvent());
     StoreEntity? storeDetail;
+    List<SaleEntity> saleEntities = [];
 
     return Scaffold(
       backgroundColor: CustomColors.neutral.c98,
@@ -45,6 +46,9 @@ class SaleDetailPage extends StatelessWidget {
         listener: (context, state) {
           if (state is GetStoreLoaded) {
             storeDetail = state.storeEntity;
+          }
+          if (state is GetSalesByReceiptIdLoaded) {
+            saleEntities = state.saleEntities;
           }
         },
         builder: (context, state) {
@@ -113,7 +117,7 @@ class SaleDetailPage extends StatelessWidget {
                                 ),
                                 child: Column(
                                   children: List.generate(
-                                    1,
+                                    saleEntities.length,
                                     (index) => Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
@@ -125,7 +129,9 @@ class SaleDetailPage extends StatelessWidget {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Text(
-                                                'Kopi Kapal Api 50g',
+                                                saleEntities[index]
+                                                    .productEntity
+                                                    .name,
                                                 style: TextStyle(
                                                   fontWeight: FontWeight.w200,
                                                   fontSize: LayoutDimen
@@ -133,7 +139,7 @@ class SaleDetailPage extends StatelessWidget {
                                                 ),
                                               ),
                                               Text(
-                                                '     5 X          Rp.2.000',
+                                                '     ${saleEntities[index].totalPcs} X          ${saleEntities[index].productEntity.saleNet.toRupiahCurrency()}',
                                                 style: TextStyle(
                                                   fontWeight: FontWeight.w100,
                                                   fontSize: LayoutDimen
@@ -146,7 +152,9 @@ class SaleDetailPage extends StatelessWidget {
                                         Flexible(
                                           flex: 2,
                                           child: Text(
-                                            'Rp. 10.000',
+                                            saleEntities[index]
+                                                .totalNet
+                                                .toRupiahCurrency(),
                                             style: TextStyle(
                                               fontWeight: FontWeight.w200,
                                               fontSize:
