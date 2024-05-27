@@ -2,7 +2,7 @@ import 'package:data_abstraction/entity/receipt_entity.dart';
 import 'package:data_abstraction/entity/stock_in_entity.dart';
 import 'package:feature_transaction/presentation/journey/transaction_list/bloc/transaction_list_bloc.dart';
 import 'package:feature_transaction/presentation/journey/transaction_list/transaction_list_constants.dart';
-import 'package:feature_transaction/presentation/journey/transaction_list/transaction_list_routes.dart';
+import 'package:feature_transaction/presentation/journey/transaction_list/widgets/th_sales_card.dart';
 import 'package:feature_transaction/presentation/journey/transaction_list/widgets/th_stock_in_card.dart';
 import 'package:flutter/material.dart';
 import 'package:module_common/common/constant/translation_constants.dart';
@@ -14,7 +14,6 @@ import 'package:ui_kit/common/constants/layout_dimen.dart';
 import 'package:ui_kit/extensions/number_extension.dart';
 import 'package:ui_kit/theme/colors.dart';
 import 'package:ui_kit/ui/scanner/scanner_finder.dart';
-import 'package:ui_kit/ui/widgets/dummy_circle_image.dart';
 import 'package:ui_kit/utils/screen_utils.dart';
 
 class TransactionListPage extends StatefulWidget {
@@ -159,93 +158,16 @@ class _TransactionListPageState extends State<TransactionListPage> {
     return Container(
       padding: EdgeInsets.symmetric(
         vertical: LayoutDimen.dimen_16.h,
+        horizontal: LayoutDimen.dimen_16.w,
       ),
       margin: EdgeInsets.only(top: LayoutDimen.dimen_35.h),
-      color: CustomColors.white.withOpacity(0.5),
+      color: CustomColors.white,
       child: Column(
         children: List.generate(
           receipts.length,
-          (index) => thSalesCard(receipts[index]),
-        ),
-      ),
-    );
-  }
-
-  Widget thSalesCard(ReceiptEntity receiptEntity) {
-    return InkWell(
-      onTap: () {
-        Navigator.pushNamed(
-          context,
-          TransactionListRoutes.transactionSaleDetail,
-        );
-      },
-      child: Padding(
-        padding: EdgeInsets.only(
-          top: LayoutDimen.dimen_14.h,
-          left: LayoutDimen.dimen_16.w,
-          right: LayoutDimen.dimen_16.w,
-        ),
-        child: Container(
-          padding: EdgeInsets.all(LayoutDimen.dimen_10.w),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  DummyCircleImage(title: receiptEntity.userName),
-                  Padding(
-                    padding: EdgeInsets.all(
-                      LayoutDimen.dimen_10.w,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          receiptEntity.userName,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontSize: LayoutDimen.dimen_13.minSp,
-                            fontWeight: FontWeight.w100,
-                          ),
-                        ),
-                        SizedBox(
-                          height: LayoutDimen.dimen_7.h,
-                        ),
-                        Text(
-                          receiptEntity.createdAt.toString(),
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontSize: LayoutDimen.dimen_12.minSp,
-                            fontWeight: FontWeight.w200,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    TransactionListStrings.total.i18n(context),
-                    style: TextStyle(
-                      fontSize: LayoutDimen.dimen_12.minSp,
-                      fontWeight: FontWeight.w200,
-                    ),
-                  ),
-                  Text(
-                    receiptEntity.totalNet.toRupiahCurrency(),
-                    style: TextStyle(
-                      fontSize: LayoutDimen.dimen_16.minSp,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-            ],
+          (index) => Padding(
+            padding: EdgeInsets.symmetric(vertical: LayoutDimen.dimen_8.h),
+            child: THSalesCard(receiptEntity: receipts[index]),
           ),
         ),
       ),
@@ -351,6 +273,16 @@ class _TransactionListPageState extends State<TransactionListPage> {
     );
   }
 
+  void addEventSaleList() {
+    receiptTotalAllPcs = 0;
+    receiptTotalAllNet = 0;
+    receiptsCount = 0;
+    saleReceipts = [];
+    widget.transactionListBloc.add(
+      GetSaleReceipts(dateTimeRange: getFilterDateRange()),
+    );
+  }
+
   Widget dateController() {
     return Container(
       padding: EdgeInsets.symmetric(
@@ -368,7 +300,7 @@ class _TransactionListPageState extends State<TransactionListPage> {
                   dateFilterIndex--;
                 }
               });
-              addEventStockInList();
+              showSales ? addEventSaleList() : addEventStockInList();
             },
             borderRadius: BorderRadius.circular(50),
             child: Material(
@@ -394,7 +326,7 @@ class _TransactionListPageState extends State<TransactionListPage> {
                     dateFilterIndex++;
                   }
                 });
-                addEventStockInList();
+                showSales ? addEventSaleList() : addEventStockInList();
               },
               borderRadius: BorderRadius.circular(
                 LayoutDimen.dimen_10.w,
@@ -411,7 +343,7 @@ class _TransactionListPageState extends State<TransactionListPage> {
                   dateFilterIndex++;
                 }
               });
-              addEventStockInList();
+              showSales ? addEventSaleList() : addEventStockInList();
             },
             borderRadius: BorderRadius.circular(50),
             child: Material(
