@@ -339,6 +339,13 @@ packages:
       relative: true
     source: path
     version: "0.0.1"
+  feature_supplier:
+    dependency: "direct main"
+    description:
+      path: "../feature/supplier"
+      relative: true
+    source: path
+    version: "0.0.1"
   feature_transaction:
     dependency: "direct main"
     description:

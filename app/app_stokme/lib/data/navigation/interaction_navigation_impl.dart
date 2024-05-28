@@ -6,6 +6,8 @@ import 'package:feature_product/domain/navigation/interaction_navigation.dart';
 import 'package:feature_product/presentation/routes.dart' as product_routes;
 import 'package:feature_stock/domain/navigation/interaction_navigation.dart';
 import 'package:feature_stock/presentation/routes.dart' as stock_routes;
+import 'package:feature_supplier/domain/navigation/interaction_navigation.dart';
+import 'package:feature_supplier/presentation/routes.dart' as supplier_routes;
 import 'package:feature_transaction/domain/navigation/interaction_navigation.dart';
 import 'package:feature_transaction/presentation/routes.dart'
     as transaction_routes;
@@ -16,7 +18,8 @@ class InteractionNavigationImpl
         LoginInteractionNavigation,
         DashboardInteractionNavigation,
         ProductInteractionNavigation,
-        StockInteractionNavigation,
+        StockteractionNavigation,
+        SupplierInteractionNavigation,
         TransactionInteractionNavigation {
   @override
   void navigateToLogin(BuildContext context) {
@@ -70,7 +73,6 @@ class InteractionNavigationImpl
 
   @override
   void navigateToSupplier(BuildContext context) {
-    // TODO(melly): create modul feature supplier
-    Navigator.of(context).pushNamed(transaction_routes.Routes.transactionList);
+    Navigator.of(context).pushNamed(supplier_routes.Routes.supplierList);
   }
 }

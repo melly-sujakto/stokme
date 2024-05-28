@@ -1,1 +1,1 @@
-abstract class StockInteractionNavigation {}
+abstract class StockteractionNavigation {}

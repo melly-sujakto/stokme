@@ -4,6 +4,7 @@ import 'package:feature_login/presentation/bloc/login_bloc.dart';
 import 'package:feature_login/presentation/routes.dart' as login_routes;
 import 'package:feature_product/presentation/routes.dart' as product_routes;
 import 'package:feature_stock/presentation/routes.dart' as stock_routes;
+import 'package:feature_supplier/presentation/routes.dart' as supplier_routes;
 import 'package:feature_transaction/presentation/routes.dart'
     as transaction_routes;
 import 'package:flutter/material.dart';
@@ -25,6 +26,7 @@ abstract class Routes {
       ...login_routes.Routes.all,
       ...product_routes.Routes.all,
       ...stock_routes.Routes.all,
+      ...supplier_routes.Routes.all,
       ...transaction_routes.Routes.all,
     };
   }

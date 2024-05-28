@@ -4,6 +4,8 @@ import 'package:feature_login/common/injector/injector.dart' as login_injector;
 import 'package:feature_product/common/injector/injector.dart'
     as product_injector;
 import 'package:feature_stock/common/injector/injector.dart' as stock_injector;
+import 'package:feature_supplier/common/injector/injector.dart'
+    as supplier_injector;
 import 'package:feature_transaction/common/injector/injector.dart'
     as transaction_injector;
 import 'package:firebase_library/firebase_library.dart';
@@ -47,5 +49,6 @@ void _configureInjector() {
   login_injector.Injector.init();
   product_injector.Injector.init();
   stock_injector.Injector.init();
+  supplier_injector.Injector.init();
   transaction_injector.Injector.init();
 }

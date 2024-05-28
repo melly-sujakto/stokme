@@ -39,6 +39,8 @@ dependencies:
     path: ../feature/product
   feature_stock:
     path: ../feature/stock
+  feature_supplier:
+    path: ../feature/supplier
   feature_transaction:
     path: ../feature/transaction
   firebase_core: ^2.24.0

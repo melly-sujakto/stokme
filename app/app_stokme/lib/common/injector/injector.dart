@@ -4,6 +4,7 @@ import 'package:feature_dashboard/domain/navigation/interaction_navigation.dart'
 import 'package:feature_login/domain/navigation/interaction_navigation.dart';
 import 'package:feature_product/domain/navigation/interaction_navigation.dart';
 import 'package:feature_stock/domain/navigation/interaction_navigation.dart';
+import 'package:feature_supplier/domain/navigation/interaction_navigation.dart';
 import 'package:feature_transaction/domain/navigation/interaction_navigation.dart';
 import 'package:firebase_library/firebase_library.dart';
 import 'package:library_injection/package/kiwi.dart';
@@ -48,7 +49,10 @@ abstract class Injector {
       ..registerSingleton<ProductInteractionNavigation>(
         (c) => c<InteractionNavigationImpl>(),
       )
-      ..registerSingleton<StockInteractionNavigation>(
+      ..registerSingleton<StockteractionNavigation>(
+        (c) => c<InteractionNavigationImpl>(),
+      )
+      ..registerSingleton<SupplierInteractionNavigation>(
         (c) => c<InteractionNavigationImpl>(),
       )
       ..registerSingleton<TransactionInteractionNavigation>(
