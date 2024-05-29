@@ -150,7 +150,7 @@ class _ScannerFinderState extends State<ScannerFinder> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  InputBasic(
+                  InputBasic.search(
                     controller: textEditController,
                     labelText: widget.labelText ??
                         TranslationConstants.code.i18n(context),
