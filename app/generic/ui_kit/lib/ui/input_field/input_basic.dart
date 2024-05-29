@@ -20,6 +20,27 @@ class InputBasic extends StatefulWidget {
     this.onFinishChangeDuration = const Duration(milliseconds: 500),
   });
 
+  factory InputBasic.search({
+    required String labelText,
+    TextEditingController? controller,
+    FocusNode? focusNode,
+    void Function(String)? onChanged,
+    Widget? suffixIcon,
+    TextInputType? keyboardType,
+    EdgeInsets margin = EdgeInsets.zero,
+  }) {
+    return InputBasic(
+      controller: controller,
+      labelText: labelText,
+      onChanged: onChanged,
+      margin: margin,
+      keyboardType: keyboardType,
+      focusNode: focusNode,
+      suffixIcon: suffixIcon,
+      useSearchIcon: true,
+    );
+  }
+
   final String labelText;
   final TextEditingController? controller;
   final FocusNode? focusNode;
@@ -115,10 +136,12 @@ class _InputBasicState extends State<InputBasic> {
                 : LayoutDimen.dimen_18.minSp,
           ),
           prefixIcon: widget.useSearchIcon
-              ? Image.asset(
-                  'assets/icons/search_icon.png',
-                  width: LayoutDimen.dimen_24.w,
-                  fit: BoxFit.fitWidth,
+              ? Padding(
+                  padding: EdgeInsets.all(LayoutDimen.dimen_8.w),
+                  child: Image.asset(
+                    'assets/icons/search_icon.png',
+                    fit: BoxFit.fitWidth,
+                  ),
                 )
               : null,
           suffixIcon: widget.suffixIcon ??
