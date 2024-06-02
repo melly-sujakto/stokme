@@ -7,6 +7,8 @@ import 'package:ui_kit/common/constants/layout_dimen.dart';
 import 'package:ui_kit/theme/colors.dart';
 import 'package:ui_kit/ui/infinite_pagination/infinite_paginantion_widget.dart';
 import 'package:ui_kit/ui/input_field/input_basic.dart';
+import 'package:ui_kit/ui/loading_indicator/loading_circular.dart';
+import 'package:ui_kit/ui/snackbar/snackbar_dialog.dart';
 import 'package:ui_kit/ui/widgets/dummy_circle_image.dart';
 import 'package:ui_kit/utils/screen_utils.dart';
 
@@ -21,28 +23,6 @@ class SupplierPage extends StatefulWidget {
 
 class _SupplierPageState extends State<SupplierPage> {
   late final SupplierBloc bloc;
-  final suppliers = [
-    SupplierEntity(
-      name: 'CV. Indogood',
-      phone: '0812347637635',
-    ),
-    SupplierEntity(
-      name: 'CV. Indoapril',
-      phone: '0812347637633',
-    ),
-    SupplierEntity(
-      name: 'CV. Indoindo',
-      phone: '0812347637631',
-    ),
-    SupplierEntity(
-      name: 'CV. Indofooooodd',
-      phone: '0812347637639',
-    ),
-    SupplierEntity(
-      name: 'CV. Indogoooood',
-      phone: '0812347637638',
-    ),
-  ];
 
   String filterValue = '';
   final pagingController =
@@ -107,7 +87,14 @@ class _SupplierPageState extends State<SupplierPage> {
               SizedBox(
                 height: LayoutDimen.dimen_16.h,
               ),
-              BlocListener<SupplierBloc, SupplierState>(
+              BlocConsumer<SupplierBloc, SupplierState>(
+                listenWhen: (previous, current) {
+                  if (previous is UpdateSupplierLoading ||
+                      previous is SetInactiveSupplierLoading) {
+                    Navigator.pop(context);
+                  }
+                  return true;
+                },
                 listener: (context, state) {
                   if (state is GetSuppliersLoaded) {
                     if (state.isLastPage) {
@@ -120,12 +107,43 @@ class _SupplierPageState extends State<SupplierPage> {
                       pagingController.appendPage(state.suppliers, index);
                     }
                   }
+
+                  if (state is UpdateSupplierSuccess ||
+                      state is SetInactiveSupplierSuccess) {
+                    SnackbarDialog().show(
+                      context: context,
+                      message: state is UpdateSupplierSuccess
+                          ? 'Update supplier berhasil'
+                          : 'Supplier berhasil dihapus',
+                      type: SnackbarDialogType.success,
+                    );
+                    resetFilter();
+                  }
+                  if (state is UpdateSupplierFailed ||
+                      state is SetInactiveSupplierFailed) {
+                    SnackbarDialog().show(
+                      context: context,
+                      message: state is UpdateSupplierFailed
+                          ? 'Update supplier gagal, silakan coba lagi'
+                          : 'Supplier gagal dihapus, silakan coba lagi',
+                      type: SnackbarDialogType.failed,
+                    );
+                  }
+                  if (state is UpdateSupplierLoading ||
+                      state is SetInactiveSupplierLoading) {
+                    Navigator.pop(context);
+                    showDialog(
+                      context: context,
+                      builder: (context) => const LoadingCircular.fullPage(),
+                    );
+                  }
                 },
-                child: InfinitePaginationWidget(
-                  pagingController: pagingController,
-                  itemBuilder: (context, item, key) =>
-                      supplierCard(suppliers[index]),
-                ),
+                builder: (context, state) {
+                  return InfinitePaginationWidget(
+                    pagingController: pagingController,
+                    itemBuilder: (context, item, key) => supplierCard(item),
+                  );
+                },
               ),
             ],
           ),
@@ -151,13 +169,13 @@ class _SupplierPageState extends State<SupplierPage> {
             SupplierDetail().showBottomSheet(
               context,
               supplier: supplier,
-              mainCallback: (product) {
-                // widget.bloc.add(UpdateProductEvent(product));
+              mainCallback: (supplier) {
+                bloc.add(UpdateSupplierEvent(supplier));
               },
               deleteCallback: () {
-                // widget.bloc.add(
-                //   DeleteProductEvent(product),
-                // );
+                bloc.add(
+                  SetInactiveSupplierEvent(supplier),
+                );
               },
             );
           },

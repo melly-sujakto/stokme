@@ -15,3 +15,13 @@ class GetSuppliersEvent extends SupplierEvent {
     this.lastItem,
   });
 }
+
+class UpdateSupplierEvent extends SupplierEvent {
+  final SupplierEntity supplier;
+  UpdateSupplierEvent(this.supplier);
+}
+
+class SetInactiveSupplierEvent extends SupplierEvent {
+  final SupplierEntity supplier;
+  SetInactiveSupplierEvent(this.supplier);
+}

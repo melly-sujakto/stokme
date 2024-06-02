@@ -33,8 +33,15 @@ class SupplierUsecase {
     int pageSize = 20,
   }) async {
     final collectionRef = firebaseLibrary.selfQuery(collectionName);
-    final initialSelfQuery =
-        collectionRef.where('store_id', isEqualTo: await _getStoreId());
+    final initialSelfQuery = collectionRef
+        .where(
+          'store_id',
+          isEqualTo: await _getStoreId(),
+        )
+        .where(
+          'is_active',
+          isEqualTo: true,
+        );
 
     final jsonList = await firebaseLibrary.getListPagination(
       initialSelfQuery: initialSelfQuery,

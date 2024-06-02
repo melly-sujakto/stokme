@@ -4,7 +4,7 @@ class SupplierEntity extends BaseEntity {
   final String? id;
   final String name;
   final String phone;
-  final bool isActive;
+  bool isActive;
 
   SupplierEntity({
     this.id,
@@ -16,4 +16,8 @@ class SupplierEntity extends BaseEntity {
     super.updatedBy,
     super.updatedAt,
   });
+
+  void setInactive() {
+    isActive = false;
+  }
 }

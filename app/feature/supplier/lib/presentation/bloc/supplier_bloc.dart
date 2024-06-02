@@ -14,6 +14,8 @@ class SupplierBloc extends BaseBloc<SupplierEvent, SupplierState> {
     this.supplierUsecase,
   ) : super(SupplierInitial()) {
     on<GetSuppliersEvent>(_onGetStockListEvent);
+    on<UpdateSupplierEvent>(_onUpdateSupplierEvent);
+    on<SetInactiveSupplierEvent>(_onSetInactiveSupplierEvent);
   }
 
   FutureOr<void> _onGetStockListEvent(
@@ -45,6 +47,33 @@ class SupplierBloc extends BaseBloc<SupplierEvent, SupplierState> {
       );
     } catch (e) {
       emit(GetSuppliersFailed());
+    }
+  }
+
+  FutureOr<void> _onUpdateSupplierEvent(
+    UpdateSupplierEvent event,
+    Emitter<SupplierState> emit,
+  ) async {
+    emit(UpdateSupplierLoading());
+    try {
+      await supplierUsecase.updateSupplier(event.supplier);
+      emit(UpdateSupplierSuccess());
+    } catch (e) {
+      emit(UpdateSupplierFailed());
+    }
+  }
+
+  FutureOr<void> _onSetInactiveSupplierEvent(
+    SetInactiveSupplierEvent event,
+    Emitter<SupplierState> emit,
+  ) async {
+    emit(SetInactiveSupplierLoading());
+    try {
+      final inactiveSupplier = event.supplier..setInactive();
+      await supplierUsecase.updateSupplier(inactiveSupplier);
+      emit(SetInactiveSupplierSuccess());
+    } catch (e) {
+      emit(SetInactiveSupplierFailed());
     }
   }
 }
