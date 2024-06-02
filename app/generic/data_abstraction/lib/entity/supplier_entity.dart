@@ -10,7 +10,7 @@ class SupplierEntity extends BaseEntity {
     this.id,
     required this.name,
     required this.phone,
-    required this.isActive,
+    this.isActive = true,
     super.createdBy,
     super.createdAt,
     super.updatedBy,

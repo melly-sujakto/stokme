@@ -5,7 +5,7 @@ class SupplierModel extends SupplierEntity {
     super.id,
     required super.name,
     required super.phone,
-    required super.isActive,
+    super.isActive,
     super.createdBy,
     super.createdAt,
     super.updatedBy,

@@ -198,7 +198,6 @@ class _SupplierDetailContentState extends State<SupplierDetailContent> {
       id: widget.supplier.id,
       phone: phone,
       name: name,
-      isActive: true,
       createdAt: widget.supplier.createdAt,
       createdBy: widget.supplier.createdBy,
       updatedAt: widget.supplier.updatedAt,
