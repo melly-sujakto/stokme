@@ -15,17 +15,26 @@ class SupplierUsecase {
     required this.sharedPreferencesWrapper,
   });
 
+  Future<String> _getStoreId() async {
+    final storeId = (await sharedPreferencesWrapper.getPrefs())
+        .getString(GenericConstants.storeId);
+    return storeId!;
+  }
+
+  Future<String> _getUserEmail() async {
+    final pref = await sharedPreferencesWrapper.getPrefs();
+    return pref.getString(GenericConstants.email)!;
+  }
+
   Future<List<SupplierEntity>> getSupplierList({
     required String filterNameOrCodeValue,
     SupplierEntity? lastItem,
     int index = 0,
     int pageSize = 20,
   }) async {
-    final storeId = (await sharedPreferencesWrapper.getPrefs())
-        .getString(GenericConstants.storeId);
     final collectionRef = firebaseLibrary.selfQuery(collectionName);
     final initialSelfQuery =
-        collectionRef.where('store_id', isEqualTo: storeId);
+        collectionRef.where('store_id', isEqualTo: await _getStoreId());
 
     final jsonList = await firebaseLibrary.getListPagination(
       initialSelfQuery: initialSelfQuery,
@@ -39,5 +48,17 @@ class SupplierUsecase {
     final result = jsonList.map(SupplierModel.fromJson).toList();
 
     return result;
+  }
+
+  Future<void> updateSupplier(SupplierEntity supplier) async {
+    await firebaseLibrary.updateDocument(
+      collectionName: collectionName,
+      id: supplier.id!,
+      document: SupplierModel.fromEntity(supplier).toFirestoreJson(
+        await _getStoreId(),
+        overridedUpdatedAt: DateTime.now(),
+        overridedUpdatedBy: await _getUserEmail(),
+      ),
+    );
   }
 }
