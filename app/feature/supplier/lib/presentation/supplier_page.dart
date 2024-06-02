@@ -1,3 +1,5 @@
+import 'package:data_abstraction/entity/supplier_entity.dart';
+import 'package:feature_supplier/presentation/widgets/supplier_detail_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:ui_kit/common/constants/layout_dimen.dart';
 import 'package:ui_kit/theme/colors.dart';
@@ -62,17 +64,22 @@ class _SupplierPageState extends State<SupplierPage> {
             LayoutDimen.dimen_10.w,
           ),
           onTap: () {
-            // SupplierDetail().showBottomSheet(
-            //   context,
-            //   type: ProductDetailContentType.edit,
-            //   product: product,
-            //   mainCallback: (product) {
-            //     widget.bloc.add(UpdateProductEvent(product));
-            //   },
-            //   deleteCallback: () => widget.bloc.add(
-            //     DeleteProductEvent(product),
-            //   ),
-            // );
+            SupplierDetail().showBottomSheet(
+              context,
+              supplier: SupplierEntity(
+                name: 'name',
+                phone: 'phone',
+                isActive: true,
+              ),
+              mainCallback: (product) {
+                // widget.bloc.add(UpdateProductEvent(product));
+              },
+              deleteCallback: () {
+                // widget.bloc.add(
+                //   DeleteProductEvent(product),
+                // );
+              },
+            );
           },
           child: Container(
             padding: EdgeInsets.all(LayoutDimen.dimen_8.w),
