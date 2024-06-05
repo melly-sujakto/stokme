@@ -3,6 +3,7 @@ import 'package:data_abstraction/entity/stock_in_entity.dart';
 import 'package:feature_transaction/presentation/blocs/transaction_bloc/transaction_bloc.dart';
 import 'package:feature_transaction/presentation/journey/stock_in/bloc/stock_in_bloc.dart';
 import 'package:feature_transaction/presentation/journey/stock_in/stock_in_constants.dart';
+import 'package:feature_transaction/presentation/journey/stock_in/widgets/supplier_form_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:module_common/common/constant/translation_constants.dart';
 import 'package:module_common/i18n/i18n_extension.dart';
@@ -236,6 +237,7 @@ class _StockInPageState extends State<StockInPage> {
                               });
                             },
                           ),
+                          const SupplierFormContent(),
                         ],
                       ],
                     ),
@@ -351,9 +353,9 @@ class _StockInPageState extends State<StockInPage> {
               InkWell(
                 onTap: resetSelectedProduct,
                 child: Icon(
-                  Icons.cancel_outlined,
+                  Icons.cancel,
                   size: LayoutDimen.dimen_38.w,
-                  color: CustomColors.errorAccent.c60,
+                  color: CustomColors.errorAccent.c40,
                 ),
               )
             ],

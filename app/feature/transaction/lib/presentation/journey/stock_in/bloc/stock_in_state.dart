@@ -19,3 +19,13 @@ class AddProductLoading extends StockInState {}
 class AddProductSuccess extends StockInState {}
 
 class AddProductError extends StockInState {}
+
+class GetSuppliersLoading extends StockInState {}
+
+class GetSuppliersLoaded extends StockInState {
+  final List<SupplierEntity> suppliers;
+
+  GetSuppliersLoaded(this.suppliers);
+}
+
+class GetSuppliersFailed extends StockInState {}

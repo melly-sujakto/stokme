@@ -15,3 +15,5 @@ class AddProductEvent extends StockInEvent {
 
   AddProductEvent(this.product);
 }
+
+class GetSuppliersEvent extends StockInEvent {}

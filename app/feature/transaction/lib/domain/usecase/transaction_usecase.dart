@@ -5,12 +5,14 @@ import 'package:data_abstraction/entity/receipt_entity.dart';
 import 'package:data_abstraction/entity/sale_entity.dart';
 import 'package:data_abstraction/entity/stock_in_entity.dart';
 import 'package:data_abstraction/entity/store_entity.dart';
+import 'package:data_abstraction/entity/supplier_entity.dart';
 import 'package:data_abstraction/model/product_model.dart';
 import 'package:data_abstraction/model/receipt_model.dart';
 import 'package:data_abstraction/model/sale_model.dart';
 import 'package:data_abstraction/model/stock_in_model.dart';
 import 'package:data_abstraction/model/stock_model.dart';
 import 'package:data_abstraction/model/store_model.dart';
+import 'package:data_abstraction/model/supplier_model.dart';
 import 'package:data_abstraction/repository/printer_repository.dart';
 import 'package:data_abstraction/repository/product_repository.dart';
 import 'package:firebase_library/firebase_library.dart';
@@ -37,6 +39,7 @@ class TransactionUsecase {
   final productCollectionName = 'product';
   final receiptCollectionName = 'receipt';
   final saleCollectionName = 'sale';
+  final supplierCollectionName = 'supplier';
 
   Future<String> _getStoreId() async {
     final pref = await sharedPreferencesWrapper.getPrefs();
@@ -337,6 +340,31 @@ class TransactionUsecase {
         // just continue if there is error or product is deleted
       }
     }
+
+    return result;
+  }
+
+  Future<List<SupplierEntity>> getSuppliers() async {
+    final collectionRef = firebaseLibrary.selfQuery(supplierCollectionName);
+    final querySnapshot = await collectionRef
+        .where(
+          'store_id',
+          isEqualTo: await _getStoreId(),
+        )
+        .where(
+          'is_active',
+          isEqualTo: true,
+        )
+        .get();
+
+    final jsonList = querySnapshot.docs.map((doc) {
+      final data = doc.data();
+      final id = doc.id;
+      data['id'] = id;
+      return data;
+    }).toList();
+
+    final result = jsonList.map(SupplierModel.fromJson).toList();
 
     return result;
   }
