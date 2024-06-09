@@ -6,15 +6,21 @@ class StockInEntity extends BaseEntity {
   final ProductEntity productEntity;
   final int totalPcs;
   final double purchaseNet;
+  String supplierId;
+  String supplierPIC;
+  final String userEmail;
 
   StockInEntity({
     this.id,
     required this.productEntity,
     required this.totalPcs,
     required this.purchaseNet,
+    required this.userEmail,
     super.createdBy,
     super.createdAt,
     super.updatedBy,
     super.updatedAt,
+    this.supplierId = '',
+    this.supplierPIC = '',
   });
 }

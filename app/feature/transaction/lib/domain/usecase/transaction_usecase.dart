@@ -122,7 +122,26 @@ class TransactionUsecase {
     }
   }
 
-  Future<void> submitStockIn(StockInEntity stockIn) async {
+  Future<void> submitStockIn(
+    StockInEntity stockIn, {
+    SupplierEntity? supplierEntity,
+    bool isNewSupplier = false,
+  }) async {
+    if (isNewSupplier) {
+      if (supplierEntity == null) {
+        // ignore: lines_longer_than_80_chars
+        throw Exception('[supplierEntity] should be not null'
+            ' if [isNewSupplier] is true');
+      }
+      final supplierData = SupplierModel.fromEntity(supplierEntity)
+          .toFirestoreJson(await _getStoreId());
+      final supplierId = await firebaseLibrary.createDocument(
+        collectionName: stockInCollectionName,
+        data: supplierData,
+      );
+      stockIn.supplierId = supplierId;
+    }
+
     final data = StockInModel.fromEntity(stockIn).toFirestoreJson(
       await _getStoreId(),
       overridedCreatedAt: DateTime.now(),

@@ -6,8 +6,14 @@ class PrepareDataEvent extends StockInEvent {}
 
 class SubmitStockInEvent extends StockInEvent {
   final StockInEntity stockInEntity;
+  final bool isNewSupplier;
+  final SupplierEntity? supplierEntity;
 
-  SubmitStockInEvent(this.stockInEntity);
+  SubmitStockInEvent({
+    required this.stockInEntity,
+    required this.isNewSupplier,
+    this.supplierEntity,
+  });
 }
 
 class AddProductEvent extends StockInEvent {

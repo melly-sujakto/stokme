@@ -42,6 +42,7 @@ class _StockInPageState extends State<StockInPage> {
   String totalProduct = '';
   String purchasePrice = '';
   bool? isAutoActiveScanner;
+  String userEmail = '';
 
   final scannerTextEditController = TextEditingController();
 
@@ -63,6 +64,7 @@ class _StockInPageState extends State<StockInPage> {
         listener: (context, stockInState) {
           if (stockInState is StockInInitial) {
             isAutoActiveScanner = stockInState.isAutoActiveScanner;
+            userEmail = stockInState.userEmail;
           }
           if (stockInState is AddProductLoading) {
             showDialog(
@@ -243,6 +245,9 @@ class _StockInPageState extends State<StockInPage> {
                                       productEntity: selectedProduct!,
                                       totalPcs: int.parse(totalProduct),
                                       purchaseNet: double.parse(purchasePrice),
+                                      supplierId: '',
+                                      supplierPIC: '',
+                                      userEmail: userEmail,
                                     ),
                                     stockInBloc: stockInBloc,
                                   ),

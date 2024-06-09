@@ -37,15 +37,19 @@ class StockInSupplierPage extends StatefulWidget {
 
 class _StockInSupplierPageState extends State<StockInSupplierPage> {
   late final StockInBloc stockInBloc;
-  TextEditingController supplierEditingController = TextEditingController();
-  SupplierEntity? supplier;
+  TextEditingController supplierNameController = TextEditingController();
+  TextEditingController supplierPhoneController = TextEditingController();
+  TextEditingController supplierPICController = TextEditingController();
+  SupplierEntity? selectedSupplier;
   List<SupplierEntity> allSuppliers = [];
-  List<SupplierEntity> suppliers = [];
-  bool addNewSuppier = false;
+  List<SupplierEntity> filteredSuppliers = [];
+  bool addNewSupplier = false;
   bool displaySuppliers = false;
+  late final StockInEntity stockInEntity;
 
   @override
   void initState() {
+    stockInEntity = widget.stockInSupplierArgument.stockInEntity;
     stockInBloc = widget.stockInSupplierArgument.stockInBloc
       ..add(GetSuppliersEvent());
     super.initState();
@@ -98,7 +102,7 @@ class _StockInSupplierPageState extends State<StockInSupplierPage> {
                     children: [
                       ...[
                         InputBasic(
-                          controller: supplierEditingController,
+                          controller: supplierNameController,
                           labelText: 'Supplier(opsional)',
                           suffixIcon:
                               const Icon(Icons.keyboard_arrow_down_rounded),
@@ -106,7 +110,7 @@ class _StockInSupplierPageState extends State<StockInSupplierPage> {
                           onChanged: (p0) {
                             setState(() {
                               displaySuppliers = true;
-                              suppliers = allSuppliers
+                              filteredSuppliers = allSuppliers
                                   .where(
                                     (element) => element.name
                                         .toLowerCase()
@@ -114,10 +118,17 @@ class _StockInSupplierPageState extends State<StockInSupplierPage> {
                                   )
                                   .toList();
                             });
+                            if (p0.isEmpty) {
+                              setState(() {
+                                selectedSupplier = null;
+                                addNewSupplier = false;
+                              });
+                              stockInEntity.supplierId = '';
+                            }
                           },
                         ),
                         if (displaySuppliers &&
-                            supplierEditingController.text.isNotEmpty)
+                            supplierNameController.text.isNotEmpty)
                           Material(
                             elevation: 2,
                             borderRadius: BorderRadius.circular(
@@ -135,8 +146,9 @@ class _StockInSupplierPageState extends State<StockInSupplierPage> {
                                         onTap: () {
                                           setState(() {
                                             displaySuppliers = false;
-                                            addNewSuppier = true;
-                                            supplier = null;
+                                            addNewSupplier = true;
+                                            selectedSupplier = null;
+                                            stockInEntity.supplierId = '';
                                           });
                                         },
                                         child: Container(
@@ -165,16 +177,18 @@ class _StockInSupplierPageState extends State<StockInSupplierPage> {
                                         ),
                                       ),
                                     ] +
-                                    suppliers
+                                    filteredSuppliers
                                         .map(
                                           (e) => InkWell(
                                             onTap: () {
                                               setState(() {
                                                 displaySuppliers = false;
-                                                addNewSuppier = false;
-                                                supplier = e;
-                                                supplierEditingController.text =
+                                                addNewSupplier = false;
+                                                selectedSupplier = e;
+                                                supplierNameController.text =
                                                     e.name;
+                                                stockInEntity.supplierId =
+                                                    e.id!;
                                               });
                                             },
                                             child: Container(
@@ -208,18 +222,24 @@ class _StockInSupplierPageState extends State<StockInSupplierPage> {
                             ),
                           ),
                       ],
-                      if (addNewSuppier && supplier == null)
+                      if (addNewSupplier && selectedSupplier == null)
                         InputBasic(
+                          controller: supplierPhoneController,
                           labelText: 'Nomor HP Supplier',
                           keyboardType: TextInputType.number,
                           margin: EdgeInsets.zero,
                           onChanged: (p0) {},
                         ),
-                      InputBasic(
-                        labelText: 'PIC Supplier (Opsional)',
-                        margin: EdgeInsets.zero,
-                        onChanged: (p0) {},
-                      ),
+                      if (selectedSupplier != null ||
+                          (addNewSupplier && selectedSupplier == null))
+                        InputBasic(
+                          controller: supplierPICController,
+                          labelText: 'PIC Supplier (Opsional)',
+                          margin: EdgeInsets.zero,
+                          onChanged: (p0) {
+                            stockInEntity.supplierPIC = p0;
+                          },
+                        ),
                     ],
                   ),
                 ),
@@ -236,7 +256,16 @@ class _StockInSupplierPageState extends State<StockInSupplierPage> {
                       onPressed: () {
                         stockInBloc.add(
                           SubmitStockInEvent(
-                            widget.stockInSupplierArgument.stockInEntity,
+                            stockInEntity:
+                                widget.stockInSupplierArgument.stockInEntity,
+                            supplierEntity: addNewSupplier
+                                ? SupplierEntity(
+                                    name: supplierNameController.text,
+                                    phone: supplierNameController.text,
+                                  )
+                                : selectedSupplier,
+                            isNewSupplier:
+                                selectedSupplier != null && addNewSupplier,
                           ),
                         );
                       },

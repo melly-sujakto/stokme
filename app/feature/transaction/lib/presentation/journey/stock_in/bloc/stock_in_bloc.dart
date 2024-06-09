@@ -26,8 +26,12 @@ class StockInBloc extends BaseBloc<StockInEvent, StockInState> {
   ) async {
     final isAutoActiveScanner =
         await transactionUsecase.getFlagAlwaysUseCameraAsScanner();
+    final userEmail = await transactionUsecase.getUserEmail();
     emit(
-      StockInInitial(isAutoActiveScanner: isAutoActiveScanner ?? false),
+      StockInInitial(
+        isAutoActiveScanner: isAutoActiveScanner ?? false,
+        userEmail: userEmail,
+      ),
     );
   }
 
@@ -37,7 +41,11 @@ class StockInBloc extends BaseBloc<StockInEvent, StockInState> {
   ) async {
     emit(SubmitStockLoading());
     try {
-      await transactionUsecase.submitStockIn(event.stockInEntity);
+      await transactionUsecase.submitStockIn(
+        event.stockInEntity,
+        supplierEntity: event.supplierEntity,
+        isNewSupplier: event.isNewSupplier,
+      );
       emit(SubmitStockSuccess());
     } catch (e) {
       emit(SubmitStockError());
