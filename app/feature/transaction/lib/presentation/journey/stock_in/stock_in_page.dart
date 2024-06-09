@@ -3,7 +3,8 @@ import 'package:data_abstraction/entity/stock_in_entity.dart';
 import 'package:feature_transaction/presentation/blocs/transaction_bloc/transaction_bloc.dart';
 import 'package:feature_transaction/presentation/journey/stock_in/bloc/stock_in_bloc.dart';
 import 'package:feature_transaction/presentation/journey/stock_in/stock_in_constants.dart';
-import 'package:feature_transaction/presentation/journey/stock_in/widgets/supplier_form_widget.dart';
+import 'package:feature_transaction/presentation/journey/stock_in/stock_in_routes.dart';
+import 'package:feature_transaction/presentation/journey/stock_in/stock_in_supplier_page.dart';
 import 'package:flutter/material.dart';
 import 'package:module_common/common/constant/translation_constants.dart';
 import 'package:module_common/i18n/i18n_extension.dart';
@@ -21,20 +22,16 @@ import 'package:ui_kit/ui/widgets/dummy_circle_image.dart';
 import 'package:ui_kit/utils/screen_utils.dart';
 
 class StockInPage extends StatefulWidget {
-  const StockInPage({
-    super.key,
-    required this.transactionBloc,
-    required this.stockInBloc,
-  });
-
-  final TransactionBloc transactionBloc;
-  final StockInBloc stockInBloc;
+  const StockInPage({super.key});
 
   @override
   State<StockInPage> createState() => _StockInPageState();
 }
 
 class _StockInPageState extends State<StockInPage> {
+  late final TransactionBloc transactionBloc;
+  late final StockInBloc stockInBloc;
+
   List<ProductEntity> choiceProducts = [];
   bool isFromOnScan = false;
   bool holdScannerFlag = false;
@@ -50,7 +47,8 @@ class _StockInPageState extends State<StockInPage> {
 
   @override
   void initState() {
-    widget.stockInBloc.add(PrepareDataEvent());
+    transactionBloc = context.read<TransactionBloc>();
+    stockInBloc = context.read<StockInBloc>()..add(PrepareDataEvent());
     super.initState();
   }
 
@@ -66,29 +64,11 @@ class _StockInPageState extends State<StockInPage> {
           if (stockInState is StockInInitial) {
             isAutoActiveScanner = stockInState.isAutoActiveScanner;
           }
-          if (stockInState is SubmitStockLoading ||
-              stockInState is AddProductLoading) {
+          if (stockInState is AddProductLoading) {
             showDialog(
               context: context,
               builder: (context) => const LoadingCircular(),
             );
-          }
-          if (stockInState is SubmitStockError) {
-            Navigator.pop(context);
-            SnackbarDialog().show(
-              context: context,
-              message: StockInConstants.failedInputStockMessage.i18n(context),
-              type: SnackbarDialogType.failed,
-            );
-          }
-          if (stockInState is SubmitStockSuccess) {
-            Navigator.pop(context);
-            SnackbarDialog().show(
-              context: context,
-              message: StockInConstants.successInputStockMessage.i18n(context),
-              type: SnackbarDialogType.success,
-            );
-            resetSelectedProduct();
           }
           if (stockInState is AddProductError) {
             Navigator.pop(context);
@@ -201,7 +181,7 @@ class _StockInPageState extends State<StockInPage> {
                                         saleNet: 0,
                                       ),
                                       mainCallback: (product) {
-                                        widget.stockInBloc
+                                        stockInBloc
                                             .add(AddProductEvent(product));
                                       },
                                     );
@@ -237,7 +217,6 @@ class _StockInPageState extends State<StockInPage> {
                               });
                             },
                           ),
-                          const SupplierFormContent(),
                         ],
                       ],
                     ),
@@ -250,20 +229,28 @@ class _StockInPageState extends State<StockInPage> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       FlatButton(
-                        title: StockInConstants.input.i18n(context),
+                        // title: StockInConstants.input.i18n(context),
+                        title: 'Lanjut',
                         onPressed: selectedProduct != null &&
                                 totalProduct.isNotEmpty &&
                                 purchasePrice.isNotEmpty
                             ? () {
-                                widget.stockInBloc.add(
-                                  SubmitStockInEvent(
-                                    StockInEntity(
+                                Navigator.pushNamed(
+                                  context,
+                                  StockInRoutes.stockInSupplier,
+                                  arguments: StockInSupplierArgument(
+                                    stockInEntity: StockInEntity(
                                       productEntity: selectedProduct!,
                                       totalPcs: int.parse(totalProduct),
                                       purchaseNet: double.parse(purchasePrice),
                                     ),
+                                    stockInBloc: stockInBloc,
                                   ),
-                                );
+                                ).then((value) {
+                                  if (value == true) {
+                                    resetSelectedProduct();
+                                  }
+                                });
                               }
                             : null,
                       ),
@@ -284,7 +271,7 @@ class _StockInPageState extends State<StockInPage> {
         choiceProducts = [];
       });
     } else {
-      widget.transactionBloc.add(
+      transactionBloc.add(
         GetProductListEvent(filterByCode: value),
       );
     }
