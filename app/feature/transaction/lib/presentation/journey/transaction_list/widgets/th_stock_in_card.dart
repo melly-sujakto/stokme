@@ -153,13 +153,13 @@ class _THStockInCardState extends State<THStockInCard> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      'CV. Wingsgood',
+                                      widget.stockInEntity.supplierName,
                                       style: TextStyle(
                                         fontSize: LayoutDimen.dimen_12.minSp,
                                       ),
                                     ),
                                     Text(
-                                      'Aji Kusuma',
+                                      widget.stockInEntity.supplierPIC,
                                       style: TextStyle(
                                         fontSize: LayoutDimen.dimen_11.minSp,
                                         fontWeight: FontWeight.w200,
@@ -197,7 +197,7 @@ class _THStockInCardState extends State<THStockInCard> {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         Text(
-                          'Melly Sujakto',
+                          widget.stockInEntity.userName,
                           style: TextStyle(
                             fontSize: LayoutDimen.dimen_13.minSp,
                           ),

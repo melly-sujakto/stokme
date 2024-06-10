@@ -15,24 +15,54 @@ class StockInBloc extends BaseBloc<StockInEvent, StockInState> {
     this.transactionUsecase,
   ) : super(StockInInitial()) {
     on<PrepareDataEvent>(_onPrepareDataEvent);
+    on<UpdateStockInDataEvent>(_onUpdateStockInDataEvent);
     on<SubmitStockInEvent>(_onSubmitStockInEvent);
     on<AddProductEvent>(_onAddProductEvent);
     on<GetSuppliersEvent>(_onGetSuppliers);
+  }
+
+  StockInEntity stockInEntity = StockInEntity(
+    productEntity: ProductEntity(code: '', name: '', saleNet: 0),
+    totalPcs: 0,
+    purchaseNet: 0,
+    userName: '',
+    userEmail: '',
+  );
+
+  void reset() {
+    stockInEntity = StockInEntity(
+      productEntity: ProductEntity(code: '', name: '', saleNet: 0),
+      totalPcs: 0,
+      purchaseNet: 0,
+      userName: '',
+      userEmail: '',
+    );
+    add(UpdateStockInDataEvent(stockInEntity));
   }
 
   FutureOr<void> _onPrepareDataEvent(
     PrepareDataEvent event,
     Emitter<StockInState> emit,
   ) async {
+    stockInEntity = stockInEntity.copyWith(
+      userEmail: await transactionUsecase.getUserEmail(),
+      userName: await transactionUsecase.getUserName(),
+    );
     final isAutoActiveScanner =
         await transactionUsecase.getFlagAlwaysUseCameraAsScanner();
-    final userEmail = await transactionUsecase.getUserEmail();
     emit(
       StockInInitial(
         isAutoActiveScanner: isAutoActiveScanner ?? false,
-        userEmail: userEmail,
       ),
     );
+  }
+
+  FutureOr<void> _onUpdateStockInDataEvent(
+    UpdateStockInDataEvent event,
+    Emitter<StockInState> emit,
+  ) async {
+    stockInEntity = event.stockInEntity;
+    emit(UpdateDataSuccess(stockInEntity));
   }
 
   FutureOr<void> _onSubmitStockInEvent(
@@ -42,7 +72,7 @@ class StockInBloc extends BaseBloc<StockInEvent, StockInState> {
     emit(SubmitStockLoading());
     try {
       await transactionUsecase.submitStockIn(
-        event.stockInEntity,
+        stockInEntity,
         supplierEntity: event.supplierEntity,
         isNewSupplier: event.isNewSupplier,
       );

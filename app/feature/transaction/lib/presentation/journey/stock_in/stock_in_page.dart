@@ -37,12 +37,8 @@ class _StockInPageState extends State<StockInPage> {
   bool holdScannerFlag = false;
 
   List<ProductEntity> filteredProducts = [];
-  ProductEntity? selectedProduct;
-
-  String totalProduct = '';
-  String purchasePrice = '';
   bool? isAutoActiveScanner;
-  String userEmail = '';
+  StockInEntity? stockInEntityData;
 
   final scannerTextEditController = TextEditingController();
 
@@ -64,7 +60,9 @@ class _StockInPageState extends State<StockInPage> {
         listener: (context, stockInState) {
           if (stockInState is StockInInitial) {
             isAutoActiveScanner = stockInState.isAutoActiveScanner;
-            userEmail = stockInState.userEmail;
+          }
+          if (stockInState is UpdateDataSuccess) {
+            stockInEntityData = stockInState.stockInEntity;
           }
           if (stockInState is AddProductLoading) {
             showDialog(
@@ -193,8 +191,9 @@ class _StockInPageState extends State<StockInPage> {
                         SizedBox(
                           height: LayoutDimen.dimen_12.h,
                         ),
-                        if (selectedProduct != null) ...[
-                          productCard(selectedProduct!),
+                        if (stockInBloc.stockInEntity.productEntity.id !=
+                            null) ...[
+                          productCard(stockInBloc.stockInEntity.productEntity),
                           SizedBox(
                             height: LayoutDimen.dimen_12.h,
                           ),
@@ -203,9 +202,15 @@ class _StockInPageState extends State<StockInPage> {
                             margin: EdgeInsets.zero,
                             keyboardType: TextInputType.number,
                             onChanged: (p0) {
-                              setState(() {
-                                totalProduct = p0;
-                              });
+                              stockInBloc.add(
+                                UpdateStockInDataEvent(
+                                  stockInBloc.stockInEntity.copyWith(
+                                    totalPcs: int.tryParse(
+                                      p0.isNotEmpty ? p0 : '0',
+                                    ),
+                                  ),
+                                ),
+                              );
                             },
                           ),
                           InputBasic(
@@ -214,9 +219,15 @@ class _StockInPageState extends State<StockInPage> {
                             keyboardType: TextInputType.number,
                             margin: EdgeInsets.zero,
                             onChanged: (p0) {
-                              setState(() {
-                                purchasePrice = p0;
-                              });
+                              stockInBloc.add(
+                                UpdateStockInDataEvent(
+                                  stockInBloc.stockInEntity.copyWith(
+                                    purchaseNet: double.tryParse(
+                                      p0.isNotEmpty ? p0 : '0',
+                                    ),
+                                  ),
+                                ),
+                              );
                             },
                           ),
                         ],
@@ -233,31 +244,24 @@ class _StockInPageState extends State<StockInPage> {
                       FlatButton(
                         // title: StockInConstants.input.i18n(context),
                         title: 'Lanjut',
-                        onPressed: selectedProduct != null &&
-                                totalProduct.isNotEmpty &&
-                                purchasePrice.isNotEmpty
-                            ? () {
-                                Navigator.pushNamed(
-                                  context,
-                                  StockInRoutes.stockInSupplier,
-                                  arguments: StockInSupplierArgument(
-                                    stockInEntity: StockInEntity(
-                                      productEntity: selectedProduct!,
-                                      totalPcs: int.parse(totalProduct),
-                                      purchaseNet: double.parse(purchasePrice),
-                                      supplierId: '',
-                                      supplierPIC: '',
-                                      userEmail: userEmail,
-                                    ),
-                                    stockInBloc: stockInBloc,
-                                  ),
-                                ).then((value) {
-                                  if (value == true) {
-                                    resetSelectedProduct();
+                        onPressed:
+                            stockInEntityData?.productEntity.id != null &&
+                                    stockInEntityData?.totalPcs != 0 &&
+                                    stockInEntityData?.purchaseNet != 0.0
+                                ? () {
+                                    Navigator.pushNamed(
+                                      context,
+                                      StockInRoutes.stockInSupplier,
+                                      arguments: StockInSupplierArgument(
+                                        stockInBloc: stockInBloc,
+                                      ),
+                                    ).then((value) {
+                                      if (value == true) {
+                                        resetSelectedProduct();
+                                      }
+                                    });
                                   }
-                                });
-                              }
-                            : null,
+                                : null,
                       ),
                     ],
                   ),
@@ -285,10 +289,16 @@ class _StockInPageState extends State<StockInPage> {
   void onSelectedProduct(ProductEntity productEntity) {
     setState(() {
       holdScannerFlag = true;
-      selectedProduct = productEntity;
       choiceProducts.clear();
       scannerTextEditController.clear();
     });
+    stockInBloc.add(
+      UpdateStockInDataEvent(
+        stockInBloc.stockInEntity.copyWith(
+          productEntity: productEntity,
+        ),
+      ),
+    );
   }
 
   Widget productCard(ProductEntity product) {
@@ -358,11 +368,9 @@ class _StockInPageState extends State<StockInPage> {
   }
 
   void resetSelectedProduct() {
+    stockInBloc.reset();
     setState(() {
       choiceProducts.clear();
-      selectedProduct = null;
-      purchasePrice = '';
-      totalProduct = '';
       holdScannerFlag = false;
       isFromOnScan = false;
       scannerTextEditController.clear();

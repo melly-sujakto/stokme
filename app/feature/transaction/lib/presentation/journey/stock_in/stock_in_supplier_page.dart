@@ -1,4 +1,3 @@
-import 'package:data_abstraction/entity/stock_in_entity.dart';
 import 'package:data_abstraction/entity/supplier_entity.dart';
 import 'package:feature_transaction/presentation/journey/stock_in/bloc/stock_in_bloc.dart';
 import 'package:feature_transaction/presentation/journey/stock_in/stock_in_constants.dart';
@@ -15,12 +14,8 @@ import 'package:ui_kit/ui/snackbar/snackbar_dialog.dart';
 import 'package:ui_kit/utils/screen_utils.dart';
 
 class StockInSupplierArgument {
-  StockInSupplierArgument({
-    required this.stockInEntity,
-    required this.stockInBloc,
-  });
+  StockInSupplierArgument({required this.stockInBloc});
 
-  final StockInEntity stockInEntity;
   final StockInBloc stockInBloc;
 }
 
@@ -45,11 +40,9 @@ class _StockInSupplierPageState extends State<StockInSupplierPage> {
   List<SupplierEntity> filteredSuppliers = [];
   bool addNewSupplier = false;
   bool displaySuppliers = false;
-  late final StockInEntity stockInEntity;
 
   @override
   void initState() {
-    stockInEntity = widget.stockInSupplierArgument.stockInEntity;
     stockInBloc = widget.stockInSupplierArgument.stockInBloc
       ..add(GetSuppliersEvent());
     super.initState();
@@ -123,7 +116,14 @@ class _StockInSupplierPageState extends State<StockInSupplierPage> {
                                 selectedSupplier = null;
                                 addNewSupplier = false;
                               });
-                              stockInEntity.supplierId = '';
+                              stockInBloc.add(
+                                UpdateStockInDataEvent(
+                                  stockInBloc.stockInEntity.copyWith(
+                                    supplierId: '',
+                                    supplierName: '',
+                                  ),
+                                ),
+                              );
                             }
                           },
                         ),
@@ -148,8 +148,16 @@ class _StockInSupplierPageState extends State<StockInSupplierPage> {
                                             displaySuppliers = false;
                                             addNewSupplier = true;
                                             selectedSupplier = null;
-                                            stockInEntity.supplierId = '';
                                           });
+                                          stockInBloc.add(
+                                            UpdateStockInDataEvent(
+                                              stockInBloc.stockInEntity
+                                                  .copyWith(
+                                                supplierId: '',
+                                                supplierName: '',
+                                              ),
+                                            ),
+                                          );
                                         },
                                         child: Container(
                                           padding: EdgeInsets.symmetric(
@@ -187,9 +195,16 @@ class _StockInSupplierPageState extends State<StockInSupplierPage> {
                                                 selectedSupplier = e;
                                                 supplierNameController.text =
                                                     e.name;
-                                                stockInEntity.supplierId =
-                                                    e.id!;
                                               });
+                                              stockInBloc.add(
+                                                UpdateStockInDataEvent(
+                                                  stockInBloc.stockInEntity
+                                                      .copyWith(
+                                                    supplierId: e.id,
+                                                    supplierName: e.name,
+                                                  ),
+                                                ),
+                                              );
                                             },
                                             child: Container(
                                               padding: EdgeInsets.symmetric(
@@ -237,7 +252,12 @@ class _StockInSupplierPageState extends State<StockInSupplierPage> {
                           labelText: 'PIC Supplier (Opsional)',
                           margin: EdgeInsets.zero,
                           onChanged: (p0) {
-                            stockInEntity.supplierPIC = p0;
+                            stockInBloc.add(
+                              UpdateStockInDataEvent(
+                                stockInBloc.stockInEntity
+                                    .copyWith(supplierPIC: p0),
+                              ),
+                            );
                           },
                         ),
                     ],
@@ -256,8 +276,6 @@ class _StockInSupplierPageState extends State<StockInSupplierPage> {
                       onPressed: () {
                         stockInBloc.add(
                           SubmitStockInEvent(
-                            stockInEntity:
-                                widget.stockInSupplierArgument.stockInEntity,
                             supplierEntity: addNewSupplier
                                 ? SupplierEntity(
                                     name: supplierNameController.text,
@@ -265,7 +283,7 @@ class _StockInSupplierPageState extends State<StockInSupplierPage> {
                                   )
                                 : selectedSupplier,
                             isNewSupplier:
-                                selectedSupplier != null && addNewSupplier,
+                                selectedSupplier == null && addNewSupplier,
                           ),
                         );
                       },

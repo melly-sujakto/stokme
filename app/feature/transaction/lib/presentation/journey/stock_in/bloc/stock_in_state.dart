@@ -4,12 +4,14 @@ sealed class StockInState {}
 
 final class StockInInitial extends StockInState {
   final bool isAutoActiveScanner;
-  final String userEmail;
 
-  StockInInitial({
-    this.isAutoActiveScanner = false,
-    this.userEmail = '',
-  });
+  StockInInitial({this.isAutoActiveScanner = false});
+}
+
+final class UpdateDataSuccess extends StockInState {
+  final StockInEntity stockInEntity;
+
+  UpdateDataSuccess(this.stockInEntity);
 }
 
 class SubmitStockLoading extends StockInState {}

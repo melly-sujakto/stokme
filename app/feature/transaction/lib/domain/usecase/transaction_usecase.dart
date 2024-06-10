@@ -133,10 +133,14 @@ class TransactionUsecase {
         throw Exception('[supplierEntity] should be not null'
             ' if [isNewSupplier] is true');
       }
-      final supplierData = SupplierModel.fromEntity(supplierEntity)
-          .toFirestoreJson(await _getStoreId());
+      final supplierData =
+          SupplierModel.fromEntity(supplierEntity).toFirestoreJson(
+        await _getStoreId(),
+        overridedCreatedAt: DateTime.now(),
+        overridedCreatedBy: await getUserEmail(),
+      );
       final supplierId = await firebaseLibrary.createDocument(
-        collectionName: stockInCollectionName,
+        collectionName: supplierCollectionName,
         data: supplierData,
       );
       stockIn.supplierId = supplierId;
