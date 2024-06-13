@@ -43,6 +43,7 @@ class StockInModel extends StockInEntity {
 
   Map<String, dynamic> toFirestoreJson(
     String storeId, {
+    required bool isActive,
     DateTime? overridedCreatedAt,
     String? overridedCreatedBy,
     DateTime? overridedUpdatedAt,
@@ -58,6 +59,7 @@ class StockInModel extends StockInEntity {
       'supplier_pic': supplierPIC,
       'user_email': userEmail,
       'user_name': userName,
+      'is_active': isActive,
       'created_at': (overridedCreatedAt ?? createdAt)?.millisecondsSinceEpoch,
       'created_by': overridedCreatedBy ?? createdBy,
       'updated_at': (overridedUpdatedAt ?? updatedAt)?.millisecondsSinceEpoch,

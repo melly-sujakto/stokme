@@ -63,6 +63,7 @@ class SupplierUsecase {
       id: supplier.id!,
       document: SupplierModel.fromEntity(supplier).toFirestoreJson(
         await _getStoreId(),
+        overridedIsActive: true,
         overridedUpdatedAt: DateTime.now(),
         overridedUpdatedBy: await _getUserEmail(),
       ),

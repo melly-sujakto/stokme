@@ -91,6 +91,7 @@ class TransactionUsecase {
   Future<void> _submitReceipt(ReceiptEntity receiptEntity) async {
     final data = ReceiptModel.fromEntity(receiptEntity).toFirestoreJson(
       await _getStoreId(),
+      isActive: true,
       overridedCreatedAt: DateTime.now(),
       overridedCreatedBy: await _getUserEmail(),
     );
@@ -105,6 +106,7 @@ class TransactionUsecase {
     for (final saleEntity in saleEntityList) {
       final data = SaleModel.fromEntity(saleEntity).toFirestoreJson(
         await _getStoreId(),
+        isActive: true,
         overridedCreatedAt: DateTime.now(),
         overridedCreatedBy: await _getUserEmail(),
       );
@@ -136,6 +138,7 @@ class TransactionUsecase {
       final supplierData =
           SupplierModel.fromEntity(supplierEntity).toFirestoreJson(
         await _getStoreId(),
+        overridedIsActive: true,
         overridedCreatedAt: DateTime.now(),
         overridedCreatedBy: await getUserEmail(),
       );
@@ -148,6 +151,7 @@ class TransactionUsecase {
 
     final data = StockInModel.fromEntity(stockIn).toFirestoreJson(
       await _getStoreId(),
+      isActive: true,
       overridedCreatedAt: DateTime.now(),
       overridedCreatedBy: await _getUserEmail(),
     );
@@ -189,7 +193,10 @@ class TransactionUsecase {
           totalPcs: totalPcs,
           createdAt: DateTime.now(),
           createdBy: await _getUserEmail(),
-        ).toFirestoreJson(await _getStoreId()),
+        ).toFirestoreJson(
+          await _getStoreId(),
+          isActive: true,
+        ),
       );
     } else {
       final stockJson = jsonList.first;
@@ -209,7 +216,10 @@ class TransactionUsecase {
           createdBy: stockJson['created_by'] ?? await _getUserEmail(),
           updatedAt: DateTime.now(),
           updatedBy: await _getUserEmail(),
-        ).toFirestoreJson(await _getStoreId()),
+        ).toFirestoreJson(
+          await _getStoreId(),
+          isActive: true,
+        ),
       );
     }
   }
@@ -229,6 +239,7 @@ class TransactionUsecase {
       collectionName: productCollectionName,
       data: ProductModel.fromEntity(productEntity).toFirestoreJson(
         await _getStoreId(),
+        isActive: true,
         overridedCreatedAt: DateTime.now(),
         overridedCreatedBy: await _getUserEmail(),
       ),

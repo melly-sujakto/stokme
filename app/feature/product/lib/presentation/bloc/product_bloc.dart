@@ -72,7 +72,7 @@ class ProductBloc extends BaseBloc<ProductEvent, ProductState> {
   ) async {
     emit(DeleteLoading());
     try {
-      await productUsecase.deleteProduct(event.productEntity.id!);
+      await productUsecase.deleteProduct(event.productEntity);
       emit(DeleteSuccess());
     } catch (e) {
       emit(DeleteFailed());

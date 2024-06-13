@@ -44,6 +44,7 @@ class SupplierModel extends SupplierEntity {
 
   Map<String, dynamic> toFirestoreJson(
     String overridedStoreId, {
+    bool? overridedIsActive,
     DateTime? overridedCreatedAt,
     String? overridedCreatedBy,
     DateTime? overridedUpdatedAt,
@@ -53,7 +54,7 @@ class SupplierModel extends SupplierEntity {
       'phone': phone,
       'name': name,
       'store_id': overridedStoreId,
-      'is_active': isActive,
+      'is_active': overridedIsActive ?? isActive,
       'created_at': (overridedCreatedAt ?? createdAt)?.millisecondsSinceEpoch,
       'created_by': overridedCreatedBy ?? createdBy,
       'updated_at': (overridedUpdatedAt ?? updatedAt)?.millisecondsSinceEpoch,

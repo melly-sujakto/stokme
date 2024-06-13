@@ -33,7 +33,10 @@ class ProductRepositoryImpl implements ProductRepository {
         ? collectionRef
             .where('store_id', isEqualTo: await _getStoreId())
             .where('sale_net', isEqualTo: 0)
-        : collectionRef.where('store_id', isEqualTo: await _getStoreId());
+            .where('is_active', isEqualTo: true)
+        : collectionRef
+            .where('store_id', isEqualTo: await _getStoreId())
+            .where('is_active', isEqualTo: true);
 
     final jsonList = await firebaseLibrary.getListPagination(
       initialSelfQuery: initialSelfQuery,

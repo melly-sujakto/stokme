@@ -45,6 +45,7 @@ class ProductModel extends ProductEntity {
 
   Map<String, dynamic> toFirestoreJson(
     String overridedStoreId, {
+    required bool isActive,
     DateTime? overridedCreatedAt,
     String? overridedCreatedBy,
     DateTime? overridedUpdatedAt,
@@ -55,6 +56,7 @@ class ProductModel extends ProductEntity {
       'name': name,
       'sale_net': saleNet,
       'store_id': overridedStoreId,
+      'is_active': isActive,
       'created_at': (overridedCreatedAt ?? createdAt)?.millisecondsSinceEpoch,
       'created_by': overridedCreatedBy ?? createdBy,
       'updated_at': (overridedUpdatedAt ?? updatedAt)?.millisecondsSinceEpoch,

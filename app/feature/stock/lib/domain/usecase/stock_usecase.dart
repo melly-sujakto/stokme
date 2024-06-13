@@ -31,7 +31,10 @@ class StockUsecase {
         .getString(GenericConstants.storeId);
     final collectionRef = firebaseLibrary.selfQuery(collectionName);
     final initialSelfQuery =
-        collectionRef.where('store_id', isEqualTo: storeId);
+        collectionRef.where('store_id', isEqualTo: storeId).where(
+              'is_active',
+              isEqualTo: true,
+            );
 
     final jsonList = await firebaseLibrary.getListPagination(
       initialSelfQuery: initialSelfQuery,

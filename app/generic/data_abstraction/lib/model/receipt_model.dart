@@ -60,6 +60,7 @@ class ReceiptModel extends ReceiptEntity {
 
   Map<String, dynamic> toFirestoreJson(
     String overridedStoreId, {
+    required bool isActive,
     DateTime? overridedCreatedAt,
     String? overridedCreatedBy,
     DateTime? overridedUpdatedAt,
@@ -75,6 +76,7 @@ class ReceiptModel extends ReceiptEntity {
       'user_email': userEmail,
       'user_name': userName,
       'store_id': overridedStoreId,
+      'is_active': isActive,
       'created_at': (overridedCreatedAt ?? createdAt)?.millisecondsSinceEpoch,
       'created_by': overridedCreatedBy ?? createdBy,
       'updated_at': (overridedUpdatedAt ?? updatedAt)?.millisecondsSinceEpoch,

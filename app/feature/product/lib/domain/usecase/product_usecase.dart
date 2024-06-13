@@ -51,6 +51,7 @@ class ProductUsecase {
       collectionName: collectionName,
       data: ProductModel.fromEntity(productEntity).toFirestoreJson(
         await _getStoreId(),
+        isActive: true,
         overridedCreatedAt: DateTime.now(),
         overridedCreatedBy: await _getUserEmail(),
       ),
@@ -75,6 +76,7 @@ class ProductUsecase {
         productEntity: productEntity,
       ).toFirestoreJson(
         await _getStoreId(),
+        isActive: true,
         overridedProductId: overridedProductId,
         overridedCreatedAt: DateTime.now(),
         overridedCreatedBy: await _getUserEmail(),
@@ -88,19 +90,26 @@ class ProductUsecase {
       id: productEntity.id!,
       document: ProductModel.fromEntity(productEntity).toFirestoreJson(
         await _getStoreId(),
+        isActive: true,
         overridedUpdatedAt: DateTime.now(),
         overridedUpdatedBy: await _getUserEmail(),
       ),
     );
   }
 
-  Future<void> deleteProduct(String productId) async {
-    await firebaseLibrary.deleteDocument(
+  Future<void> deleteProduct(ProductEntity productEntity) async {
+    await firebaseLibrary.updateDocument(
       collectionName: collectionName,
-      id: productId,
+      id: productEntity.id!,
+      document: ProductModel.fromEntity(productEntity).toFirestoreJson(
+        await _getStoreId(),
+        isActive: false,
+        overridedUpdatedAt: DateTime.now(),
+        overridedUpdatedBy: await _getUserEmail(),
+      ),
     );
     //affect stock
-    unawaited(_deleteStockByProductId(productId));
+    unawaited(_deleteStockByProductId(productEntity.id!));
   }
 
   Future<void> _deleteStockByProductId(String productId) async {
@@ -110,10 +119,18 @@ class ProductUsecase {
         .limit(1)
         .get();
     final stockId = stockQSnapshot.docs.last.id;
+    final data = stockQSnapshot.docs.last.data();
+
     unawaited(
-      firebaseLibrary.deleteDocument(
+      firebaseLibrary.updateDocument(
         collectionName: collectionNameStock,
         id: stockId,
+        document: StockModel.fromJson(data).toFirestoreJson(
+          await _getStoreId(),
+          isActive: false,
+          overridedUpdatedAt: DateTime.now(),
+          overridedUpdatedBy: await _getUserEmail(),
+        ),
       ),
     );
   }

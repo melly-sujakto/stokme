@@ -15,9 +15,9 @@ class SaleModel extends SaleEntity {
     super.updatedAt,
   });
 
-    factory SaleModel.fromJson(Map<String, dynamic> json) {
+  factory SaleModel.fromJson(Map<String, dynamic> json) {
     return SaleModel(
-      id: json['id'], 
+      id: json['id'],
       productEntity: ProductModel.fromJson(json['product']),
       receiptId: json['receipt_id'],
       totalNet: JsonUtils.validateIntOrDouble(json['total_net']),
@@ -49,6 +49,7 @@ class SaleModel extends SaleEntity {
 
   Map<String, dynamic> toFirestoreJson(
     String overridedStoreId, {
+    required bool isActive,
     DateTime? overridedCreatedAt,
     String? overridedCreatedBy,
     DateTime? overridedUpdatedAt,
@@ -60,6 +61,7 @@ class SaleModel extends SaleEntity {
       'total_pcs': totalPcs,
       'total_net': totalNet,
       'store_id': overridedStoreId,
+      'is_active': isActive,
       'created_at': (overridedCreatedAt ?? createdAt)?.millisecondsSinceEpoch,
       'created_by': overridedCreatedBy ?? createdBy,
       'updated_at': (overridedUpdatedAt ?? updatedAt)?.millisecondsSinceEpoch,
