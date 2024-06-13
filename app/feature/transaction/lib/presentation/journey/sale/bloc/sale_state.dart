@@ -4,8 +4,12 @@ sealed class SaleState {}
 
 final class SaleInitial extends SaleState {
   final bool isAutoActiveScanner;
+  final bool isAvailableEditPrice;
 
-  SaleInitial({this.isAutoActiveScanner = false});
+  SaleInitial({
+    this.isAutoActiveScanner = false,
+    this.isAvailableEditPrice = false,
+  });
 }
 
 final class GenerateReceiptFinished extends SaleState {}

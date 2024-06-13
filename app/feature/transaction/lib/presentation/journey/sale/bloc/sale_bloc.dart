@@ -36,8 +36,12 @@ class SaleBloc extends BaseBloc<SaleEvent, SaleState> {
   ) async {
     final isAutoActiveScanner =
         await transactionUsecase.getFlagAlwaysUseCameraAsScanner();
+    final isAvailableEditPrice = await transactionUsecase.getUserRole() == 1;
     emit(
-      SaleInitial(isAutoActiveScanner: isAutoActiveScanner ?? false),
+      SaleInitial(
+        isAutoActiveScanner: isAutoActiveScanner ?? false,
+        isAvailableEditPrice: isAvailableEditPrice,
+      ),
     );
   }
 

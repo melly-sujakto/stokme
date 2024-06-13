@@ -15,9 +15,11 @@ class SaleProductModalContent extends StatefulWidget {
     super.key,
     required this.product,
     required this.bloc,
+    required this.isAvailableEditPrice,
   });
   final ProductEntity product;
   final SaleBloc bloc;
+  final bool isAvailableEditPrice;
 
   @override
   State<SaleProductModalContent> createState() =>
@@ -120,22 +122,23 @@ class _SaleProductModalContentState extends State<SaleProductModalContent> {
                           fontWeight: FontWeight.w900,
                         ),
                       ),
-                      InkWell(
-                        onTap: () {
-                          setState(() {
-                            isEditPrice = !isEditPrice;
-                          });
-                        },
-                        child: Container(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: LayoutDimen.dimen_12.w,
-                          ),
-                          child: Image.asset(
-                            SaleAssets.pencilEditIcon,
-                            height: LayoutDimen.dimen_30.w,
+                      if (widget.isAvailableEditPrice)
+                        InkWell(
+                          onTap: () {
+                            setState(() {
+                              isEditPrice = !isEditPrice;
+                            });
+                          },
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: LayoutDimen.dimen_12.w,
+                            ),
+                            child: Image.asset(
+                              SaleAssets.pencilEditIcon,
+                              height: LayoutDimen.dimen_30.w,
+                            ),
                           ),
                         ),
-                      ),
                     ],
                   ),
                 SizedBox(

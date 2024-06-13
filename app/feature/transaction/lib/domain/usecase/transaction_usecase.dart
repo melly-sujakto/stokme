@@ -46,6 +46,12 @@ class TransactionUsecase {
     return pref.getString(GenericConstants.storeId)!;
   }
 
+  Future<int> getUserRole() async {
+    final prefs = await sharedPreferencesWrapper.getPrefs();
+    final roleId = prefs.getInt(GenericConstants.roleId);
+    return roleId!;
+  }
+
   Future<String> _getUserEmail() async {
     final pref = await sharedPreferencesWrapper.getPrefs();
     return pref.getString(GenericConstants.email)!;

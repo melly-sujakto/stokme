@@ -37,6 +37,7 @@ class _SaleInputPageState extends State<SaleInputPage> {
   bool isFromOnScan = false;
   bool holdScannerFlag = false;
   bool? isAutoActiveScanner;
+  bool isAvailableEditPrice = false;
 
   final scannerTextEditController = TextEditingController();
 
@@ -57,6 +58,7 @@ class _SaleInputPageState extends State<SaleInputPage> {
         listener: (context, state) {
           if (state is SaleInitial) {
             isAutoActiveScanner = state.isAutoActiveScanner;
+            isAvailableEditPrice = state.isAvailableEditPrice;
           }
 
           if (state is CalculationSuccess) {
@@ -205,6 +207,7 @@ class _SaleInputPageState extends State<SaleInputPage> {
       builder: (context) => SaleProductModalContent(
         product: productEntity,
         bloc: widget.saleBloc,
+        isAvailableEditPrice: isAvailableEditPrice,
       ),
     ).then((value) {
       setState(() {
