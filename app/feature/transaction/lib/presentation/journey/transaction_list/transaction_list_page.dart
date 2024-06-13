@@ -41,6 +41,7 @@ class _TransactionListPageState extends State<TransactionListPage> {
   double stockInTotalPurchaseNet = 0;
   int stockInCount = 0;
   List<StockInEntity> stockInList = [];
+  String filter = '';
 
   @override
   void initState() {
@@ -114,7 +115,19 @@ class _TransactionListPageState extends State<TransactionListPage> {
                           // ignore: lines_longer_than_80_chars
                           '$stockInCount stok masuk',
                         ]),
-                        thStockInList(stockInList),
+                        thStockInList(
+                          stockInList
+                              .where(
+                                (stockIn) =>
+                                    stockIn.productEntity.code
+                                        .toLowerCase()
+                                        .contains(filter.toLowerCase()) ||
+                                    stockIn.productEntity.name
+                                        .toLowerCase()
+                                        .contains(filter.toLowerCase()),
+                              )
+                              .toList(),
+                        ),
                       ],
               ],
             );
@@ -138,8 +151,16 @@ class _TransactionListPageState extends State<TransactionListPage> {
             padding: EdgeInsets.only(bottom: LayoutDimen.dimen_8.h),
             child: ScannerFinder(
               labelText: 'Cari nama/kode',
-              onChanged: (value) {},
-              onScan: (value) {},
+              onChanged: (value) {
+                setState(() {
+                  filter = value;
+                });
+              },
+              onScan: (value) {
+                setState(() {
+                  filter = value;
+                });
+              },
             ),
           ),
           ...List.generate(
