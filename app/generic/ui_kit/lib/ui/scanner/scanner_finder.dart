@@ -13,6 +13,7 @@ abstract class ScannerFinderConstants {
   static const closeScannerAsset = 'assets/icons/close_scanner_icon.png';
   static const openScannerAsset = 'assets/icons/open_scanner_icon.png';
   static const scannerOverlayAsset = 'assets/icons/scanner_overlay.png';
+  static const buttonScannerAsset = 'assets/icons/button_scanner.png';
   static const beepSoundAsset = 'audio/scanner_beep.mp3';
 }
 
@@ -55,6 +56,8 @@ class _ScannerFinderState extends State<ScannerFinder> {
   );
   final player = AudioPlayer();
   late bool scannerActive;
+  bool autoScan = false;
+  bool readyToScan = false;
   late final TextEditingController textEditController;
 
   @override
@@ -92,13 +95,39 @@ class _ScannerFinderState extends State<ScannerFinder> {
                       horizontal: LayoutDimen.dimen_32.w,
                       vertical: LayoutDimen.dimen_12.h,
                     ),
-                    child:
+                    child: Stack(
+                      children: [
                         Image.asset(ScannerFinderConstants.scannerOverlayAsset),
+                        Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Text(
+                                widget.holdScanner
+                                    ? 'On hold'
+                                    : readyToScan || autoScan
+                                        ? 'Scanning...'
+                                        : 'Ketuk dua kali untuk '
+                                            'aktifkan auto scan',
+                                maxLines: 2,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: LayoutDimen.dimen_11.minSp,
+                                  color: CustomColors.neutral.c60,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                   fit: BoxFit.fitWidth,
                   controller: cameraController,
                   onDetect: (capture) {
-                    if (!widget.holdScanner) {
+                    // just in case flow ButtonScanner is error
+                    // if (!widget.holdScanner ) {
+                    if ((readyToScan || autoScan) && !widget.holdScanner) {
                       final List<Barcode> barcodes = capture.barcodes;
                       for (final barcode in barcodes) {
                         player
@@ -138,6 +167,29 @@ class _ScannerFinderState extends State<ScannerFinder> {
                     ),
                   ],
                 ),
+                Align(
+                  alignment: Alignment.bottomRight,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          setState(() {
+                            scannerActive = false;
+                          });
+                        },
+                        child: Container(
+                          width: LayoutDimen.dimen_20.w,
+                          height: LayoutDimen.dimen_20.w,
+                          margin: EdgeInsets.all(LayoutDimen.dimen_8.w),
+                          child: Image.asset(
+                            ScannerFinderConstants.closeScannerAsset,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),
@@ -146,7 +198,6 @@ class _ScannerFinderState extends State<ScannerFinder> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Flexible(
-              flex: 6,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -212,27 +263,63 @@ class _ScannerFinderState extends State<ScannerFinder> {
             SizedBox(
               width: LayoutDimen.dimen_8.w,
             ),
-            Flexible(
-              child: InkWell(
-                onTap: () {
-                  setState(() {
-                    scannerActive = !scannerActive;
-                  });
-                },
-                child: Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: LayoutDimen.dimen_8.w,
-                    vertical: LayoutDimen.dimen_10.h,
+            scannerActive
+                ? GestureDetector(
+                    onDoubleTap: () {
+                      setState(() {
+                        autoScan = !autoScan;
+                      });
+                    },
+                    onLongPressStart: !autoScan
+                        ? (_) {
+                            if (!readyToScan) {
+                              setState(() {
+                                readyToScan = !widget.holdScanner;
+                              });
+                            }
+                          }
+                        : null,
+                    onLongPressEnd: !autoScan
+                        ? (_) {
+                            setState(() {
+                              readyToScan = false;
+                            });
+                          }
+                        : null,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(
+                          LayoutDimen.dimen_10.w,
+                        ),
+                        color: autoScan
+                            ? CustomColors.neutral.c60
+                            : CustomColors.secondary.c60,
+                      ),
+                      width: LayoutDimen.dimen_60.w,
+                      height: LayoutDimen.dimen_60.w,
+                      padding: EdgeInsets.all(LayoutDimen.dimen_6.w),
+                      child: Image.asset(
+                        ScannerFinderConstants.buttonScannerAsset,
+                      ),
+                    ),
+                  )
+                : InkWell(
+                    onTap: () {
+                      setState(() {
+                        scannerActive = true;
+                      });
+                    },
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: LayoutDimen.dimen_8.w,
+                        vertical: LayoutDimen.dimen_10.h,
+                      ),
+                      child: Image.asset(
+                        ScannerFinderConstants.openScannerAsset,
+                        width: LayoutDimen.dimen_30.w,
+                      ),
+                    ),
                   ),
-                  child: Image.asset(
-                    scannerActive
-                        ? ScannerFinderConstants.closeScannerAsset
-                        : ScannerFinderConstants.openScannerAsset,
-                    width: LayoutDimen.dimen_30.w,
-                  ),
-                ),
-              ),
-            ),
           ],
         ),
       ],
