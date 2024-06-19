@@ -7,6 +7,7 @@ import 'package:feature_transaction/presentation/journey/sale/sale_routes.dart';
 import 'package:feature_transaction/presentation/journey/sale/screens/sale_result_page.dart';
 import 'package:feature_transaction/presentation/journey/sale/widgets/sale_product_card.dart';
 import 'package:flutter/material.dart';
+import 'package:module_common/common/constant/translation_constants.dart';
 import 'package:module_common/i18n/i18n_extension.dart';
 import 'package:module_common/presentation/bloc/base_bloc.dart';
 import 'package:ui_kit/common/constants/layout_dimen.dart';
@@ -14,6 +15,7 @@ import 'package:ui_kit/extensions/number_extension.dart';
 import 'package:ui_kit/theme/colors.dart';
 import 'package:ui_kit/ui/app_bar/app_bar_with_title_only.dart';
 import 'package:ui_kit/ui/button/flat_button.dart';
+import 'package:ui_kit/ui/dialog/confirmation_dialog.dart';
 import 'package:ui_kit/ui/loading_indicator/loading_circular.dart';
 import 'package:ui_kit/utils/screen_utils.dart';
 
@@ -146,13 +148,29 @@ class _SaleReviewPageState extends State<SaleReviewPage> {
                           ? const LoadingCircular()
                           : FlatButton(
                               title: SaleStrings.process.i18n(context),
-                              onPressed: () {
-                                widget.salesReviewArgument.saleBloc.add(
-                                  SubmitReceiptAndSalesEvent(
-                                    widget.salesReviewArgument.saleEntityList,
-                                  ),
-                                );
-                              },
+                              onPressed: widget.salesReviewArgument
+                                      .saleEntityList.isNotEmpty
+                                  ? () {
+                                      ConfirmationDialog(
+                                        descriptionText:
+                                            'Proses transaksi ini?',
+                                        cancelText: TranslationConstants.no
+                                            .i18n(context),
+                                        confirmText: TranslationConstants.yes
+                                            .i18n(context),
+                                        onConfirmed: () {
+                                          Navigator.pop(context);
+                                          widget.salesReviewArgument.saleBloc
+                                              .add(
+                                            SubmitReceiptAndSalesEvent(
+                                              widget.salesReviewArgument
+                                                  .saleEntityList,
+                                            ),
+                                          );
+                                        },
+                                      ).show(context);
+                                    }
+                                  : null,
                               margin: EdgeInsets.zero,
                             ),
                     ),

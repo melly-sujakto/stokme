@@ -165,7 +165,6 @@ class _SaleInputPageState extends State<SaleInputPage> {
                                   productEntity: product,
                                   totalPcs: recordedProducts[index].totalPcs,
                                   recordedIndex: index,
-                                  
                                 );
                               },
                               onDelete: () {
@@ -191,17 +190,19 @@ class _SaleInputPageState extends State<SaleInputPage> {
                     children: [
                       FlatButton(
                         title: SaleStrings.continueBtnTitle.i18n(context),
-                        onPressed: () {
-                          Navigator.pushNamed(
-                            context,
-                            SaleRoutes.salesReview,
-                            arguments: SaleReviewArgument(
-                              saleEntityList:
-                                  recordedProducts.reversed.toList(),
-                              saleBloc: widget.saleBloc,
-                            ),
-                          );
-                        },
+                        onPressed: recordedProducts.isNotEmpty
+                            ? () {
+                                Navigator.pushNamed(
+                                  context,
+                                  SaleRoutes.salesReview,
+                                  arguments: SaleReviewArgument(
+                                    saleEntityList:
+                                        recordedProducts.reversed.toList(),
+                                    saleBloc: widget.saleBloc,
+                                  ),
+                                );
+                              }
+                            : null,
                       ),
                     ],
                   ),
