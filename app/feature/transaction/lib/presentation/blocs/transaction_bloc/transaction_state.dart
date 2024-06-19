@@ -19,3 +19,10 @@ final class GetProductListLoaded extends TransactionInitial {
     required this.isLastPage,
   });
 }
+
+final class GetProductListLoadedOnLastPage extends GetProductListLoaded {
+  GetProductListLoadedOnLastPage({
+    required super.products,
+    required super.isLastPage,
+  });
+}

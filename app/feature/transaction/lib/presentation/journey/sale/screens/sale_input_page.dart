@@ -6,7 +6,6 @@ import 'package:feature_transaction/presentation/journey/sale/sale_constants.dar
 import 'package:feature_transaction/presentation/journey/sale/sale_routes.dart';
 import 'package:feature_transaction/presentation/journey/sale/screens/sale_review_page.dart';
 import 'package:feature_transaction/presentation/journey/sale/widgets/sale_product_card.dart';
-import 'package:feature_transaction/presentation/journey/sale/widgets/sale_product_modal_content.dart';
 import 'package:flutter/material.dart';
 import 'package:module_common/i18n/i18n_extension.dart';
 import 'package:module_common/presentation/bloc/base_bloc.dart';
@@ -35,7 +34,6 @@ class _SaleInputPageState extends State<SaleInputPage> {
   List<SaleEntity> recordedProducts = [];
   List<ProductEntity> choiceProducts = [];
   bool isFromOnScan = false;
-  bool holdScannerFlag = false;
   bool? isAutoActiveScanner;
   bool isAvailableEditPrice = false;
 
@@ -75,8 +73,10 @@ class _SaleInputPageState extends State<SaleInputPage> {
           listener: (context, transactionState) {
             if (transactionState is GetProductListLoaded) {
               choiceProducts = transactionState.products;
-              if (isFromOnScan && choiceProducts.length == 1) {
-                onSelectedProduct(choiceProducts.first);
+            }
+            if (transactionState is GetProductListLoadedOnLastPage) {
+              if (isFromOnScan && transactionState.products.length == 1) {
+                onSelectedProduct(transactionState.products.first);
               }
             }
           },
@@ -96,7 +96,6 @@ class _SaleInputPageState extends State<SaleInputPage> {
                             autoActiveScanner: isAutoActiveScanner!,
                             textEditController: scannerTextEditController,
                             keyboardType: TextInputType.number,
-                            holdScanner: holdScannerFlag,
                             optionList: choiceProducts
                                 .map(
                                   (e) => Padding(
@@ -188,32 +187,32 @@ class _SaleInputPageState extends State<SaleInputPage> {
   }
 
   void onSelectedProduct(ProductEntity productEntity) {
-    setState(() {
-      holdScannerFlag = true;
-    });
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(
-            LayoutDimen.dimen_30.w,
-          ),
-          topRight: Radius.circular(
-            LayoutDimen.dimen_30.w,
-          ),
-        ),
-      ),
-      builder: (context) => SaleProductModalContent(
+    widget.saleBloc.add(
+      CalculatePriceProductEvent(
         product: productEntity,
-        bloc: widget.saleBloc,
-        isAvailableEditPrice: isAvailableEditPrice,
+        totalPcs: 1,
       ),
-    ).then((value) {
-      setState(() {
-        holdScannerFlag = false;
-      });
-    });
+    );
+    // TODO(Melly): move to on edit
+    // showModalBottomSheet(
+    //   context: context,
+    //   isScrollControlled: true,
+    //   shape: RoundedRectangleBorder(
+    //     borderRadius: BorderRadius.only(
+    //       topLeft: Radius.circular(
+    //         LayoutDimen.dimen_30.w,
+    //       ),
+    //       topRight: Radius.circular(
+    //         LayoutDimen.dimen_30.w,
+    //       ),
+    //     ),
+    //   ),
+    //   builder: (context) => SaleProductModalContent(
+    //     product: productEntity,
+    //     bloc: widget.saleBloc,
+    //     isAvailableEditPrice: isAvailableEditPrice,
+    //   ),
+    // );
   }
 
   void addEventGetProducts(String value) {

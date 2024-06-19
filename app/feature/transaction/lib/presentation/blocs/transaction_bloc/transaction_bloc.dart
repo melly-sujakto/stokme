@@ -46,12 +46,21 @@ class TransactionBloc extends BaseBloc<TransactionEvent, TransactionState> {
           ),
         );
 
-        emit(
-          GetProductListLoaded(
-            products: finalProductList,
-            isLastPage: alreadyOnLastPage,
-          ),
-        );
+        if (alreadyOnLastPage) {
+          emit(
+            GetProductListLoadedOnLastPage(
+              products: finalProductList,
+              isLastPage: alreadyOnLastPage,
+            ),
+          );
+        } else {
+          emit(
+            GetProductListLoaded(
+              products: finalProductList,
+              isLastPage: alreadyOnLastPage,
+            ),
+          );
+        }
 
         index++;
       }
