@@ -2,12 +2,14 @@ import 'package:data_abstraction/entity/supplier_entity.dart';
 import 'package:feature_transaction/presentation/journey/stock_in/bloc/stock_in_bloc.dart';
 import 'package:feature_transaction/presentation/journey/stock_in/stock_in_constants.dart';
 import 'package:flutter/material.dart';
+import 'package:module_common/common/constant/translation_constants.dart';
 import 'package:module_common/i18n/i18n_extension.dart';
 import 'package:module_common/presentation/bloc/base_bloc.dart';
 import 'package:ui_kit/common/constants/layout_dimen.dart';
 import 'package:ui_kit/theme/colors.dart';
 import 'package:ui_kit/ui/app_bar/app_bar_with_title_only.dart';
 import 'package:ui_kit/ui/button/flat_button.dart';
+import 'package:ui_kit/ui/dialog/confirmation_dialog.dart';
 import 'package:ui_kit/ui/input_field/input_basic.dart';
 import 'package:ui_kit/ui/loading_indicator/loading_circular.dart';
 import 'package:ui_kit/ui/snackbar/snackbar_dialog.dart';
@@ -272,21 +274,41 @@ class _StockInSupplierPageState extends State<StockInSupplierPage> {
                   children: [
                     FlatButton(
                       title:
-                          'Lewati dan ${StockInConstants.input.i18n(context)}',
-                      onPressed: () {
-                        stockInBloc.add(
-                          SubmitStockInEvent(
-                            supplierEntity: addNewSupplier
-                                ? SupplierEntity(
-                                    name: supplierNameController.text,
-                                    phone: supplierNameController.text,
-                                  )
-                                : selectedSupplier,
-                            isNewSupplier:
-                                selectedSupplier == null && addNewSupplier,
-                          ),
-                        );
-                      },
+                          // ignore: lines_longer_than_80_chars
+                          '${selectedSupplier == null && !addNewSupplier ? 'Lewati dan ' : ''}'
+                          '${StockInConstants.input.i18n(context)}',
+                      onPressed: displaySuppliers
+                          ? null
+                          : addNewSupplier &&
+                                  supplierPhoneController.text.isEmpty
+                              ? null
+                              : () {
+                                  ConfirmationDialog(
+                                    descriptionText: 'Proses transaksi ini?',
+                                    cancelText:
+                                        TranslationConstants.no.i18n(context),
+                                    confirmText:
+                                        TranslationConstants.yes.i18n(context),
+                                    onConfirmed: () {
+                                      Navigator.pop(context);
+                                      stockInBloc.add(
+                                        SubmitStockInEvent(
+                                          supplierEntity: addNewSupplier
+                                              ? SupplierEntity(
+                                                  name: supplierNameController
+                                                      .text,
+                                                  phone: supplierNameController
+                                                      .text,
+                                                )
+                                              : selectedSupplier,
+                                          isNewSupplier:
+                                              selectedSupplier == null &&
+                                                  addNewSupplier,
+                                        ),
+                                      );
+                                    },
+                                  ).show(context);
+                                },
                     ),
                   ],
                 ),
