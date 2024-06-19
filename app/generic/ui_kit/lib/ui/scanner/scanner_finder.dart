@@ -56,9 +56,11 @@ class _ScannerFinderState extends State<ScannerFinder> {
   );
   final player = AudioPlayer();
   late bool scannerActive;
-  bool autoScan = false;
-  bool readyToScan = false;
   late final TextEditingController textEditController;
+
+  bool autoScan = false;
+  bool giveAccessToScan = false;
+  bool scannerAllowToScan = true;
 
   @override
   void initState() {
@@ -105,10 +107,10 @@ class _ScannerFinderState extends State<ScannerFinder> {
                               Text(
                                 widget.holdScanner
                                     ? 'On hold'
-                                    : readyToScan || autoScan
-                                        ? 'Scanning...'
+                                    : giveAccessToScan || autoScan
+                                        ? 'Sedang memindai...'
                                         : 'Ketuk dua kali untuk '
-                                            'aktifkan auto scan',
+                                            'aktifkan auto pindai',
                                 maxLines: 2,
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
@@ -125,26 +127,34 @@ class _ScannerFinderState extends State<ScannerFinder> {
                   fit: BoxFit.fitWidth,
                   controller: cameraController,
                   onDetect: (capture) {
-                    // just in case flow ButtonScanner is error
-                    // if (!widget.holdScanner ) {
-                    if ((readyToScan || autoScan) && !widget.holdScanner) {
-                      final List<Barcode> barcodes = capture.barcodes;
-                      for (final barcode in barcodes) {
+                    if (scannerAllowToScan) {
+                      setState(() {
+                        scannerAllowToScan = false;
+                      });
+                      // To avoid infinite scan in a second
+                      Future.delayed(const Duration(seconds: 2), () {
+                        setState(() {
+                          scannerAllowToScan = true;
+                        });
+                      });
+                      if ((giveAccessToScan || autoScan) &&
+                          !widget.holdScanner) {
+                        final barcode = capture.barcodes.last;
                         player
                           ..setVolume(1)
                           ..play(
-                            AssetSource(ScannerFinderConstants.beepSoundAsset),
+                            AssetSource(
+                              ScannerFinderConstants.beepSoundAsset,
+                            ),
                           );
 
                         if (barcode.rawValue != null) {
                           if (kDebugMode) {
                             print('Scanned barcode: ${barcode.rawValue}');
                           }
-
                           setState(() {
                             textEditController.text = barcode.rawValue!;
                           });
-
                           widget.onScan(barcode.rawValue!);
                         }
                       }
@@ -272,9 +282,9 @@ class _ScannerFinderState extends State<ScannerFinder> {
                     },
                     onLongPressStart: !autoScan
                         ? (_) {
-                            if (!readyToScan) {
+                            if (!giveAccessToScan) {
                               setState(() {
-                                readyToScan = !widget.holdScanner;
+                                giveAccessToScan = !widget.holdScanner;
                               });
                             }
                           }
@@ -282,7 +292,7 @@ class _ScannerFinderState extends State<ScannerFinder> {
                     onLongPressEnd: !autoScan
                         ? (_) {
                             setState(() {
-                              readyToScan = false;
+                              giveAccessToScan = false;
                             });
                           }
                         : null,
