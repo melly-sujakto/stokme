@@ -16,10 +16,14 @@ class SaleProductModalContent extends StatefulWidget {
     required this.product,
     required this.bloc,
     required this.isAvailableEditPrice,
+    required this.totalPcs,
+    required this.onEdit,
   });
   final ProductEntity product;
   final SaleBloc bloc;
   final bool isAvailableEditPrice;
+  final void Function() onEdit;
+  final int totalPcs;
 
   @override
   State<SaleProductModalContent> createState() =>
@@ -32,16 +36,17 @@ class _SaleProductModalContentState extends State<SaleProductModalContent> {
   late final TextEditingController totalTextEditController;
 
   final totalFocusNode = FocusNode()..requestFocus();
-  int? total;
+  late int total;
   bool isEditPrice = false;
 
   @override
   void initState() {
     super.initState();
     price = widget.product.saleNet.toString();
+    total = widget.totalPcs;
     priceTextEditController = TextEditingController(text: price);
     totalTextEditController = TextEditingController(
-      text: total?.toString(),
+      text: total.toString(),
     );
   }
 
@@ -150,6 +155,7 @@ class _SaleProductModalContentState extends State<SaleProductModalContent> {
                   labelText: SaleStrings.totalPcs.i18n(context),
                   margin: EdgeInsets.zero,
                   focusNode: totalFocusNode,
+                  onFinishChangeDuration: const Duration(),
                   onChanged: (value) {
                     if (value.isEmpty) {
                       total = 1;
@@ -172,9 +178,10 @@ class _SaleProductModalContentState extends State<SaleProductModalContent> {
                           name: widget.product.name,
                           saleNet: double.parse(price),
                         ),
-                        totalPcs: total ?? 1,
+                        totalPcs: total,
                       ),
                     );
+                    widget.onEdit();
                     FocusManager.instance.primaryFocus?.unfocus();
                     Navigator.pop(context);
                   },

@@ -6,6 +6,7 @@ import 'package:feature_transaction/presentation/journey/sale/sale_constants.dar
 import 'package:feature_transaction/presentation/journey/sale/sale_routes.dart';
 import 'package:feature_transaction/presentation/journey/sale/screens/sale_review_page.dart';
 import 'package:feature_transaction/presentation/journey/sale/widgets/sale_product_card.dart';
+import 'package:feature_transaction/presentation/journey/sale/widgets/sale_product_modal_content.dart';
 import 'package:flutter/material.dart';
 import 'package:module_common/i18n/i18n_extension.dart';
 import 'package:module_common/presentation/bloc/base_bloc.dart';
@@ -58,14 +59,13 @@ class _SaleInputPageState extends State<SaleInputPage> {
             isAutoActiveScanner = state.isAutoActiveScanner;
             isAvailableEditPrice = state.isAvailableEditPrice;
           }
-
           if (state is CalculationSuccess) {
             choiceProducts = [];
             scannerTextEditController.clear();
             //close Keyboard
             // TODO(melly): will check, is it disturb end user or not?
             FocusManager.instance.primaryFocus?.unfocus();
-            recordedProducts.add(state.saleEntity);
+            recordedProducts.insert(0, state.saleEntity);
           }
         },
         builder: (context, state) =>
@@ -85,7 +85,6 @@ class _SaleInputPageState extends State<SaleInputPage> {
               children: [
                 SingleChildScrollView(
                   child: Container(
-                    height: ScreenUtil.screenHeight,
                     padding: EdgeInsets.all(LayoutDimen.dimen_16.w),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -151,7 +150,35 @@ class _SaleInputPageState extends State<SaleInputPage> {
                         SizedBox(
                           height: LayoutDimen.dimen_32.h,
                         ),
-                        Expanded(child: productListCard()),
+                        ...List.generate(
+                          recordedProducts.length,
+                          (index) {
+                            final orderNumber = recordedProducts.length - index;
+                            final product =
+                                recordedProducts[index].productEntity;
+                            return SaleProductCard(
+                              product: product,
+                              orderNumber: orderNumber,
+                              totalPcs: recordedProducts[index].totalPcs,
+                              onEdit: () {
+                                onEditProductDetail(
+                                  productEntity: product,
+                                  totalPcs: recordedProducts[index].totalPcs,
+                                  recordedIndex: index,
+                                  
+                                );
+                              },
+                              onDelete: () {
+                                setState(() {
+                                  recordedProducts.removeAt(index);
+                                });
+                              },
+                            );
+                          },
+                        ),
+                        SizedBox(
+                          height: LayoutDimen.dimen_100.h,
+                        ),
                       ],
                     ),
                   ),
@@ -169,7 +196,8 @@ class _SaleInputPageState extends State<SaleInputPage> {
                             context,
                             SaleRoutes.salesReview,
                             arguments: SaleReviewArgument(
-                              saleEntityList: recordedProducts,
+                              saleEntityList:
+                                  recordedProducts.reversed.toList(),
                               saleBloc: widget.saleBloc,
                             ),
                           );
@@ -193,26 +221,38 @@ class _SaleInputPageState extends State<SaleInputPage> {
         totalPcs: 1,
       ),
     );
-    // TODO(Melly): move to on edit
-    // showModalBottomSheet(
-    //   context: context,
-    //   isScrollControlled: true,
-    //   shape: RoundedRectangleBorder(
-    //     borderRadius: BorderRadius.only(
-    //       topLeft: Radius.circular(
-    //         LayoutDimen.dimen_30.w,
-    //       ),
-    //       topRight: Radius.circular(
-    //         LayoutDimen.dimen_30.w,
-    //       ),
-    //     ),
-    //   ),
-    //   builder: (context) => SaleProductModalContent(
-    //     product: productEntity,
-    //     bloc: widget.saleBloc,
-    //     isAvailableEditPrice: isAvailableEditPrice,
-    //   ),
-    // );
+  }
+
+  void onEditProductDetail({
+    required ProductEntity productEntity,
+    required int totalPcs,
+    required int recordedIndex,
+  }) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(
+            LayoutDimen.dimen_30.w,
+          ),
+          topRight: Radius.circular(
+            LayoutDimen.dimen_30.w,
+          ),
+        ),
+      ),
+      builder: (context) => SaleProductModalContent(
+        product: productEntity,
+        totalPcs: totalPcs,
+        bloc: widget.saleBloc,
+        isAvailableEditPrice: isAvailableEditPrice,
+        onEdit: () {
+          setState(() {
+            recordedProducts.removeAt(recordedIndex);
+          });
+        },
+      ),
+    );
   }
 
   void addEventGetProducts(String value) {
@@ -225,28 +265,5 @@ class _SaleInputPageState extends State<SaleInputPage> {
         GetProductListEvent(filterByCode: value),
       );
     }
-  }
-
-  Widget productListCard() {
-    return Container(
-      padding: EdgeInsets.only(
-        bottom: LayoutDimen.dimen_100.h,
-      ),
-      child: ListView(
-        children: List.generate(recordedProducts.length, (index) {
-          final orderNumber = index + 1;
-          return SaleProductCard(
-            product: recordedProducts[index].productEntity,
-            orderNumber: orderNumber,
-            totalPcs: recordedProducts[index].totalPcs,
-            onDelete: () {
-              setState(() {
-                recordedProducts.removeAt(index);
-              });
-            },
-          );
-        }),
-      ),
-    );
   }
 }
