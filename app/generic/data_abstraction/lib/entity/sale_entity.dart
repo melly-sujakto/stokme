@@ -5,7 +5,7 @@ class SaleEntity extends BaseEntity {
   final String? id;
   final ProductEntity productEntity;
   final String receiptId;
-  final int totalPcs;
+  int totalPcs;
   final double totalNet;
 
   SaleEntity({

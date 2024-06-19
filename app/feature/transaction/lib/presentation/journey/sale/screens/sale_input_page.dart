@@ -1,5 +1,6 @@
 import 'package:data_abstraction/entity/product_entity.dart';
 import 'package:data_abstraction/entity/sale_entity.dart';
+import 'package:extensions/iterable_extensions.dart';
 import 'package:feature_transaction/presentation/blocs/transaction_bloc/transaction_bloc.dart';
 import 'package:feature_transaction/presentation/journey/sale/bloc/sale_bloc.dart';
 import 'package:feature_transaction/presentation/journey/sale/sale_constants.dart';
@@ -65,7 +66,24 @@ class _SaleInputPageState extends State<SaleInputPage> {
             //close Keyboard
             // TODO(melly): will check, is it disturb end user or not?
             FocusManager.instance.primaryFocus?.unfocus();
-            recordedProducts.insert(0, state.saleEntity);
+            final existingSale = recordedProducts.firstWhereOrNull(
+              (sale) =>
+                  sale.productEntity.id == state.saleEntity.productEntity.id,
+            );
+            if (existingSale == null) {
+              recordedProducts.insert(0, state.saleEntity);
+            } else {
+              recordedProducts.removeWhere(
+                (sale) =>
+                    sale.productEntity.id == state.saleEntity.productEntity.id,
+              );
+              widget.saleBloc.add(
+                CalculatePriceProductEvent(
+                  product: state.saleEntity.productEntity,
+                  totalPcs: state.saleEntity.totalPcs + existingSale.totalPcs,
+                ),
+              );
+            }
           }
         },
         builder: (context, state) =>

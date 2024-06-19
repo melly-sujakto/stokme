@@ -11,6 +11,8 @@ environment:
 dependencies:
   data_abstraction:
     path: ../../generic/data_abstraction
+  extensions:
+    path: ../../library/extensions
   firebase_library:
     path: ../../library/firebase_library
   flutter:
