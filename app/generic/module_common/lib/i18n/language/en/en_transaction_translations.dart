@@ -28,4 +28,10 @@ final Map<String, String> translations = {
   'transaction.list.salesTitle': 'Sales',
   'transaction.list.stockInTitle': 'Stock In',
   'transaction.list.total': 'Total',
+  'transaction.stockIn.supplierLabel': 'Supplier (optional)',
+  'transaction.stockIn.addSupplier': 'Add as new supplier',
+  'transaction.stockIn.supplierPhone': 'Supplier Phone',
+  'transaction.stockIn.supplierPIC': 'PIC Supplier (Opsional)',
+  'transaction.stockIn.skipAndText': 'Skip and',
+  'transaction.stockIn.processThisTransaction': 'Process this transaction?',
 };

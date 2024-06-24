@@ -164,6 +164,14 @@ class _ProductDetailContentState extends State<ProductDetailContent> {
                     )
                   else if (widget.useScannerForCode)
                     ScannerFinder(
+                      labelText: TranslationConstants.code.i18n(context),
+                      onHoldText:
+                          TranslationConstants.scannerOnHoldText.i18n(context),
+                      scanningText: TranslationConstants.scannerScanningText
+                          .i18n(context),
+                      doubleTapToAutoScanText: TranslationConstants
+                          .scannerDoubleTapToAutoScanText
+                          .i18n(context),
                       autoActiveScanner: true,
                       onChanged: (value) {
                         setState(() {

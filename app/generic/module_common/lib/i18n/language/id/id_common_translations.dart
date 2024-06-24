@@ -13,4 +13,8 @@ final Map<String, String> translations = {
   'common.product.successAddProductMessage': 'Product berhasil ditambahkan',
   'common.scanner.label': 'Cari nama/kode',
   'common.review.pcs': 'pcs',
+  'common.scanner.onHoldText': 'Sedang ditahan',
+  'common.scanner.scanningText': 'Sedang memindai...',
+  'common.scanner.doubleTapToAutoScanText':
+      'Ketuk tombol dua kali untuk aktifkan pindai otomatis',
 };

@@ -2,8 +2,6 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
-import 'package:module_common/common/constant/translation_constants.dart';
-import 'package:module_common/i18n/i18n_extension.dart';
 import 'package:ui_kit/common/constants/layout_dimen.dart';
 import 'package:ui_kit/theme/colors.dart';
 import 'package:ui_kit/ui/input_field/input_basic.dart';
@@ -15,12 +13,17 @@ abstract class ScannerFinderConstants {
   static const scannerOverlayAsset = 'assets/icons/scanner_overlay.png';
   static const buttonScannerAsset = 'assets/icons/button_scanner.png';
   static const beepSoundAsset = 'audio/scanner_beep.mp3';
+
+  static const onHoldText = 'On hold';
+  static const scanningText = 'Scanning...';
+  static const doubleTapToAutoScanText =
+      'Double tap the button to activate auto scan';
 }
 
 class ScannerFinder extends StatefulWidget {
   const ScannerFinder({
     super.key,
-    this.labelText,
+    required this.labelText,
     required this.onChanged,
     required this.onScan,
     this.optionList = const [],
@@ -30,9 +33,12 @@ class ScannerFinder extends StatefulWidget {
     this.holdScanner = false,
     this.addProductAction,
     this.autoActiveScanner = false,
+    this.onHoldText,
+    this.scanningText,
+    this.doubleTapToAutoScanText,
   });
 
-  final String? labelText;
+  final String labelText;
   final void Function(String) onChanged;
   final void Function(String) onScan;
   final List<Widget> optionList;
@@ -44,6 +50,9 @@ class ScannerFinder extends StatefulWidget {
 
   /// Set false to inactivate scanner sistem
   final bool holdScanner;
+  final String? onHoldText;
+  final String? scanningText;
+  final String? doubleTapToAutoScanText;
 
   @override
   State<ScannerFinder> createState() => _ScannerFinderState();
@@ -106,11 +115,14 @@ class _ScannerFinderState extends State<ScannerFinder> {
                             children: [
                               Text(
                                 widget.holdScanner
-                                    ? 'On hold'
+                                    ? widget.onHoldText ??
+                                        ScannerFinderConstants.onHoldText
                                     : giveAccessToScan || autoScan
-                                        ? 'Sedang memindai...'
-                                        : 'Ketuk dua kali untuk '
-                                            'aktifkan auto pindai',
+                                        ? widget.scanningText ??
+                                            ScannerFinderConstants.scanningText
+                                        : widget.doubleTapToAutoScanText ??
+                                            ScannerFinderConstants
+                                                .doubleTapToAutoScanText,
                                 maxLines: 2,
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
@@ -213,8 +225,7 @@ class _ScannerFinderState extends State<ScannerFinder> {
                 children: [
                   InputBasic.search(
                     controller: textEditController,
-                    labelText: widget.labelText ??
-                        TranslationConstants.code.i18n(context),
+                    labelText: widget.labelText,
                     onChanged: widget.onChanged,
                     margin: EdgeInsets.zero,
                     keyboardType: widget.keyboardType,

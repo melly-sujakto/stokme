@@ -1,4 +1,5 @@
 import 'package:data_abstraction/entity/supplier_entity.dart';
+import 'package:feature_supplier/presentation/supplier_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:module_common/common/constant/translation_constants.dart';
 import 'package:module_common/i18n/i18n_extension.dart';
@@ -111,7 +112,9 @@ class _SupplierDetailContentState extends State<SupplierDetailContent> {
                         InkWell(
                           onTap: () {
                             ConfirmationDialog(
-                              descriptionText: 'Hapus supplier ini?',
+                              descriptionText: SupplierStrings
+                                  .deleteConfirmation
+                                  .i18n(context),
                               cancelText: TranslationConstants.no.i18n(context),
                               confirmText:
                                   TranslationConstants.yes.i18n(context),
@@ -148,7 +151,7 @@ class _SupplierDetailContentState extends State<SupplierDetailContent> {
                   InputBasic(
                     controller: phoneTextEditController,
                     keyboardType: TextInputType.number,
-                    labelText: 'No HP',
+                    labelText: SupplierStrings.noHp.i18n(context),
                     margin: EdgeInsets.zero,
                     onChanged: (value) {
                       setState(() {
@@ -166,7 +169,9 @@ class _SupplierDetailContentState extends State<SupplierDetailContent> {
                     onPressed: phone.isNotEmpty && name.isNotEmpty
                         ? () {
                             ConfirmationDialog(
-                              descriptionText: 'Ubah detail supplier ini?',
+                              descriptionText: SupplierStrings
+                                  .updateConfirmation
+                                  .i18n(context),
                               cancelText: TranslationConstants.no.i18n(context),
                               confirmText:
                                   TranslationConstants.yes.i18n(context),

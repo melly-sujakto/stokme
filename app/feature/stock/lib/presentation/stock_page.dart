@@ -90,7 +90,15 @@ class _StockPageState extends State<StockPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ScannerFinder(
-                labelText: TranslationConstants.scannerLabelText.i18n(context),
+                labelText: TranslationConstants.scannerSearchNameCodeText
+                    .i18n(context),
+                onHoldText:
+                    TranslationConstants.scannerOnHoldText.i18n(context),
+                scanningText:
+                    TranslationConstants.scannerScanningText.i18n(context),
+                doubleTapToAutoScanText: TranslationConstants
+                    .scannerDoubleTapToAutoScanText
+                    .i18n(context),
                 onChanged: (value) {
                   filterValue = value;
                   resetFilter();

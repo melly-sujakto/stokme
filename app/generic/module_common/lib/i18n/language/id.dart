@@ -14,6 +14,8 @@ import 'package:module_common/i18n/language/id/id_profile_translations.dart'
     as profile;
 import 'package:module_common/i18n/language/id/id_stock_translations.dart'
     as stock;
+import 'package:module_common/i18n/language/id/id_supplier_translations.dart'
+    as supplier;
 import 'package:module_common/i18n/language/id/id_transaction_translations.dart'
     as sale;
 
@@ -27,4 +29,5 @@ final Map<String, String> translations = {
   ...profile.translations,
   ...sale.translations,
   ...stock.translations,
+  ...supplier.translations,
 };

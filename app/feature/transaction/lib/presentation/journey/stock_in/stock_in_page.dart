@@ -111,10 +111,16 @@ class _StockInPageState extends State<StockInPage> {
                     child: Column(
                       children: [
                         if (isAutoActiveScanner != null)
-                          // TODO(Melly): scanner finder will be wrapped as
-                          // a widget to be used on sale and stock_in
                           ScannerFinder(
                             labelText: TranslationConstants.code.i18n(context),
+                            onHoldText: TranslationConstants.scannerOnHoldText
+                                .i18n(context),
+                            scanningText: TranslationConstants
+                                .scannerScanningText
+                                .i18n(context),
+                            doubleTapToAutoScanText: TranslationConstants
+                                .scannerDoubleTapToAutoScanText
+                                .i18n(context),
                             autoActiveScanner: isAutoActiveScanner!,
                             textEditController: scannerTextEditController,
                             holdScanner: holdScannerFlag,
@@ -213,6 +219,9 @@ class _StockInPageState extends State<StockInPage> {
                               );
                             },
                           ),
+                          SizedBox(
+                            height: LayoutDimen.dimen_16.h,
+                          ),
                           InputBasic(
                             labelText:
                                 StockInConstants.purchaseNet.i18n(context),
@@ -242,8 +251,7 @@ class _StockInPageState extends State<StockInPage> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       FlatButton(
-                        // title: StockInConstants.input.i18n(context),
-                        title: 'Lanjut',
+                        title: StockInConstants.continueText.i18n(context),
                         onPressed:
                             stockInEntityData?.productEntity.id != null &&
                                     stockInEntityData?.totalPcs != 0 &&

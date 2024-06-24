@@ -150,7 +150,14 @@ class _TransactionListPageState extends State<TransactionListPage> {
           Padding(
             padding: EdgeInsets.only(bottom: LayoutDimen.dimen_8.h),
             child: ScannerFinder(
-              labelText: 'Cari nama/kode',
+              labelText:
+                  TranslationConstants.scannerSearchNameCodeText.i18n(context),
+              onHoldText: TranslationConstants.scannerOnHoldText.i18n(context),
+              scanningText:
+                  TranslationConstants.scannerScanningText.i18n(context),
+              doubleTapToAutoScanText: TranslationConstants
+                  .scannerDoubleTapToAutoScanText
+                  .i18n(context),
               onChanged: (value) {
                 setState(() {
                   filter = value;
@@ -227,6 +234,7 @@ class _TransactionListPageState extends State<TransactionListPage> {
         ],
       ),
       Text(
+        // TODO(Melly): implement multilang
         'Hari Ini',
         style: TextStyle(
           fontSize: LayoutDimen.dimen_18.minSp,

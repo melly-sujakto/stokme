@@ -9,6 +9,7 @@ import 'package:feature_transaction/presentation/journey/sale/screens/sale_revie
 import 'package:feature_transaction/presentation/journey/sale/widgets/sale_product_card.dart';
 import 'package:feature_transaction/presentation/journey/sale/widgets/sale_product_modal_content.dart';
 import 'package:flutter/material.dart';
+import 'package:module_common/common/constant/translation_constants.dart';
 import 'package:module_common/i18n/i18n_extension.dart';
 import 'package:module_common/presentation/bloc/base_bloc.dart';
 import 'package:ui_kit/common/constants/layout_dimen.dart';
@@ -110,6 +111,14 @@ class _SaleInputPageState extends State<SaleInputPage> {
                         if (isAutoActiveScanner != null)
                           ScannerFinder(
                             labelText: SaleStrings.code.i18n(context),
+                            onHoldText: TranslationConstants.scannerOnHoldText
+                                .i18n(context),
+                            scanningText: TranslationConstants
+                                .scannerScanningText
+                                .i18n(context),
+                            doubleTapToAutoScanText: TranslationConstants
+                                .scannerDoubleTapToAutoScanText
+                                .i18n(context),
                             autoActiveScanner: isAutoActiveScanner!,
                             textEditController: scannerTextEditController,
                             keyboardType: TextInputType.number,

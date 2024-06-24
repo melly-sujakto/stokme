@@ -1,8 +1,11 @@
 import 'package:data_abstraction/entity/supplier_entity.dart';
 import 'package:feature_supplier/presentation/bloc/supplier_bloc.dart';
+import 'package:feature_supplier/presentation/supplier_constants.dart';
 import 'package:feature_supplier/presentation/widgets/supplier_detail_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:module_common/common/constant/translation_constants.dart';
+import 'package:module_common/i18n/i18n_extension.dart';
 import 'package:ui_kit/common/constants/layout_dimen.dart';
 import 'package:ui_kit/theme/colors.dart';
 import 'package:ui_kit/ui/infinite_pagination/infinite_paginantion_widget.dart';
@@ -65,7 +68,7 @@ class _SupplierPageState extends State<SupplierPage> {
       backgroundColor: CustomColors.neutral.c98,
       appBar: AppBar(
         title: Text(
-          'Supplier',
+          SupplierStrings.supplierTitle.i18n(context),
           style: TextStyle(
             fontSize: LayoutDimen.dimen_19.minSp,
             fontWeight: FontWeight.bold,
@@ -78,7 +81,7 @@ class _SupplierPageState extends State<SupplierPage> {
           child: Column(
             children: [
               InputBasic.search(
-                labelText: 'Cari nama',
+                labelText: TranslationConstants.nameLabelText.i18n(context),
                 onChanged: (value) {
                   filterValue = value;
                   resetFilter();
@@ -113,8 +116,8 @@ class _SupplierPageState extends State<SupplierPage> {
                     SnackbarDialog().show(
                       context: context,
                       message: state is UpdateSupplierSuccess
-                          ? 'Update supplier berhasil'
-                          : 'Supplier berhasil dihapus',
+                          ? SupplierStrings.updateSupplierSucceed.i18n(context)
+                          : SupplierStrings.deleteSupplierSucceed.i18n(context),
                       type: SnackbarDialogType.success,
                     );
                     resetFilter();
@@ -124,8 +127,8 @@ class _SupplierPageState extends State<SupplierPage> {
                     SnackbarDialog().show(
                       context: context,
                       message: state is UpdateSupplierFailed
-                          ? 'Update supplier gagal, silakan coba lagi'
-                          : 'Supplier gagal dihapus, silakan coba lagi',
+                          ? SupplierStrings.updateSupplierFailed
+                          : SupplierStrings.deleteSupplierFailed,
                       type: SnackbarDialogType.failed,
                     );
                   }

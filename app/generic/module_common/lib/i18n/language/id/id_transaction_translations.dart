@@ -28,4 +28,10 @@ final Map<String, String> translations = {
   'transaction.list.salesTitle': 'Penjualan',
   'transaction.list.stockInTitle': 'Stok Masuk',
   'transaction.list.total': 'Total',
+  'transaction.stockIn.supplierLabel': 'Supplier (opsional)',
+  'transaction.stockIn.addSupplier': 'Tambah Sebagai Supplier Baru',
+  'transaction.stockIn.supplierPhone': 'Nomor HP Supplier',
+  'transaction.stockIn.supplierPIC': 'PIC Supplier (Opsional)',
+  'transaction.stockIn.skipAndText': 'Lewati dan',
+  'transaction.stockIn.processThisTransaction': 'Proses transaksi ini?',
 };

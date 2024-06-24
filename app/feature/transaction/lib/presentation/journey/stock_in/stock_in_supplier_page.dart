@@ -55,7 +55,7 @@ class _StockInSupplierPageState extends State<StockInSupplierPage> {
     return Scaffold(
       backgroundColor: CustomColors.neutral.c95,
       appBar: AppBarWithTitleOnly(
-        appBarTitle: 'Supplier ${StockInConstants.appTitle.i18n(context)}',
+        appBarTitle: StockInConstants.appTitle.i18n(context),
       ),
       body: BlocConsumer<StockInBloc, StockInState>(
         listener: (context, stockInState) {
@@ -98,7 +98,8 @@ class _StockInSupplierPageState extends State<StockInSupplierPage> {
                       ...[
                         InputBasic(
                           controller: supplierNameController,
-                          labelText: 'Supplier(opsional)',
+                          labelText:
+                              StockInConstants.supplierLabel.i18n(context),
                           suffixIcon:
                               const Icon(Icons.keyboard_arrow_down_rounded),
                           margin: EdgeInsets.zero,
@@ -128,6 +129,9 @@ class _StockInSupplierPageState extends State<StockInSupplierPage> {
                               );
                             }
                           },
+                        ),
+                        SizedBox(
+                          height: LayoutDimen.dimen_16.h,
                         ),
                         if (displaySuppliers &&
                             supplierNameController.text.isNotEmpty)
@@ -174,7 +178,8 @@ class _StockInSupplierPageState extends State<StockInSupplierPage> {
                                             ),
                                           ),
                                           child: Text(
-                                            'Tambah Sebagai Supplier Baru',
+                                            StockInConstants.addSupplier
+                                                .i18n(context),
                                             textAlign: TextAlign.center,
                                             overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
@@ -239,19 +244,22 @@ class _StockInSupplierPageState extends State<StockInSupplierPage> {
                             ),
                           ),
                       ],
-                      if (addNewSupplier && selectedSupplier == null)
+                      if (addNewSupplier && selectedSupplier == null) ...[
                         InputBasic(
                           controller: supplierPhoneController,
-                          labelText: 'Nomor HP Supplier',
+                          labelText: StockInConstants.supplierPhone,
                           keyboardType: TextInputType.number,
                           margin: EdgeInsets.zero,
-                          onChanged: (p0) {},
                         ),
+                        SizedBox(
+                          height: LayoutDimen.dimen_16.h,
+                        ),
+                      ],
                       if (selectedSupplier != null ||
-                          (addNewSupplier && selectedSupplier == null))
+                          (addNewSupplier && selectedSupplier == null)) ...[
                         InputBasic(
                           controller: supplierPICController,
-                          labelText: 'PIC Supplier (Opsional)',
+                          labelText: StockInConstants.supplierPIC.i18n(context),
                           margin: EdgeInsets.zero,
                           onChanged: (p0) {
                             stockInBloc.add(
@@ -262,6 +270,10 @@ class _StockInSupplierPageState extends State<StockInSupplierPage> {
                             );
                           },
                         ),
+                        SizedBox(
+                          height: LayoutDimen.dimen_16.h,
+                        ),
+                      ],
                     ],
                   ),
                 ),
@@ -275,7 +287,7 @@ class _StockInSupplierPageState extends State<StockInSupplierPage> {
                     FlatButton(
                       title:
                           // ignore: lines_longer_than_80_chars
-                          '${selectedSupplier == null && !addNewSupplier ? 'Lewati dan ' : ''}'
+                          '${selectedSupplier == null && !addNewSupplier ? '${StockInConstants.skipAndText.i18n(context)} ' : ''}'
                           '${StockInConstants.input.i18n(context)}',
                       onPressed: displaySuppliers
                           ? null
@@ -284,7 +296,9 @@ class _StockInSupplierPageState extends State<StockInSupplierPage> {
                               ? null
                               : () {
                                   ConfirmationDialog(
-                                    descriptionText: 'Proses transaksi ini?',
+                                    descriptionText: StockInConstants
+                                        .processThisTransaction
+                                        .i18n(context),
                                     cancelText:
                                         TranslationConstants.no.i18n(context),
                                     confirmText:
@@ -297,7 +311,7 @@ class _StockInSupplierPageState extends State<StockInSupplierPage> {
                                               ? SupplierEntity(
                                                   name: supplierNameController
                                                       .text,
-                                                  phone: supplierNameController
+                                                  phone: supplierPhoneController
                                                       .text,
                                                 )
                                               : selectedSupplier,
