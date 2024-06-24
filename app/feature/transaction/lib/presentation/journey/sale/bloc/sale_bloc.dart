@@ -118,7 +118,7 @@ class SaleBloc extends BaseBloc<SaleEvent, SaleState> {
   ) async {
     emit(SubmitLoading());
     try {
-      await transactionUsecase.submitReceiptAndSales(
+      receipt = await transactionUsecase.submitReceiptAndSales(
         receiptEntity: receipt.copyWith(
           totalPcs: _calculateTotalPcs(event.saleEntityList),
         ),

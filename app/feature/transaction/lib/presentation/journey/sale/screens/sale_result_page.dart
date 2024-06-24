@@ -4,6 +4,7 @@ import 'package:feature_transaction/presentation/blocs/print_bloc/print_bloc.dar
 import 'package:feature_transaction/presentation/journey/sale/bloc/sale_bloc.dart';
 import 'package:feature_transaction/presentation/journey/sale/sale_constants.dart';
 import 'package:feature_transaction/presentation/journey/sale/sale_routes.dart';
+import 'package:feature_transaction/presentation/journey/transaction_list/transaction_list_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:module_common/i18n/i18n_extension.dart';
 import 'package:module_common/presentation/bloc/base_bloc.dart';
@@ -65,11 +66,11 @@ class _SaleResultPageState extends State<SaleResultPage> {
                       children: [
                         Image.asset(
                           SaleAssets.successResultImage,
-                          width: LayoutDimen.dimen_94.w,
+                          width: LayoutDimen.dimen_76.w,
                         ),
                         Padding(
                           padding: EdgeInsets.symmetric(
-                            vertical: LayoutDimen.dimen_32.h,
+                            vertical: LayoutDimen.dimen_24.h,
                           ),
                           child: Text(
                             SaleStrings.successResultText.i18n(context),
@@ -91,9 +92,9 @@ class _SaleResultPageState extends State<SaleResultPage> {
                                   LayoutDimen.dimen_12.w,
                                   LayoutDimen.dimen_12.w,
                                   LayoutDimen.dimen_40.w,
-                                  LayoutDimen.dimen_24.w,
+                                  LayoutDimen.dimen_12.w,
                                 ),
-                                height: LayoutDimen.dimen_115.h,
+                                height: LayoutDimen.dimen_95.h,
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
@@ -135,10 +136,9 @@ class _SaleResultPageState extends State<SaleResultPage> {
                               dashedLine(),
                               Container(
                                 padding: EdgeInsets.symmetric(
-                                  vertical: LayoutDimen.dimen_24.h,
+                                  vertical: LayoutDimen.dimen_16.h,
                                   horizontal: LayoutDimen.dimen_32.w,
                                 ),
-                                height: LayoutDimen.dimen_230.h,
                                 child: Column(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
@@ -188,6 +188,21 @@ class _SaleResultPageState extends State<SaleResultPage> {
                                           ),
                                         ],
                                       ),
+                                    ),
+                                    FlatButton(
+                                      title: 'Lihat Detail',
+                                      onPressed: () {
+                                        Navigator.pushNamed(
+                                          context,
+                                          TransactionListRoutes.saleDetail,
+                                          arguments: saleBloc.receipt,
+                                        );
+                                      },
+                                      margin: EdgeInsets.zero,
+                                      color: CustomColors.secondary.c80,
+                                    ),
+                                    SizedBox(
+                                      height: LayoutDimen.dimen_12.h,
                                     ),
                                     BlocConsumer<PrintBloc, PrintState>(
                                       listener: (context, printState) {

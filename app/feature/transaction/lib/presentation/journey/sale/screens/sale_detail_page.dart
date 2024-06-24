@@ -345,6 +345,7 @@ class SaleDetailPage extends StatelessWidget {
                                                   fontSize: LayoutDimen
                                                       .dimen_12.minSp,
                                                 ),
+                                                textAlign: TextAlign.right,
                                               ),
                                             ],
                                           ),

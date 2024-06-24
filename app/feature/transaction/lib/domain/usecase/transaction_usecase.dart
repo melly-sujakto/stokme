@@ -84,28 +84,34 @@ class TransactionUsecase {
     return pref.getString(GenericConstants.userName)!;
   }
 
-  Future<void> submitReceiptAndSales({
+  Future<ReceiptEntity> submitReceiptAndSales({
     required ReceiptEntity receiptEntity,
     required List<SaleEntity> saleEntityList,
   }) async {
     // submit receipt
-    await _submitReceipt(receiptEntity);
+    final receipt = await _submitReceipt(receiptEntity);
     // submit sales
     await _submitSaleList(saleEntityList);
+    return receipt;
   }
 
-  Future<void> _submitReceipt(ReceiptEntity receiptEntity) async {
+  Future<ReceiptEntity> _submitReceipt(ReceiptEntity receiptEntity) async {
     final data = ReceiptModel.fromEntity(receiptEntity).toFirestoreJson(
       await _getStoreId(),
       isActive: true,
       overridedCreatedAt: DateTime.now(),
       overridedCreatedBy: await _getUserEmail(),
     );
-    await firebaseLibrary.createDocument(
+    final id = await firebaseLibrary.createDocument(
       collectionName: receiptCollectionName,
       data: data,
       id: receiptEntity.id,
     );
+    final receiptJson = await firebaseLibrary.getById(
+      collectionName: receiptCollectionName,
+      id: id,
+    );
+    return ReceiptModel.fromJson(receiptJson!);
   }
 
   Future<void> _submitSaleList(List<SaleEntity> saleEntityList) async {
