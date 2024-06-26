@@ -6,6 +6,7 @@ import 'package:feature_dashboard/presentation/journey/more/more_contants.dart';
 import 'package:flutter/material.dart';
 import 'package:module_common/common/constant/translation_constants.dart';
 import 'package:module_common/common/enum/languages.dart';
+import 'package:module_common/common/utils/printer_util.dart';
 import 'package:module_common/i18n/i18n_extension.dart';
 import 'package:module_common/package/bluetooth_print.dart';
 import 'package:module_common/presentation/bloc/base_bloc.dart';
@@ -194,7 +195,7 @@ class _MorePageState extends State<MorePage> {
 
   Widget rowPrinters(BuildContext context) {
     return rowItem(
-      iconPath: MoreAssets.printerIcon,
+      iconPath: PrinterUtil.printerIcon,
       child: BlocBuilder<MoreBloc, MoreState>(
         builder: (context, state) {
           return InkWell(
@@ -210,7 +211,7 @@ class _MorePageState extends State<MorePage> {
                             Flexible(
                               flex: 2,
                               child: Image.asset(
-                                MoreAssets.printerIcon,
+                                PrinterUtil.printerIcon,
                                 height: LayoutDimen.dimen_40.h,
                                 fit: BoxFit.fitHeight,
                               ),
@@ -225,6 +226,12 @@ class _MorePageState extends State<MorePage> {
                               flex: 8,
                               child: ListView(
                                 children: [
+                                  if (state.devices.isEmpty)
+                                    const Center(
+                                      child: Text(
+                                        'Printer tidak ditemukan!',
+                                      ),
+                                    ),
                                   if (state.devices.length > 1)
                                     Flexible(
                                       child: _printerRowItem(

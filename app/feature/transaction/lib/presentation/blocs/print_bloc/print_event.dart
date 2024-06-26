@@ -3,6 +3,7 @@ part of 'print_bloc.dart';
 sealed class PrintEvent {}
 
 class PrintExecuteEvent extends PrintEvent {
+  final BuildContext context;
   // TODO(melly): wrap to be one entity
   final List<SaleEntity> saleEntityList;
   final ReceiptEntity receiptEntity;
@@ -11,7 +12,8 @@ class PrintExecuteEvent extends PrintEvent {
   final String userName;
   final StoreEntity? storeEntity;
 
-  PrintExecuteEvent({
+  PrintExecuteEvent(
+    this.context, {
     required this.saleEntityList,
     required this.receiptEntity,
     required this.dateText,

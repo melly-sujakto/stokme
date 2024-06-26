@@ -12,7 +12,8 @@ class _$Injector extends Injector {
     final KiwiContainer container = KiwiContainer();
     container
       ..registerFactory((c) => SaleBloc(c<TransactionUsecase>()))
-      ..registerFactory((c) => PrintBloc(c<TransactionUsecase>()))
+      ..registerFactory((c) => PrintBloc(c<TransactionUsecase>(),
+          c<SharedPreferencesWrapper>(), c<PrinterUtil>()))
       ..registerFactory((c) => TransactionBloc(c<TransactionUsecase>()))
       ..registerFactory((c) => StockInBloc(c<TransactionUsecase>()))
       ..registerFactory((c) => TransactionListBloc(c<TransactionUsecase>()));
@@ -24,7 +25,6 @@ class _$Injector extends Injector {
     container.registerFactory((c) => TransactionUsecase(
         firebaseLibrary: c<FirebaseLibrary>(),
         sharedPreferencesWrapper: c<SharedPreferencesWrapper>(),
-        printerRepository: c<PrinterRepository>(),
         productRepository: c<ProductRepository>()));
   }
 }

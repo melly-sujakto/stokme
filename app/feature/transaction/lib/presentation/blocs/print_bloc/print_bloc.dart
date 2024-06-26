@@ -3,9 +3,14 @@ import 'dart:async';
 import 'package:data_abstraction/entity/receipt_entity.dart';
 import 'package:data_abstraction/entity/sale_entity.dart';
 import 'package:data_abstraction/entity/store_entity.dart';
+import 'package:extensions/iterable_extensions.dart';
 import 'package:feature_transaction/domain/usecase/transaction_usecase.dart';
+import 'package:flutter/material.dart';
+import 'package:module_common/common/constant/generic_constants.dart';
+import 'package:module_common/common/utils/printer_util.dart';
 import 'package:module_common/package/bluetooth_print.dart';
 import 'package:module_common/presentation/bloc/base_bloc.dart';
+import 'package:module_common/wrapper/shared_preferences_wrapper.dart';
 import 'package:ui_kit/extensions/number_extension.dart';
 
 part 'print_event.dart';
@@ -13,8 +18,14 @@ part 'print_state.dart';
 
 class PrintBloc extends BaseBloc<PrintEvent, PrintState> {
   final TransactionUsecase transactionUsecase;
+  final SharedPreferencesWrapper sharedPreferencesWrapper;
+  final PrinterUtil printerUtil;
 
-  PrintBloc(this.transactionUsecase) : super(PrintInitial()) {
+  PrintBloc(
+    this.transactionUsecase,
+    this.sharedPreferencesWrapper,
+    this.printerUtil,
+  ) : super(PrintInitial()) {
     on<PrintExecuteEvent>(_onPrintExecuteEvent);
   }
 
@@ -26,33 +37,34 @@ class PrintBloc extends BaseBloc<PrintEvent, PrintState> {
     PrintExecuteEvent event,
     Emitter<PrintState> emit,
   ) async {
-    emit(PrintLoading());
-    try {
-      // Get store detail
-      final storeDetail = event.storeEntity ?? await _getStoreDetail();
+    // Get store detail
+    final storeDetail = event.storeEntity ?? await _getStoreDetail();
 
-      // Print execution
-      final devices = await transactionUsecase.scanAvailablePrinters();
-      await Future.delayed(
-        const Duration(seconds: 1),
-        () async {
-          await transactionUsecase.startPrint(
-            device: devices.first,
-            lineTexts: generateLineTexts(
-              storeDetail: storeDetail,
-              saleEntityList: event.saleEntityList,
-              receiptEntity: event.receiptEntity,
-              dateText: event.dateText,
-              timeText: event.timeText,
-              userName: event.userName,
-            ),
-          );
-          emit(PrintSuccess());
-        },
-      );
-    } catch (e) {
-      emit(PrintFailed());
-    }
+    // Get default printer
+    final prefs = await sharedPreferencesWrapper.getPrefs();
+    final printerAddress = prefs.getString(
+      GenericConstants.printerAddress,
+    );
+    final availablePrinters = await printerUtil.scan();
+    final defaultPrinter = availablePrinters
+        .firstWhereOrNull((printer) => printer.address == printerAddress);
+
+    // ignore: use_build_context_synchronously
+    await printerUtil.executePrinter(
+      event.context,
+      printer: defaultPrinter,
+      additionalInfo: printerAddress != null && defaultPrinter == null
+          ? 'Printer default tidak ditemukan.'
+          : null,
+      lineTexts: generateLineTexts(
+        storeDetail: storeDetail,
+        saleEntityList: event.saleEntityList,
+        receiptEntity: event.receiptEntity,
+        dateText: event.dateText,
+        timeText: event.timeText,
+        userName: event.userName,
+      ),
+    );
   }
 
   List<LineText> generateLineTexts({

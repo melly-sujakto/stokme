@@ -10,7 +10,10 @@ class PlainDialog {
     required this.content,
   });
 
-  void show(BuildContext context) {
+  void show(
+    BuildContext context, {
+    void Function(dynamic)? thenCallback,
+  }) {
     showDialog(
       context: context,
       barrierColor: CustomColors.black.withOpacity(0.2),
@@ -39,6 +42,10 @@ class PlainDialog {
           ),
         ),
       ),
-    );
+    ).then((value) {
+      if (thenCallback != null) {
+        thenCallback(value);
+      }
+    });
   }
 }

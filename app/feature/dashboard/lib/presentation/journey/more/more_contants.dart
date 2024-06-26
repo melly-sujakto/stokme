@@ -9,7 +9,6 @@ abstract class MoreStrings {
 }
 
 abstract class MoreAssets {
-  static const printerIcon = 'assets/icons/printer_icon.png';
   static const warningIcon = 'assets/icons/warning_icon.png';
   static const barcodeIcon = 'assets/icons/barcode_icon.png';
   static const helpIcon = 'assets/icons/help_icon.png';

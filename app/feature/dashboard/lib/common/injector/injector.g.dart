@@ -12,7 +12,7 @@ class _$Injector extends Injector {
     final KiwiContainer container = KiwiContainer();
     container
       ..registerFactory((c) => ProfileBloc(c<DashboardUsecase>()))
-      ..registerSingleton((c) => MoreBloc(c<DashboardUsecase>()))
+      ..registerSingleton((c) => MoreBloc(c<DashboardUsecase>(), c<PrinterUtil>()))
       ..registerSingleton((c) => HomeBloc(c<DashboardUsecase>()));
   }
 
@@ -21,7 +21,6 @@ class _$Injector extends Injector {
     final KiwiContainer container = KiwiContainer();
     container.registerSingleton((c) => DashboardUsecase(
         sharedPreferencesWrapper: c<SharedPreferencesWrapper>(),
-        firebaseLibrary: c<FirebaseLibrary>(),
-        printerRepository: c<PrinterRepository>()));
+        firebaseLibrary: c<FirebaseLibrary>()));
   }
 }

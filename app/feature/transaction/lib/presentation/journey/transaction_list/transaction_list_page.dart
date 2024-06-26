@@ -13,6 +13,7 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:ui_kit/common/constants/layout_dimen.dart';
 import 'package:ui_kit/extensions/number_extension.dart';
 import 'package:ui_kit/theme/colors.dart';
+import 'package:ui_kit/ui/loading_indicator/loading_circular.dart';
 import 'package:ui_kit/ui/scanner/scanner_finder.dart';
 import 'package:ui_kit/utils/screen_utils.dart';
 
@@ -105,7 +106,10 @@ class _TransactionListPageState extends State<TransactionListPage> {
                           // ignore: lines_longer_than_80_chars
                           '$receiptsCount ${TransactionListStrings.sales.i18n(context)}',
                         ]),
-                        thSales(saleReceipts)
+                        if (saleReceipts.isEmpty)
+                          const LoadingCircular()
+                        else
+                          thSales(saleReceipts)
                       ]
                     : [
                         percentIndicator([

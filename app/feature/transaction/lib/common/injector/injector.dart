@@ -1,4 +1,3 @@
-import 'package:data_abstraction/repository/printer_repository.dart';
 import 'package:data_abstraction/repository/product_repository.dart';
 import 'package:feature_transaction/domain/usecase/transaction_usecase.dart';
 import 'package:feature_transaction/presentation/blocs/print_bloc/print_bloc.dart';
@@ -8,6 +7,7 @@ import 'package:feature_transaction/presentation/journey/stock_in/bloc/stock_in_
 import 'package:feature_transaction/presentation/journey/transaction_list/bloc/transaction_list_bloc.dart';
 import 'package:firebase_library/firebase_library.dart';
 import 'package:library_injection/package/kiwi.dart';
+import 'package:module_common/common/utils/printer_util.dart';
 import 'package:module_common/wrapper/shared_preferences_wrapper.dart';
 
 part 'injector.g.dart';

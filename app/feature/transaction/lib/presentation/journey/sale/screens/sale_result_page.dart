@@ -13,7 +13,6 @@ import 'package:ui_kit/extensions/date_time_extension.dart';
 import 'package:ui_kit/extensions/number_extension.dart';
 import 'package:ui_kit/theme/colors.dart';
 import 'package:ui_kit/ui/button/flat_button.dart';
-import 'package:ui_kit/ui/snackbar/snackbar_dialog.dart';
 import 'package:ui_kit/utils/screen_utils.dart';
 
 class SaleResultArgument {
@@ -204,46 +203,26 @@ class _SaleResultPageState extends State<SaleResultPage> {
                                     SizedBox(
                                       height: LayoutDimen.dimen_12.h,
                                     ),
-                                    BlocConsumer<PrintBloc, PrintState>(
-                                      listener: (context, printState) {
-                                        if (printState is PrintFailed) {
-                                          SnackbarDialog().show(
-                                            context: context,
-                                            message: 'Gagal mencetak struk,'
-                                                ' silakan cek kembali',
-                                            type: SnackbarDialogType.failed,
-                                          );
-                                        }
-                                      },
-                                      builder: (context, printState) {
-                                        if (printState is PrintLoading) {
-                                          return FlatButton(
-                                            title: 'Sedang mencetak...',
-                                            color: CustomColors.neutral.c90,
-                                            onPressed: null,
-                                          );
-                                        }
-                                        return FlatButton(
-                                          title: SaleStrings.printReceipt
-                                              .i18n(context),
-                                          onPressed: () async {
-                                            printBloc.add(
-                                              PrintExecuteEvent(
-                                                saleEntityList:
-                                                    state.saleEntityList,
-                                                receiptEntity: saleBloc.receipt,
-                                                dateText: DateTime.now()
-                                                    .toYMMMMEEEEd(),
-                                                timeText: DateTime.now()
-                                                    .toTimeWithColon(),
-                                                userName: saleBloc.userName,
-                                              ),
-                                            );
-                                          },
-                                          margin: EdgeInsets.zero,
+                                    FlatButton(
+                                      title: SaleStrings.printReceipt
+                                          .i18n(context),
+                                      onPressed: () async {
+                                        printBloc.add(
+                                          PrintExecuteEvent(
+                                            context,
+                                            saleEntityList:
+                                                state.saleEntityList,
+                                            receiptEntity: saleBloc.receipt,
+                                            dateText:
+                                                DateTime.now().toYMMMMEEEEd(),
+                                            timeText: DateTime.now()
+                                                .toTimeWithColon(),
+                                            userName: saleBloc.userName,
+                                          ),
                                         );
                                       },
-                                    )
+                                      margin: EdgeInsets.zero,
+                                    ),
                                   ],
                                 ),
                               )

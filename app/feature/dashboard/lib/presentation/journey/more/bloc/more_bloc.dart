@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:feature_dashboard/domain/navigation/usecase/dashboard_usecase.dart';
+import 'package:module_common/common/utils/printer_util.dart';
 import 'package:module_common/package/bluetooth_print.dart';
 import 'package:module_common/presentation/bloc/base_bloc.dart';
 
@@ -9,9 +10,11 @@ part 'more_state.dart';
 
 class MoreBloc extends BaseBloc<MoreEvent, MoreState> {
   final DashboardUsecase dashboardUsecase;
+  final PrinterUtil printerUtil;
 
   MoreBloc(
     this.dashboardUsecase,
+    this.printerUtil,
   ) : super(MoreInitial()) {
     on<LogoutEvent>(_onLogoutEvent);
     on<PrepareMoreDataEvent>(_onPrepareMoreDataEvent);
@@ -28,7 +31,7 @@ class MoreBloc extends BaseBloc<MoreEvent, MoreState> {
     PrepareMoreDataEvent event,
     emit,
   ) async {
-    availablePrinters = await dashboardUsecase.scanAvailablePrinters();
+    availablePrinters = await printerUtil.scan();
     defaultPrinter = await dashboardUsecase.getDefaultPrinter();
     alwaysUseCameraAsScanner =
         await dashboardUsecase.getFlagScannerCamera() ?? false;
