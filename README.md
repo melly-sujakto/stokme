@@ -28,23 +28,14 @@
 
 To run the project locally, follow these steps:
 
-1. **Clone the repository**:
+1. **Install the dependencies**:
     ```bash
-    git clone https://github.com/your-username/stokme.git
+    cd app
+    make install-dependencies
     ```
 
-2. **Install the dependencies**:
+2. **Run the app** on an emulator or physical device:
     ```bash
-    cd stokme
-    npm install
-    # or
-    flutter pub get
-    ```
-
-3. **Run the app** on an emulator or physical device:
-    ```bash
-    npm start
-    # or
     flutter run
     ```
 
